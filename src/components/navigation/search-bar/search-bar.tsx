@@ -1,8 +1,8 @@
+import './search-bar.scss';
+
 export default function SearchBar() {
 
     return (
-        <div id="search-bar">
-            <h4>Search Bar Placeholder</h4>
-        </div>
+        <input id="search-bar" type="text" placeholder="SEARCH FOR AN ITEM..." />
     )
 }

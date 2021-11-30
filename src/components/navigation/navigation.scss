@@ -1,3 +1,5 @@
+@import "../../util/mixins";
+
 #navigation {
     display: flex;
     flex-direction: row;
@@ -8,16 +10,36 @@
 
     #logo {
         height: 100%;
-        width: 240px;
+        flex: 15%;
         background-image: url("../../assets/logo/logo.png");
         background-repeat: no-repeat;
         background-position: 50% 40%;
     }
-}
+    #nav-list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        list-style: none;
+        justify-content: flex-end;
+        flex: 85%;
 
-#nav-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
+        li {
+            padding: 0px 15px 0px 15px;
+        }
+
+        #server {
+            @include title-style;
+            letter-spacing: 1px;
+            font-size: 26px;
+            padding-right: 0px;
+        }
+        #crystal {
+            padding-left: 0px;
+            padding-right: 3%;
+            img {
+                height: 36px;
+            }
+        }
+    }
 }
