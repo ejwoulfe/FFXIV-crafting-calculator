@@ -10,7 +10,8 @@ export default function Navigation() {
 
     return (
         <nav id="navigation">
-            <img id="logo" src={logo} alt="logo" />
+            <div id="logo">
+            </div>
             <ul id="nav-list">
                 <li><SearchBar /></li>
                 <li>{server}</li>

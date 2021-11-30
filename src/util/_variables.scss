@@ -1,0 +1,23 @@
+// Screen Width
+$max-width-large: 1920px;
+$min-width: 475px;
+
+// Colors
+$sky-blue: #D1FCFF;
+$light-black: #252525;
+$dark-black: #161616;
+
+// Font Family
+$main-font: ff-font;
+$title-font: staatliches;
+
+
+@font-face {
+  font-family: 'ff-font';
+  src:  url('../fonts/OPTIEngeEtienne.otf') format('opentype');
+}
+@font-face {
+  font-family: 'staatliches';
+  src:  url('../fonts/Staatliches-Regular.ttf') format('truetype');
+}
+

@@ -1,0 +1,30 @@
+@import "../../util/variables";
+@import "../../util/mixins";
+
+#home-page {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+
+    #title {
+        font-size: 96px;
+        @include title-style;
+    }
+    #disciples-title {
+        @include title-style;
+        margin-bottom: 0px;
+    }
+
+    #disciples-container {
+        height: 500px;
+        background-color: rgba($color: #473c2a, $alpha: 0.29);
+        border: 1px solid $sky-blue;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+}

@@ -1,0 +1,10 @@
+@import "./variables";
+
+// Title Mixin
+@mixin title-style {
+    text-transform: uppercase;
+    font-family: $title-font;
+    color: $sky-blue;
+    letter-spacing: 2px;
+    font-weight: 100;
+}

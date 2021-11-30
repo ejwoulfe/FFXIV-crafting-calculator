@@ -1,18 +1,23 @@
-#navigation{
+#navigation {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
     height: 120px;
+    background-color: #2c333a;
 
-    #logo{
+    #logo {
         height: 100%;
+        width: 240px;
+        background-image: url("../../assets/logo/logo.png");
+        background-repeat: no-repeat;
+        background-position: 50% 40%;
     }
 }
 
-#nav-list{
+#nav-list {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-     align-items: center;
+    align-items: center;
 }
