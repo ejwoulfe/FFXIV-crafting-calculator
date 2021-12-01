@@ -3,21 +3,19 @@ $max-width-large: 1920px;
 $min-width: 475px;
 
 // Colors
-$sky-blue: #D1FCFF;
-$light-black: #252525;
-$dark-black: #161616;
+$sky-blue: #d1fcff;
+$background-color: #1f2328;
+$nav-background: #2c333a;
 
 // Font Family
 $main-font: ff-font;
-$title-font: staatliches;
-
+$main-font: staatliches;
 
 @font-face {
-  font-family: 'ff-font';
-  src:  url('../fonts/OPTIEngeEtienne.otf') format('opentype');
+  font-family: "ff-font";
+  src: url("../fonts/OPTIEngeEtienne.otf") format("opentype");
 }
 @font-face {
-  font-family: 'staatliches';
-  src:  url('../fonts/Staatliches-Regular.ttf') format('truetype');
+  font-family: "staatliches";
+  src: url("../fonts/Staatliches-Regular.ttf") format("truetype");
 }
-
