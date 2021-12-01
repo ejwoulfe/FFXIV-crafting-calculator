@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import './server-list.scss';
+import { ServerContext } from '../../../context/ServerContext';
+
 
 export default function ServerList() {
 
     const [naServerList, setNAServerList] = useState<object>({});
+    const { setServer } = useContext(ServerContext);
 
     useEffect(() => {
 
@@ -13,6 +16,7 @@ export default function ServerList() {
             Crystal: ["Balmung", "Brynhildr", "Coeurl", "Diabolos", "Goblin", "Malboro", "Mateus", "Zalera"]
         })
     }, [])
+
 
     function createListOfServers(servers: object) {
         let numberOfDataCenters = Object.entries(servers).length;
@@ -34,16 +38,22 @@ export default function ServerList() {
 
                 </ul>
             ))
-
-
         }
-
 
         return unorderedListsArray;
     }
 
+
+    function changeServer(event: any) {
+
+        if (event.target.className === 'server') {
+            setServer(event.target.innerText)
+        }
+
+    }
+
     return (
-        <div id="server-list">
+        <div id="server-list" onClick={(event) => { changeServer(event) }}>
             {createListOfServers(naServerList).map((value) => {
                 return value;
             })}

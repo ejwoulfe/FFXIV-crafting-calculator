@@ -33,8 +33,13 @@
 .server {
     margin-left: 10px;
     border-bottom: 1px solid $nav-background;
-    padding: 25px 0px 5px 0px;
+    padding: 25px 0px 5px 5px;
     cursor: pointer;
     width: 125px;
     font-size: 18px;
+
+    &:hover {
+        background-color: #d1fcff42;
+        color: rgb(211, 198, 125);
+    }
 }
