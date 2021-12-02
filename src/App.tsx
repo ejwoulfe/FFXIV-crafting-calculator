@@ -5,7 +5,7 @@ import Home from './routes/home/home';
 
 function App() {
 
-  const [server, setServer] = useState<string>("")
+  const [server, setServer] = useState<string>("No Server Selected")
 
   return (
     <div id="app">
