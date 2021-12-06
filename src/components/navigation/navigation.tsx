@@ -1,15 +1,19 @@
 
 import { useEffect, useState, useContext } from 'react';
-import SearchBar from './search-bar/search-bar';
+import SearchBar from '../search-bar/search-bar';
 import crystal from '../../assets/navigation-icons/crystal.png';
 import './navigation.scss';
 import ServerList from './server-list/server-list';
+import RecipeList from './recipe-list/recipe-list';
 import { ServerContext } from '../../context/ServerContext';
+import RecipeObject from '../../interfaces/recipe-interface';
 
 export default function Navigation() {
 
     const { server } = useContext(ServerContext);
-    const [showList, setShowList] = useState<boolean>(false);
+    const [recipeList, setRecipeList] = useState<RecipeObject[]>([]);
+    const [showRecipeList, setShowRecipeList] = useState<boolean>(false);
+    const [showServerList, setShowServerList] = useState<boolean>(false);
 
     useEffect(() => {
 
@@ -21,11 +25,18 @@ export default function Navigation() {
         }
     }, []);
 
+
+    useEffect(() => {
+        if (recipeList.length > 0) {
+            setShowRecipeList(true);
+        }
+    }, [recipeList])
+
     // The only situation we want the drop down to be visible is when the user clicks on the button.
     // So hide the menu on a click that isn't the drop down menu button.
     let detectClick = (event: any) => {
         if (event.target.id !== 'crystal-image') {
-            setShowList(false)
+            setShowServerList(false)
         }
     }
 
@@ -34,10 +45,13 @@ export default function Navigation() {
             <div id="logo">
             </div>
             <ul id="nav-list">
-                <li id="search-bar-container"><SearchBar /></li>
+                <li id="search-bar-container">
+                    <SearchBar setList={setRecipeList} />
+                    {showRecipeList ? <RecipeList list={recipeList} /> : null}
+                </li>
                 <li id="server">{server}</li>
-                <li id="crystal" onClick={() => { setShowList(!showList) }} ><img id="crystal-image" src={crystal} alt="crystal" /></li>
-                {showList ? <ServerList /> : null}
+                <li id="crystal" onClick={() => { setShowServerList(!showServerList) }} ><img id="crystal-image" src={crystal} alt="crystal" /></li>
+                {showServerList ? <ServerList /> : null}
             </ul>
         </nav>
     )

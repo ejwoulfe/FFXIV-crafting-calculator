@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './search-bar.scss';
+import RecipeObject from '../../interfaces/recipe-interface';
 
-export default function SearchBar() {
+
+
+export default function SearchBar({ setList }: { setList: React.Dispatch<React.SetStateAction<RecipeObject[]>> }) {
 
     const [searchTerm, setSearchTerm] = useState<string | null>(null);
 
@@ -15,7 +18,8 @@ export default function SearchBar() {
                 if (searchTerm !== null && searchTerm.length >= 2) {
                     let searchQuery = await fetch('http://localhost:5000/recipes/' + searchTerm);
                     let results = await searchQuery.json();
-                    console.log(results);
+                    setList(results);
+
                 }
 
             } catch (error: any) {
@@ -26,7 +30,7 @@ export default function SearchBar() {
         // Clean up
         return () => clearTimeout(delay)
 
-    }, [searchTerm])
+    }, [searchTerm, setList])
 
 
     function handleSearch(event: React.KeyboardEvent<HTMLInputElement>) {
