@@ -3,19 +3,10 @@ const router = express.Router()
 const db = require('../config/connect-to-database');
 
 
-
-// Get recipe by id
-// router.get('/:recipeId', function (req, res) {
-//     let sql = "SELECT * FROM ffxivcc.recipes where recipe_id =";
-// })
-
+// Get from all recipes
 router.get("/", (req, res) => {
 
-    let sql = "SELECT * FROM recipes";
-
-
-
-    db.query(sql, (err, results) => {
+    db.query("SELECT * FROM recipes LIKE ", (err, results) => {
 
         if (err) {
 
@@ -27,11 +18,25 @@ router.get("/", (req, res) => {
 
 });
 
-router.get("/:discipeId", (req, res) => {
+// Get all recipes in a specific disciple of the hand.
+router.get("disciple/:discipeId", (req, res) => {
+
+    db.query(`SELECT * FROM recipes where disciple_id = ${req.params.discipeId}`, (err, results) => {
+
+        if (err) {
+
+            throw err;
+        }
+
+        res.send(JSON.parse(JSON.stringify(results)));
+    })
+});
 
 
+// 
+router.get("/:recipeName", (req, res) => {
 
-    db.query(`SELECT * FROM ffxivcc.recipes where disciple_id = ${req.params.discipeId}`, (err, results) => {
+    db.query(`SELECT * FROM recipes WHERE name LIKE "%${req.params.recipeName}%"`, (err, results) => {
 
         if (err) {
 

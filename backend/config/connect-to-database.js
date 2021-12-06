@@ -6,7 +6,6 @@ const app = express();
 
 
 
-// Setup on port 5000
 dotenv.config();
 app.use(cors());
 app.use(express.json());
@@ -31,11 +30,11 @@ module.exports = connection;
 
 // Setup routes for our models.
 const recipesRouter = require('../routes/recipes');
-//const recipesByDiscRouter = require('../routes/recipes-by-disciple');
+
 
 // Routes to send requests through.
 app.use('/recipes', recipesRouter);
-//app.use('/disciple/recipes', recipesByDiscRouter);
+
 
 app.listen(process.env.PORT, () => {
 
