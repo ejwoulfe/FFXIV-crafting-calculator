@@ -1,5 +1,5 @@
 export default interface RecipeObject {
-    disciple_id: string,
+    disciple_id: number,
     icon: string,
     item_level: string | null,
     level: string,
