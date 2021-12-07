@@ -5,41 +5,26 @@ import RecipeObject from '../../../interfaces/recipe-interface';
 export default function RecipeList(props: { list: RecipeObject[] }) {
 
 
-    // disciple_id: 3
-    // icon: "../../assets/recipe-icons/blacksmith/test-fire-target-dummy.png"
-    // item_level: null
-    // level: 70
-    // link: "https://na.finalfantasyxiv.com/lodestone/playguide/db/recipe/98306f42b61/"
-    // name: "Test-fire Target Dummy"
-    // recipe_id: 1149
-    // total_crafted: 1
-    // type: "null"
-
-    // useEffect(() => {
-
-    //     console.log(props.list)
-
-    // }, [props])
 
     function createListOfRecipes(recipes: RecipeObject[]) {
 
+        const images = require.context('../../../assets/recipe-icons/weaver', true);
         return recipes.map((recipe: RecipeObject, index: number) => {
-            let imgPath = `../${recipe.icon}`
+
+
+            let img = recipe.name.replace(/\s+/g, '-').toLowerCase();
+            let source = images(`./${img}.png`).default;
             return (
                 <li className="recipe-list-item" key={"recipe-" + index}>
-
+                    <img src={source} alt={`${recipe.name} icon`} />
                     <p>{recipe.name}</p>
                 </li>
+
+
             )
         })
 
     }
-
-    // function Img(image: any) {
-
-    //     return <img width="100" src={require("" + image)} alt="asd" />
-
-    // };
 
     return (
         <div id="recipe-list" >
