@@ -1,5 +1,6 @@
 
 import { useEffect, useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import SearchBar from '../search-bar/search-bar';
 import crystal from '../../assets/navigation-icons/crystal.png';
 import './navigation.scss';
@@ -48,7 +49,8 @@ export default function Navigation() {
 
     return (
         <nav id="navigation">
-            <div id="logo" />
+            <Link to="/" id="logo" />
+
             <ul id="nav-list">
                 <li id="search-bar-container">
                     <SearchBar setList={setRecipeList} />
