@@ -8,3 +8,8 @@
     letter-spacing: 2px;
     font-weight: 100;
 }
+
+@mixin list-hover {
+    background-color: #d1fcff42;
+    color: rgb(211, 198, 125);
+}

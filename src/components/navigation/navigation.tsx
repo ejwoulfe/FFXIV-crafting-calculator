@@ -36,21 +36,30 @@ export default function Navigation() {
     // So hide the menu on a click that isn't the drop down menu button.
     let detectClick = (event: any) => {
         if (event.target.id !== 'crystal-image') {
-            setShowServerList(false)
+            setShowServerList(false);
+        }
+        if (event.target.className !== 'recipe-list-item') {
+            setShowRecipeList(false);
+        }
+        if (event.target.id === 'search-bar') {
+            setShowRecipeList(true);
         }
     }
 
     return (
         <nav id="navigation">
-            <div id="logo">
-            </div>
+            <div id="logo" />
             <ul id="nav-list">
                 <li id="search-bar-container">
                     <SearchBar setList={setRecipeList} />
                     {showRecipeList ? <RecipeList list={recipeList} /> : null}
                 </li>
-                <li id="server">{server}</li>
-                <li id="crystal" onClick={() => { setShowServerList(!showServerList) }} ><img id="crystal-image" src={crystal} alt="crystal" /></li>
+                <li id="server">
+                    {server}
+                </li>
+                <li id="crystal" onClick={() => { setShowServerList(!showServerList) }} >
+                    <img id="crystal-image" src={crystal} alt="crystal" />
+                </li>
                 {showServerList ? <ServerList /> : null}
             </ul>
         </nav>

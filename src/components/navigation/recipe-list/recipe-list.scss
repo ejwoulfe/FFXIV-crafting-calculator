@@ -1,29 +1,62 @@
 @import "../../../util/variables";
+@import "../../../util/mixins";
 
-#search-list {
+#recipe-list {
     position: absolute;
-    top: 100px;
-    right: 22px;
+    top: 100%;
     background-color: #000000;
     list-style: none;
     text-align: left;
-    padding: 30px;
     border: solid 1px $sky-blue;
-    width: 12rem;
     color: $sky-blue;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    width: auto;
-    justify-content: center;
-    align-items: center;
     font-family: $main-font;
+    width: 93.3%;
+    padding: 0px;
+    height: 500px;
+    overflow-y: auto;
 }
 .recipe-list-item {
     margin-left: 10px;
     border-bottom: 1px solid $nav-background;
-    padding: 25px 0px 5px 5px;
     cursor: pointer;
-    width: 125px;
     font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 5px 0px 5px 0px;
+    margin: auto;
+
+    &:hover {
+        @include list-hover;
+    }
+
+    .recipe-info-text {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+
+        .recipe-name {
+            margin: 0;
+        }
+        .recipe-disciple {
+            margin: 0;
+            font-size: 12px;
+        }
+    }
+
+    .recipe-icon {
+        width: 50px;
+        height: 50px;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .recipe-name {
+    }
 }

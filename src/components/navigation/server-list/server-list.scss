@@ -1,4 +1,5 @@
 @import "../../../util/variables";
+@import "../../../util/mixins";
 
 #server-list {
     position: absolute;
@@ -39,7 +40,6 @@
     font-size: 18px;
 
     &:hover {
-        background-color: #d1fcff42;
-        color: rgb(211, 198, 125);
+        @include list-hover;
     }
 }

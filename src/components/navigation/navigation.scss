@@ -30,6 +30,10 @@
         #crystal {
             padding: 0px 15px 0px 15px;
         }
+        #search-bar-container {
+            width: 350px;
+            position: relative;
+        }
 
         #server {
             @include title-style;
