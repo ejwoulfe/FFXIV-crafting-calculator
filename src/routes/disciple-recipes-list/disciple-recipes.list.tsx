@@ -1,5 +1,6 @@
 import './disciple-recipes.scss';
 import { useParams } from 'react-router-dom'
+import RecipesList from '../../components/recipes-list/recipes-list';
 
 export default function DisciplesRecipeList() {
     const { disciple } = useParams()
@@ -10,7 +11,7 @@ export default function DisciplesRecipeList() {
 
             <h1 id="title">{disciple} Recipes</h1>
 
-
+            <RecipesList />
         </div>
     )
 }

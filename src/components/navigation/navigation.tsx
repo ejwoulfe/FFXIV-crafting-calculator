@@ -5,14 +5,14 @@ import SearchBar from '../search-bar/search-bar';
 import crystal from '../../assets/navigation-icons/crystal.png';
 import './navigation.scss';
 import ServerList from './server-list/server-list';
-import RecipeList from './recipe-list/recipe-list';
+import SearchList from './search-list/search-list';
 import { ServerContext } from '../../context/ServerContext';
 import RecipeObject from '../../interfaces/recipe-interface';
 
 export default function Navigation() {
 
     const { server } = useContext(ServerContext);
-    const [recipeList, setRecipeList] = useState<RecipeObject[]>([]);
+    const [searchList, setSearchList] = useState<RecipeObject[]>([]);
     const [showRecipeList, setShowRecipeList] = useState<boolean>(false);
     const [showServerList, setShowServerList] = useState<boolean>(false);
 
@@ -28,10 +28,10 @@ export default function Navigation() {
 
 
     useEffect(() => {
-        if (recipeList.length > 0) {
+        if (searchList.length > 0) {
             setShowRecipeList(true);
         }
-    }, [recipeList])
+    }, [searchList])
 
     // The only situation we want the drop down to be visible is when the user clicks on the button.
     // So hide the menu on a click that isn't the drop down menu button.
@@ -53,8 +53,8 @@ export default function Navigation() {
 
             <ul id="nav-list">
                 <li id="search-bar-container">
-                    <SearchBar setList={setRecipeList} />
-                    {showRecipeList ? <RecipeList list={recipeList} /> : null}
+                    <SearchBar setList={setSearchList} />
+                    {showRecipeList ? <SearchList list={searchList} /> : null}
                 </li>
                 <li id="server">
                     {server}

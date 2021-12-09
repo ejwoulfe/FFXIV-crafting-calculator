@@ -1,8 +1,8 @@
-import './recipe-list.scss';
+import './search-list.scss';
 import RecipeObject from '../../../interfaces/recipe-interface';
 
 
-export default function RecipeList(props: { list: RecipeObject[] }) {
+export default function SearchList(props: { list: RecipeObject[] }) {
 
     // Given the array of recipe objects, create a list item for each showing an image and name.
     function createListOfRecipes(recipes: RecipeObject[]) {
