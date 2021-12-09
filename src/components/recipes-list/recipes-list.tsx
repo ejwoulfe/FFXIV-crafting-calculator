@@ -2,6 +2,7 @@ import './recipes-list.scss';
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import RecipeObject from '../../interfaces/recipe-interface';
+import Pagination from './pagination/pagination';
 
 export default function RecipesList() {
     const { disciple } = useParams()
@@ -43,16 +44,22 @@ export default function RecipesList() {
 
         async function fetchDiscipleRecipes() {
 
-            let listQuery = await fetch('http://localhost:5000/disciple/' + discipleID);
-            let results = await listQuery.json();
-            setRecipeList(results);
+            try {
 
+                let listQuery = await fetch('http://localhost:5000/disciple/' + discipleID);
+                let results = await listQuery.json();
+                setRecipeList(results);
+
+            } catch (error: any) {
+
+                throw new Error(error);
+
+            }
         }
 
         if (discipleID !== undefined) {
             fetchDiscipleRecipes();
         }
-
 
     }, [discipleID]);
 
@@ -70,25 +77,24 @@ export default function RecipesList() {
         // type: "null"
 
         return recipeList?.map((recipe, index) => {
+
             return (
                 <div className="recipe-item-row" key={"row-" + index}>
                     <h4>{recipe.name}</h4>
-
-
                 </div>
-
             )
         })
-
     }
+
 
 
     return (
         <div id="list-container">
             <h1>{disciple}</h1>
-            {recipeList !== undefined ? createRecipesList(recipeList) : <h1>Loading Recipes</h1>}
+            <div id="cards-container">
 
-
+                {recipeList !== undefined ? createRecipesList(recipeList) : <h1>Loading Recipes</h1>}
+            </div>
         </div>
     );
 }
