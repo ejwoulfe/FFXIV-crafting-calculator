@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './search-bar.scss';
 import RecipeObject from '../../interfaces/recipe-interface';
+import RecipeList from '../../interfaces/recipe-list-interface';
 
 
 
-export default function SearchBar({ setList }: { setList: React.Dispatch<React.SetStateAction<RecipeObject[]>> }) {
+export default function SearchBar({ setList }: { setList: React.Dispatch<React.SetStateAction<RecipeList>> }) {
 
     const [searchTerm, setSearchTerm] = useState<string | null>(null);
 

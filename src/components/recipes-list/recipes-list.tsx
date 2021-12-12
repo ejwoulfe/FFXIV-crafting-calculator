@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import RecipeObject from '../../interfaces/recipe-interface';
 import Pagination from './pagination/pagination';
+import RecipeRow from './recipe-row/recipe-row';
+import RecipeList from '../../interfaces/recipe-list-interface';
 
 export default function RecipesList() {
     const { disciple } = useParams()
@@ -64,7 +66,7 @@ export default function RecipesList() {
     }, [discipleID]);
 
 
-    function createRecipesList(recipesList: RecipeObject[]) {
+    function createRecipesList(recipesList: RecipeList) {
 
         // disciple_id: 1
         // icon: "alchemist/rainbow-moth-orchid-corsage.png"
@@ -76,12 +78,13 @@ export default function RecipesList() {
         // total_crafted: 1
         // type: "null"
 
-        return recipeList?.map((recipe, index) => {
+        return recipeList?.map((recipe: RecipeObject, index: number) => {
+
+
+
 
             return (
-                <div className="recipe-item-row" key={"row-" + index}>
-                    <h4>{recipe.name}</h4>
-                </div>
+                <RecipeRow data={recipe} />
             )
         })
     }

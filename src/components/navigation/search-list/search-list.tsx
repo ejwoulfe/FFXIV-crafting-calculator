@@ -1,15 +1,15 @@
 import './search-list.scss';
+import RecipeList from '../../../interfaces/recipe-list-interface';
 import RecipeObject from '../../../interfaces/recipe-interface';
 
-
-export default function SearchList(props: { list: RecipeObject[] }) {
+export default function SearchList(data: { recipes: RecipeList }) {
 
     // Given the array of recipe objects, create a list item for each showing an image and name.
-    function createListOfRecipes(recipes: RecipeObject[]) {
+    function createListOfRecipes(list: RecipeList) {
 
         const images = require.context('../../../assets/recipe-icons/', true);
         let disciple = "";
-        return recipes.map((recipe: RecipeObject, index: number) => {
+        return list.map((recipe: RecipeObject, index: number) => {
 
             switch (recipe.disciple_id) {
                 case 1:
@@ -58,7 +58,7 @@ export default function SearchList(props: { list: RecipeObject[] }) {
 
     return (
         <ul id="recipe-list">
-            {createListOfRecipes(props.list)}
+            {createListOfRecipes(data.recipes)}
         </ul>
     )
 }
