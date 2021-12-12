@@ -31,11 +31,13 @@ module.exports = connection;
 // Setup routes for our models.
 const recipesRouter = require('../routes/recipes');
 const discipleRouter = require('../routes/disciple');
+const materialsRouter = require('../routes/materials');
 
 
 // Routes to send requests through.
 app.use('/recipes', recipesRouter);
 app.use('/disciple', discipleRouter);
+app.use('/materials', materialsRouter);
 
 
 app.listen(process.env.PORT, () => {

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './search-bar.scss';
 import RecipeObject from '../../interfaces/recipe-interface';
-import RecipeList from '../../interfaces/recipe-list-interface';
 
 
 
-export default function SearchBar({ setList }: { setList: React.Dispatch<React.SetStateAction<RecipeList>> }) {
+export default function SearchBar({ setList }: { setList: React.Dispatch<React.SetStateAction<Array<RecipeObject>>> }) {
 
     const [searchTerm, setSearchTerm] = useState<string | null>(null);
 
@@ -17,7 +16,7 @@ export default function SearchBar({ setList }: { setList: React.Dispatch<React.S
             try {
 
                 if (searchTerm !== null && searchTerm.length >= 2) {
-                    let searchQuery = await fetch('http://localhost:5000/recipes/' + searchTerm);
+                    let searchQuery = await fetch('http://localhost:5000/recipes/name/' + searchTerm);
                     let results = await searchQuery.json();
                     setList(results);
 

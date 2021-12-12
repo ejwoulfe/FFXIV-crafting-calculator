@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react';
 import RecipeObject from '../../interfaces/recipe-interface';
 import Pagination from './pagination/pagination';
 import RecipeRow from './recipe-row/recipe-row';
-import RecipeList from '../../interfaces/recipe-list-interface';
 
 export default function RecipesList() {
     const { disciple } = useParams()
-    const [recipeList, setRecipeList] = useState<RecipeObject[]>();
+    const [recipeList, setRecipeList] = useState<Array<RecipeObject>>();
     const [discipleID, setDiscipleID] = useState<number>();
 
 
@@ -48,7 +47,7 @@ export default function RecipesList() {
 
             try {
 
-                let listQuery = await fetch('http://localhost:5000/disciple/' + discipleID);
+                let listQuery = await fetch('http://localhost:5000/disciple/id/' + discipleID);
                 let results = await listQuery.json();
                 setRecipeList(results);
 
@@ -66,26 +65,15 @@ export default function RecipesList() {
     }, [discipleID]);
 
 
-    function createRecipesList(recipesList: RecipeList) {
+    function createRecipesList(recipesList: Array<RecipeObject>) {
 
-        // disciple_id: 1
-        // icon: "alchemist/rainbow-moth-orchid-corsage.png"
-        // item_level: 1
-        // level: 73
-        // link: "https://na.finalfantasyxiv.com/lodestone/playguide/db/recipe/4619e66f8f3/"
-        // name: "Rainbow Moth Orchid Corsage"
-        // recipe_id: 2249
-        // total_crafted: 1
-        // type: "null"
+        return recipesList?.map((recipe: RecipeObject, index: number) => {
 
-        return recipeList?.map((recipe: RecipeObject, index: number) => {
-
-
-
-
-            return (
-                <RecipeRow data={recipe} />
-            )
+            if (index < 100) {
+                return (
+                    <RecipeRow currentRecipe={recipe} />
+                )
+            }
         })
     }
 

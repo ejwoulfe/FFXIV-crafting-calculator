@@ -1,11 +1,14 @@
 import './search-list.scss';
-import RecipeList from '../../../interfaces/recipe-list-interface';
 import RecipeObject from '../../../interfaces/recipe-interface';
 
-export default function SearchList(data: { recipes: RecipeList }) {
+interface SearchListProps {
+    recipes: Array<RecipeObject>
+}
+
+export default function SearchList(searchResults: SearchListProps) {
 
     // Given the array of recipe objects, create a list item for each showing an image and name.
-    function createListOfRecipes(list: RecipeList) {
+    function createListOfRecipes(list: Array<RecipeObject>) {
 
         const images = require.context('../../../assets/recipe-icons/', true);
         let disciple = "";
@@ -58,7 +61,7 @@ export default function SearchList(data: { recipes: RecipeList }) {
 
     return (
         <ul id="recipe-list">
-            {createListOfRecipes(data.recipes)}
+            {createListOfRecipes(searchResults.recipes)}
         </ul>
     )
 }

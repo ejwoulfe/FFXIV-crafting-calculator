@@ -5,9 +5,23 @@ const db = require('../config/connect-to-database');
 
 
 // 
-router.get("/:recipeName", (req, res) => {
+router.get("/name/:recipeName", (req, res) => {
 
     db.query(`SELECT * FROM recipes WHERE name LIKE "%${req.params.recipeName}%"`, (err, results) => {
+
+        if (err) {
+
+            throw err;
+        }
+
+        res.send(JSON.parse(JSON.stringify(results)));
+    })
+});
+
+
+router.get("/id/:recipeId", (req, res) => {
+
+    db.query(`SELECT * FROM materials_list WHERE recipe_id = ${req.params.recipeId}`, (err, results) => {
 
         if (err) {
 

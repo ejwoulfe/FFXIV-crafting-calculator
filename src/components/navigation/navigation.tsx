@@ -7,12 +7,12 @@ import './navigation.scss';
 import ServerList from './server-list/server-list';
 import SearchList from './search-list/search-list';
 import { ServerContext } from '../../context/ServerContext';
-import RecipeList from '../../interfaces/recipe-list-interface';
+import RecipeObject from '../../interfaces/recipe-interface';
 
 export default function Navigation() {
 
     const { server } = useContext(ServerContext);
-    const [searchResults, setSearchResults] = useState<RecipeList>([]);
+    const [searchResults, setSearchResults] = useState<Array<RecipeObject>>([]);
     const [showRecipeList, setShowRecipeList] = useState<boolean>(false);
     const [showServerList, setShowServerList] = useState<boolean>(false);
 
