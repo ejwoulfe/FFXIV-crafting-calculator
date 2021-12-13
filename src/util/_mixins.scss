@@ -13,3 +13,28 @@
     background-color: #d1fcff42;
     color: rgb(211, 198, 125);
 }
+
+@mixin item-list {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    margin: 3px 0px 3px 0px;
+
+    .item-image {
+        height: 50px;
+        width: 50px;
+    }
+    .item-quantity {
+        margin: 0px 0px 0px 5px;
+        font-size: 26px;
+    }
+    .x-marker {
+        font-size: 12px;
+    }
+    .item-name {
+        margin: 0px 0px 0px 10px;
+        font-size: 18px;
+    }
+}

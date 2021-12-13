@@ -32,12 +32,14 @@ module.exports = connection;
 const recipesRouter = require('../routes/recipes');
 const discipleRouter = require('../routes/disciple');
 const materialsRouter = require('../routes/materials');
+const crystalsRouter = require('../routes/crystals');
 
 
 // Routes to send requests through.
 app.use('/recipes', recipesRouter);
 app.use('/disciple', discipleRouter);
 app.use('/materials', materialsRouter);
+app.use('/crystals', crystalsRouter);
 
 
 app.listen(process.env.PORT, () => {

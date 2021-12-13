@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
-import alchemist from '../../assets/disciples-icons/alchemist.png';
-import armorer from '../../assets/disciples-icons/armorer.png';
-import blacksmith from '../../assets/disciples-icons/blacksmith.png';
-import carpenter from '../../assets/disciples-icons/carpenter.png';
-import culinarian from '../../assets/disciples-icons/culinarian.png';
-import goldsmith from '../../assets/disciples-icons/goldsmith.png';
-import leatherworker from '../../assets/disciples-icons/leatherworker.png';
-import weaver from '../../assets/disciples-icons/weaver.png';
+import alchemist from '../../assets/disciple-icons/alchemist.png';
+import armorer from '../../assets/disciple-icons/armorer.png';
+import blacksmith from '../../assets/disciple-icons/blacksmith.png';
+import carpenter from '../../assets/disciple-icons/carpenter.png';
+import culinarian from '../../assets/disciple-icons/culinarian.png';
+import goldsmith from '../../assets/disciple-icons/goldsmith.png';
+import leatherworker from '../../assets/disciple-icons/leatherworker.png';
+import weaver from '../../assets/disciple-icons/weaver.png';
 import './disciples.scss';
 
 export default function Disciples() {

@@ -1,0 +1,92 @@
+@import "../../../util/variables";
+@import "../../../util/mixins";
+
+.recipe-row {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    height: 200px;
+    background-color: #473c2a46;
+    color: $sky-blue;
+    font-family: $main-font;
+    letter-spacing: 1px;
+
+    &:nth-child(even) {
+        background-color: $nav-background;
+    }
+
+    .recipe-details {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        height: 80%;
+        align-items: flex-start;
+        flex: 20%;
+        border-right: solid 2px $sky-blue;
+
+        h2 {
+            margin: 0px 0px 5px 5px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 200;
+            text-decoration: underline;
+        }
+
+        .img-and-details {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: flex-start;
+
+            img {
+                flex: 50%;
+                margin: 0px 10px 0px 10px;
+            }
+
+            .details {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                flex: 50%;
+                align-items: flex-start;
+                justify-content: flex-end;
+
+                p {
+                    margin: 3px 0px 3px 0px;
+                }
+            }
+        }
+    }
+
+    .recipe-materials {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: center;
+        height: 80%;
+        flex: 60%;
+        border-right: solid 2px $sky-blue;
+        padding-left: 40px;
+
+        li {
+            @include item-list;
+        }
+    }
+    .recipe-crystals {
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        justify-content: center;
+        flex: 20%;
+        padding-left: 40px;
+
+        li {
+            @include item-list;
+        }
+    }
+}

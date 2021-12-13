@@ -15,7 +15,7 @@
     font-family: $main-font;
     width: 93.3%;
     padding: 0px;
-    height: 500px;
+    max-height: 500px;
     overflow-y: auto;
 }
 .recipe-list-item {

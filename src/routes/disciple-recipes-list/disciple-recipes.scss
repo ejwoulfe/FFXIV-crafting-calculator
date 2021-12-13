@@ -1,4 +1,7 @@
+@import "../../util/mixins.scss";
+
 #title {
-    text-transform: capitalize;
+    @include title-style;
     text-align: center;
+    font-size: 62px;
 }

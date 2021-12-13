@@ -5,3 +5,13 @@
     align-items: center;
     justify-content: center;
 }
+#rows-container {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    width: 100%;
+}
+
+#disciple-icon {
+    margin-bottom: 30px;
+}

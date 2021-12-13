@@ -9,7 +9,8 @@ export default function RecipesList() {
     const { disciple } = useParams()
     const [recipeList, setRecipeList] = useState<Array<RecipeObject>>();
     const [discipleID, setDiscipleID] = useState<number>();
-
+    const discipleImages = require.context('../../assets/disciple-icons/', true);
+    let filePath = discipleImages(`./${disciple}.png`).default;
 
     useEffect(() => {
         switch (disciple) {
@@ -71,7 +72,7 @@ export default function RecipesList() {
 
             if (index < 100) {
                 return (
-                    <RecipeRow currentRecipe={recipe} />
+                    <RecipeRow currentRecipe={recipe} key={"recipe-row-" + index} />
                 )
             }
         })
@@ -81,9 +82,8 @@ export default function RecipesList() {
 
     return (
         <div id="list-container">
-            <h1>{disciple}</h1>
-            <div id="cards-container">
-
+            <img id="disciple-icon" src={filePath} alt={disciple + "icon"} />
+            <div id="rows-container">
                 {recipeList !== undefined ? createRecipesList(recipeList) : <h1>Loading Recipes</h1>}
             </div>
         </div>
