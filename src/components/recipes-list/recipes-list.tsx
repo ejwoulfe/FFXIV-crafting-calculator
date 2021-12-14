@@ -1,16 +1,23 @@
 import './recipes-list.scss';
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import RecipeObject from '../../interfaces/recipe-interface';
-import Pagination from './pagination/pagination';
 import RecipeRow from './recipe-row/recipe-row';
+import Pagination from './pagination/pagination';
 
 export default function RecipesList() {
     const { disciple } = useParams()
-    const [recipeList, setRecipeList] = useState<Array<RecipeObject>>();
     const [discipleID, setDiscipleID] = useState<number>();
     const discipleImages = require.context('../../assets/disciple-icons/', true);
     let filePath = discipleImages(`./${disciple}.png`).default;
+    const rowLimit = 100;
+
+    // State that is changed by its children components
+
+    const [recipeList, setRecipeList] = useState<Array<RecipeObject>>();
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState<number>();
+
 
     useEffect(() => {
         switch (disciple) {
@@ -39,16 +46,15 @@ export default function RecipesList() {
                 setDiscipleID(8);
                 break;
         }
-    }, [disciple])
 
+    }, [disciple])
 
     useEffect(() => {
 
-        async function fetchDiscipleRecipes() {
-
+        async function fetchDiscipleRecipes(page: number) {
             try {
 
-                let listQuery = await fetch('http://localhost:5000/disciple/id/' + discipleID);
+                let listQuery = await fetch('http://localhost:5000/disciple/id&=' + discipleID + '/page&=' + page);
                 let results = await listQuery.json();
                 setRecipeList(results);
 
@@ -60,23 +66,41 @@ export default function RecipesList() {
         }
 
         if (discipleID !== undefined) {
-            fetchDiscipleRecipes();
+            fetchDiscipleRecipes(currentPage)
+        }
+    }, [currentPage, discipleID])
+
+    useEffect(() => {
+        async function fetchNumberOfRecipes() {
+            try {
+
+                let rowsQuery = await fetch('http://localhost:5000/disciple/id&=' + discipleID);
+                let rowsJSON = await rowsQuery.json();
+                let numOfRows = (Object.values(rowsJSON[0])[0]) as number
+                // Total number of pages will be the number of total rows divided by 100 rows per page, rounded up.
+                setTotalPages(Math.ceil(numOfRows / rowLimit));
+
+            } catch (error: any) {
+
+                throw new Error(error);
+
+            }
         }
 
-    }, [discipleID]);
+        if (discipleID !== undefined) {
+            fetchNumberOfRecipes();
+        }
+    }, [discipleID])
 
 
     function createRecipesList(recipesList: Array<RecipeObject>) {
 
         return recipesList?.map((recipe: RecipeObject, index: number) => {
 
-            // Insert Pagination Here. Good Luck!
+            return (
+                <RecipeRow currentRecipe={recipe} key={"recipe-row-" + index} />
+            )
 
-            if (index > 600 && index < 700) {
-                return (
-                    <RecipeRow currentRecipe={recipe} key={"recipe-row-" + index} />
-                )
-            }
         })
     }
 
@@ -85,6 +109,7 @@ export default function RecipesList() {
     return (
         <div id="list-container">
             <img id="disciple-icon" src={filePath} alt={disciple + "icon"} />
+            {totalPages !== undefined ? <Pagination pageData={{ currentPage, setCurrentPage, totalPages }} /> : null}
             <div id="rows-container">
                 {recipeList !== undefined ? createRecipesList(recipeList) : <div className="loading-spinner"></div>}
             </div>

@@ -1,43 +1,16 @@
-#pagination-buttons {
+@import "../../../util/variables";
+
+#pagination-container {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 20px;
 
-    button {
-        margin: 0px 2px;
-        background-color: transparent;
-        border: none;
-        border-radius: 4px;
-        padding: 10px 15px 10px 15px;
-        color: #192024;
-        box-shadow: solid 1px #000000;
-
-        &:hover {
-            cursor: pointer;
-        }
-    }
-
-    .page_disabled {
-        pointer-events: none;
-        box-shadow: none;
-        color: #ffffff;
-        border: none;
-        background-color: #ff690f;
-
-        &:hover {
-            cursor: default;
-        }
-    }
-
-    .prev_disabled,
-    .next_disabled {
-        color: #8295a3;
-
-        &:hover {
-            cursor: default;
-        }
+    li {
+        list-style-type: none;
+        padding-left: 10px;
+        cursor: pointer;
+        color: $sky-blue;
+        font-family: ff-font;
+        font-size: 3rem;
     }
 }
