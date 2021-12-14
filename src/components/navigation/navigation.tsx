@@ -41,6 +41,8 @@ export default function Navigation() {
         }
         if (event.target.className !== 'recipe-list-item') {
             setShowRecipeList(false);
+        } if (event.target.id === 'search-bar' && event.target.value.length >= 2) {
+            setShowRecipeList(true);
         }
     }
 

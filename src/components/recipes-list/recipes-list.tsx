@@ -70,7 +70,9 @@ export default function RecipesList() {
 
         return recipesList?.map((recipe: RecipeObject, index: number) => {
 
-            if (index < 100) {
+            // Insert Pagination Here. Good Luck!
+
+            if (index > 600 && index < 700) {
                 return (
                     <RecipeRow currentRecipe={recipe} key={"recipe-row-" + index} />
                 )
@@ -84,7 +86,7 @@ export default function RecipesList() {
         <div id="list-container">
             <img id="disciple-icon" src={filePath} alt={disciple + "icon"} />
             <div id="rows-container">
-                {recipeList !== undefined ? createRecipesList(recipeList) : <h1>Loading Recipes</h1>}
+                {recipeList !== undefined ? createRecipesList(recipeList) : <div className="loading-spinner"></div>}
             </div>
         </div>
     );

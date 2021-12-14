@@ -61,7 +61,9 @@ function RecipeRow(props: RowProps) {
     function createItemsList(itemArray: Array<MaterialObject> | Array<CrystalObject>, itemType: string) {
 
         return itemArray.map((item: MaterialObject | CrystalObject, index: number) => {
-            let filePath;
+
+            let filePath = null;
+
             if (itemType === "material") {
                 filePath = materialImages(`./${item.icon}`).default;
             } else {
@@ -74,7 +76,6 @@ function RecipeRow(props: RowProps) {
                     <p className="item-quantity"><span className="x-marker">x</span>{item.quantity}</p>
                     <p className="item-name">{item.name}</p>
                 </li>
-
             )
         })
     }
@@ -97,11 +98,10 @@ function RecipeRow(props: RowProps) {
                 </span>
             </div>
             <div className="recipe-materials">
-                {materialsArr !== null ? createItemsList(materialsArr, "material") : <h4>Loading Materials Data</h4>}
+                {materialsArr !== null ? createItemsList(materialsArr, "material") : <div className="loading-spinner"></div>}
             </div>
             <div className="recipe-crystals">
-                {crystalsArr !== null ? createItemsList(crystalsArr, "crystal") : <h4>Loading Crystals Data</h4>}
-
+                {crystalsArr !== null ? createItemsList(crystalsArr, "crystal") : <div className="loading-spinner"></div>}
             </div>
         </div>
     );

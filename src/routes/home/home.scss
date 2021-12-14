@@ -28,3 +28,28 @@
         flex-wrap: wrap;
     }
 }
+
+#icons-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 0px;
+
+    .disciples-li {
+        list-style: none;
+        flex: 24%;
+        text-decoration: none;
+
+        .disciples-icon {
+            cursor: pointer;
+        }
+
+        p {
+            @include title-style;
+            letter-spacing: 0.5px;
+            font-size: 26px;
+            margin-top: 0px;
+        }
+    }
+}
