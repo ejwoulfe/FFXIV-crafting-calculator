@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from 'react';
 import './pagination.scss';
 
 interface PaginationProps {
@@ -11,17 +11,29 @@ export default function Pagination(data: { pageData: PaginationProps }) {
 
     let page = data.pageData;
 
-    function createPaginationNumbers(totalPages: number) {
+    console.log(data)
+
+
+    function createPaginationNumbers(totalPages: number, currentPage: number) {
         let pagesArr = [];
+        console.log("called.")
+
         for (let i = 1; i <= totalPages; i++) {
             pagesArr.push(i);
         }
         return pagesArr.map((pageNumber, index) => {
-            return <li key={"page-number-" + index}>{pageNumber}</li>
+
+
+            if (pageNumber === currentPage) {
+                return <button key={"page-number-" + index} className="page-disabled" >{pageNumber}</button>
+            } else {
+                return <button key={"page-number-" + index} className="page-active"> {pageNumber}</button>
+            }
         })
     }
 
     function changePage(event: any) {
+
         page.setCurrentPage(event.target.innerHTML as number);
     }
 
@@ -29,7 +41,7 @@ export default function Pagination(data: { pageData: PaginationProps }) {
     return (
         <div>
             <ul id="pagination-container" onClick={(e) => { changePage(e) }}>
-                {createPaginationNumbers(page.totalPages)}
+                {createPaginationNumbers(page.totalPages, page.currentPage)}
             </ul>
         </div>
     );

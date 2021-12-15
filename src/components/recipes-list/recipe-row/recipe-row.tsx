@@ -12,44 +12,37 @@ function RecipeRow(props: RowProps) {
 
     const [materialsArr, setMaterialsArr] = useState<Array<MaterialObject> | null>(null);
     const [crystalsArr, setCrystalsArr] = useState<Array<CrystalObject> | null>(null);
+    const [isCanceled, setIsCanceled] = useState<boolean>(false);
 
     let recipe = props.currentRecipe;
 
-    async function fetchItemData(recipeID: number, itemType: string) {
-
-        try {
-
-            let itemsFetchQuery = await fetch(`http://localhost:5000/${itemType}/id/` + recipeID);
-            let items = await itemsFetchQuery.json();
-            return items;
-
-        } catch (error: any) {
-
-            throw new Error(error);
-
-        }
-    }
 
     useEffect(() => {
-        fetchItemData(recipe.recipe_id, "materials").then((materials) => {
-            setMaterialsArr(materials);
-        });
-        fetchItemData(recipe.recipe_id, "crystals").then((crystals) => {
-            setCrystalsArr(crystals);
-        });
-    }, [recipe.recipe_id])
+        const firstController = new AbortController();
+        const secondController = new AbortController();
 
 
-    // disciple_id: 3
-    // icon: "blacksmith/colibri-pink-dye.png"
-    // item_level: null
-    // level: 30
-    // link: "https://na.finalfantasyxiv.com/lodestone/playguide/db/recipe/77b517e589e/"
-    // name: "Colibri Pink Dye"
-    // recipe_id: 1217
-    // total_crafted: 1
-    // type: "null"
+        fetch(`http://localhost:5000/materials/id/${recipe.recipe_id}`, { signal: firstController.signal })
+            .then((response) => response.json())
+            .then((data) => {
+                setMaterialsArr(data)
+            })
+            .catch((error) => console.log(error.message));
 
+
+        fetch(`http://localhost:5000/crystals/id/${recipe.recipe_id}`, { signal: secondController.signal })
+            .then((response) => response.json())
+            .then((data) => {
+                setCrystalsArr(data)
+            })
+            .catch((error) => console.log(error.message));
+
+        return () => {
+            firstController.abort()
+            secondController.abort()
+            setIsCanceled(true)
+        };
+    }, [recipe.recipe_id]);
 
     const recipeImages = require.context('../../../assets/recipe-icons/', true);
     let filePath = recipeImages(`./${recipe.icon}`).default;
@@ -98,10 +91,10 @@ function RecipeRow(props: RowProps) {
                 </span>
             </div>
             <div className="recipe-materials">
-                {materialsArr !== null ? createItemsList(materialsArr, "material") : <div className="loading-spinner"></div>}
+                {materialsArr !== null && isCanceled === false ? createItemsList(materialsArr, "material") : <div className="loading-spinner"></div>}
             </div>
             <div className="recipe-crystals">
-                {crystalsArr !== null ? createItemsList(crystalsArr, "crystal") : <div className="loading-spinner"></div>}
+                {crystalsArr !== null && isCanceled === false ? createItemsList(crystalsArr, "crystal") : <div className="loading-spinner"></div>}
             </div>
         </div>
     );

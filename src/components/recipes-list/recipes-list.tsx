@@ -1,24 +1,29 @@
 import './recipes-list.scss';
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import RecipeObject from '../../interfaces/recipe-interface';
 import RecipeRow from './recipe-row/recipe-row';
 import Pagination from './pagination/pagination';
 
 export default function RecipesList() {
-    const { disciple } = useParams()
+
+    const { disciple } = useParams();
     const [discipleID, setDiscipleID] = useState<number>();
     const discipleImages = require.context('../../assets/disciple-icons/', true);
     let filePath = discipleImages(`./${disciple}.png`).default;
+    const [recipeList, setRecipeList] = useState<Array<RecipeObject>>();
+
+    // Current per page limit is 100.
     const rowLimit = 100;
 
     // State that is changed by its children components
 
-    const [recipeList, setRecipeList] = useState<Array<RecipeObject>>();
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>();
 
 
+
+    // We need a number ID in order to fetch from our database, switch statement to assign a number depending on the disciple.
     useEffect(() => {
         switch (disciple) {
             case "alchemist":
@@ -46,7 +51,6 @@ export default function RecipesList() {
                 setDiscipleID(8);
                 break;
         }
-
     }, [disciple])
 
     useEffect(() => {
@@ -58,6 +62,7 @@ export default function RecipesList() {
                 let results = await listQuery.json();
                 setRecipeList(results);
 
+
             } catch (error: any) {
 
                 throw new Error(error);
@@ -68,9 +73,14 @@ export default function RecipesList() {
         if (discipleID !== undefined) {
             fetchDiscipleRecipes(currentPage)
         }
+
+
+
     }, [currentPage, discipleID])
 
+
     useEffect(() => {
+
         async function fetchNumberOfRecipes() {
             try {
 
@@ -80,6 +90,7 @@ export default function RecipesList() {
                 // Total number of pages will be the number of total rows divided by 100 rows per page, rounded up.
                 setTotalPages(Math.ceil(numOfRows / rowLimit));
 
+
             } catch (error: any) {
 
                 throw new Error(error);
@@ -87,9 +98,12 @@ export default function RecipesList() {
             }
         }
 
+
         if (discipleID !== undefined) {
             fetchNumberOfRecipes();
         }
+
+
     }, [discipleID])
 
 
@@ -103,7 +117,6 @@ export default function RecipesList() {
 
         })
     }
-
 
 
     return (
