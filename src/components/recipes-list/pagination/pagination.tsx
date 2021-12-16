@@ -11,9 +11,6 @@ export default function Pagination(data: { pageData: PaginationProps }) {
 
     let page = data.pageData;
 
-    console.log(data)
-
-
     function createPaginationNumbers(totalPages: number, currentPage: number) {
         let pagesArr = [];
         console.log("called.")
@@ -21,6 +18,7 @@ export default function Pagination(data: { pageData: PaginationProps }) {
         for (let i = 1; i <= totalPages; i++) {
             pagesArr.push(i);
         }
+
         return pagesArr.map((pageNumber, index) => {
 
 

@@ -1,5 +1,5 @@
 import './recipes-list.scss';
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import RecipeObject from '../../interfaces/recipe-interface';
 import RecipeRow from './recipe-row/recipe-row';
@@ -8,9 +8,10 @@ import Pagination from './pagination/pagination';
 export default function RecipesList() {
 
     const { disciple } = useParams();
-    const [discipleID, setDiscipleID] = useState<number>();
+    const location = useLocation();
+    const { name } = location.state;
     const discipleImages = require.context('../../assets/disciple-icons/', true);
-    let filePath = discipleImages(`./${disciple}.png`).default;
+    let filePath = discipleImages(`./${name}.png`).default;
     const [recipeList, setRecipeList] = useState<Array<RecipeObject>>();
 
     // Current per page limit is 100.
@@ -22,89 +23,31 @@ export default function RecipesList() {
     const [totalPages, setTotalPages] = useState<number>();
 
 
-
     // We need a number ID in order to fetch from our database, switch statement to assign a number depending on the disciple.
     useEffect(() => {
-        switch (disciple) {
-            case "alchemist":
-                setDiscipleID(1);
-                break;
-            case "armorer":
-                setDiscipleID(2);
-                break;
-            case "blacksmith":
-                setDiscipleID(3);
-                break;
-            case "carpenter":
-                setDiscipleID(4);
-                break;
-            case "culinarian":
-                setDiscipleID(5);
-                break;
-            case "goldsmith":
-                setDiscipleID(6);
-                break;
-            case "leatherworker":
-                setDiscipleID(7);
-                break;
-            case "weaver":
-                setDiscipleID(8);
-                break;
-        }
+
+
+        fetch('http://localhost:5000/disciple/id&=' + disciple + '/page&=' + currentPage)
+            .then((response) => response.json())
+            .then((recipes) => {
+                setRecipeList(recipes)
+            })
+            .catch((error) => console.log(error.message));
+
+    }, [disciple, currentPage])
+
+    useEffect(() => {
+
+        fetch('http://localhost:5000/disciple/id&=' + disciple)
+            .then((response) => response.json())
+            .then((rows) => {
+
+                let numOfRows = (Object.values(rows[0])[0]) as number
+                setTotalPages(Math.ceil(numOfRows / rowLimit))
+            })
+            .catch((error) => console.log(error.message));
     }, [disciple])
 
-    useEffect(() => {
-
-        async function fetchDiscipleRecipes(page: number) {
-            try {
-
-                let listQuery = await fetch('http://localhost:5000/disciple/id&=' + discipleID + '/page&=' + page);
-                let results = await listQuery.json();
-                setRecipeList(results);
-
-
-            } catch (error: any) {
-
-                throw new Error(error);
-
-            }
-        }
-
-        if (discipleID !== undefined) {
-            fetchDiscipleRecipes(currentPage)
-        }
-
-
-
-    }, [currentPage, discipleID])
-
-
-    useEffect(() => {
-
-        async function fetchNumberOfRecipes() {
-            try {
-
-                let rowsQuery = await fetch('http://localhost:5000/disciple/id&=' + discipleID);
-                let rowsJSON = await rowsQuery.json();
-                let numOfRows = (Object.values(rowsJSON[0])[0]) as number
-                // Total number of pages will be the number of total rows divided by 100 rows per page, rounded up.
-                setTotalPages(Math.ceil(numOfRows / rowLimit));
-
-
-            } catch (error: any) {
-
-                throw new Error(error);
-
-            }
-        }
-
-
-        if (discipleID !== undefined) {
-            fetchNumberOfRecipes();
-        }
-
-
-    }, [discipleID])
 
 
     function createRecipesList(recipesList: Array<RecipeObject>) {

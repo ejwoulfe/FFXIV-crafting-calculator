@@ -17,6 +17,7 @@ function RecipeRow(props: RowProps) {
     let recipe = props.currentRecipe;
 
 
+
     useEffect(() => {
         const firstController = new AbortController();
         const secondController = new AbortController();
@@ -51,8 +52,11 @@ function RecipeRow(props: RowProps) {
 
 
 
+
+
     function createItemsList(itemArray: Array<MaterialObject> | Array<CrystalObject>, itemType: string) {
 
+        console.log("Creating item list for: " + itemArray);
         return itemArray.map((item: MaterialObject | CrystalObject, index: number) => {
 
             let filePath = null;
