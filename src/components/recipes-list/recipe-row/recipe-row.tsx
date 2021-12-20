@@ -5,43 +5,64 @@ import CrystalObject from '../../../interfaces/crystal-interface';
 import './recipe-row.scss';
 
 interface RowProps {
-    currentRecipe: RecipeObject
+    recipe: RecipeObject,
+    index: number,
+    setIsDoneLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function RecipeRow(props: RowProps) {
-
+function RecipeRow(props: { currentRecipe: RowProps }) {
     const [materialsArr, setMaterialsArr] = useState<Array<MaterialObject> | null>(null);
     const [crystalsArr, setCrystalsArr] = useState<Array<CrystalObject> | null>(null);
     const [isCanceled, setIsCanceled] = useState<boolean>(false);
 
-    let recipe = props.currentRecipe;
+    let recipe = props.currentRecipe.recipe;
 
+    useEffect(() => {
+        if (props.currentRecipe.index === 99) {
+            setTimeout(() => { props.currentRecipe.setIsDoneLoading(true); }, 1000);
+
+        }
+    }, [props.currentRecipe.index, props.currentRecipe]);
 
 
     useEffect(() => {
         const firstController = new AbortController();
         const secondController = new AbortController();
 
-
         fetch(`http://localhost:5000/materials/id/${recipe.recipe_id}`, { signal: firstController.signal })
             .then((response) => response.json())
             .then((data) => {
-                setMaterialsArr(data)
+                setMaterialsArr(data);
+                setIsCanceled(false);
             })
-            .catch((error) => console.log(error.message));
+            .catch((error) => {
+                if (error.name === "AbortError") {
+                    setIsCanceled(true);
+                    setMaterialsArr(null);
+                } else {
+                    console.log(error.message)
+                }
+            });
 
 
         fetch(`http://localhost:5000/crystals/id/${recipe.recipe_id}`, { signal: secondController.signal })
             .then((response) => response.json())
             .then((data) => {
-                setCrystalsArr(data)
+                setCrystalsArr(data);
+                setIsCanceled(false);
             })
-            .catch((error) => console.log(error.message));
+            .catch((error) => {
+                if (error.name === "AbortError") {
+                    setIsCanceled(true);
+                    setCrystalsArr(null);
+                } else {
+                    console.log(error.message)
+                }
+            });
 
         return () => {
             firstController.abort()
             secondController.abort()
-            setIsCanceled(true)
         };
     }, [recipe.recipe_id]);
 
@@ -51,13 +72,11 @@ function RecipeRow(props: RowProps) {
     const crystalImages = require.context('../../../assets/crystal-icons/', true);
 
 
-
-
-
     function createItemsList(itemArray: Array<MaterialObject> | Array<CrystalObject>, itemType: string) {
 
-        console.log("Creating item list for: " + itemArray);
+
         return itemArray.map((item: MaterialObject | CrystalObject, index: number) => {
+
 
             let filePath = null;
 
@@ -66,7 +85,6 @@ function RecipeRow(props: RowProps) {
             } else {
                 filePath = crystalImages(`./${item.icon}`).default;
             }
-
             return (
                 <li key={'item-' + index}>
                     <img className="item-image" src={filePath} alt={`${item.name} + icon`} />

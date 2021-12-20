@@ -4,7 +4,8 @@ import './pagination.scss';
 interface PaginationProps {
     currentPage: number,
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>,
-    totalPages: number
+    totalPages: number,
+    isDoneLoading: boolean
 }
 
 export default function Pagination(data: { pageData: PaginationProps }) {
@@ -13,7 +14,6 @@ export default function Pagination(data: { pageData: PaginationProps }) {
 
     function createPaginationNumbers(totalPages: number, currentPage: number) {
         let pagesArr = [];
-        console.log("called.")
 
         for (let i = 1; i <= totalPages; i++) {
             pagesArr.push(i);
@@ -32,7 +32,10 @@ export default function Pagination(data: { pageData: PaginationProps }) {
 
     function changePage(event: any) {
 
-        page.setCurrentPage(event.target.innerHTML as number);
+
+        if (data.pageData.isDoneLoading === true) {
+            page.setCurrentPage(event.target.innerHTML as number);
+        }
     }
 
 

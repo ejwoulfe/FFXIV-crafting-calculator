@@ -13,6 +13,8 @@ export default function RecipesList() {
     const discipleImages = require.context('../../assets/disciple-icons/', true);
     let filePath = discipleImages(`./${name}.png`).default;
     const [recipeList, setRecipeList] = useState<Array<RecipeObject>>();
+    const [isCanceled, setIsCanceled] = useState<boolean>(false);
+    const [isDoneLoading, setIsDoneLoading] = useState<boolean>(false);
 
     // Current per page limit is 100.
     const rowLimit = 100;
@@ -25,16 +27,32 @@ export default function RecipesList() {
 
     // We need a number ID in order to fetch from our database, switch statement to assign a number depending on the disciple.
     useEffect(() => {
+        const controller = new AbortController();
+        console.log("Page has changed. Page is: " + currentPage);
+        setIsDoneLoading(false);
 
-
-        fetch('http://localhost:5000/disciple/id&=' + disciple + '/page&=' + currentPage)
-            .then((response) => response.json())
-            .then((recipes) => {
-                setRecipeList(recipes)
+        fetch('http://localhost:5000/disciple/id&=' + disciple + '/page&=' + currentPage, { signal: controller.signal })
+            .then((response) => {
+                return response.json();
             })
-            .catch((error) => console.log(error.message));
+            .then((recipes) => {
+                setRecipeList(recipes);
+                setIsCanceled(false);
+            })
+            .catch((error) => {
+                if (error.name === "AbortError") {
+                    setIsCanceled(true);
+                    console.log(error.message)
+                } else {
+                    console.log(error.message)
+                }
+            });
 
-    }, [disciple, currentPage])
+        return () => {
+            controller.abort();
+        };
+
+    }, [disciple, currentPage]);
 
     useEffect(() => {
 
@@ -52,22 +70,28 @@ export default function RecipesList() {
 
     function createRecipesList(recipesList: Array<RecipeObject>) {
 
-        return recipesList?.map((recipe: RecipeObject, index: number) => {
+        // console.log("calling create")
+
+        let rows = recipesList.map((recipe: RecipeObject, index: number) => {
 
             return (
-                <RecipeRow currentRecipe={recipe} key={"recipe-row-" + index} />
+                <RecipeRow currentRecipe={{ recipe, index, setIsDoneLoading }} key={"recipe-row-" + index} />
             )
 
-        })
+        });
+
+        return rows;
     }
 
 
     return (
         <div id="list-container">
             <img id="disciple-icon" src={filePath} alt={disciple + "icon"} />
-            {totalPages !== undefined ? <Pagination pageData={{ currentPage, setCurrentPage, totalPages }} /> : null}
+            {totalPages !== undefined ? <Pagination pageData={{ currentPage, setCurrentPage, totalPages, isDoneLoading }} /> : null}
             <div id="rows-container">
-                {recipeList !== undefined ? createRecipesList(recipeList) : <div className="loading-spinner"></div>}
+                {recipeList !== undefined && isCanceled === false
+                    ? createRecipesList(recipeList)
+                    : <div className="loading-spinner"></div>}
             </div>
         </div>
     );
