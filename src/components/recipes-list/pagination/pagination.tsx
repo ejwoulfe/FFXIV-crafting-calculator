@@ -1,16 +1,13 @@
-import { useEffect, useState } from 'react';
 import './pagination.scss';
 
 interface PaginationProps {
     currentPage: number,
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>,
     totalPages: number,
-    isDoneLoading: boolean
+    abortController: AbortController
 }
 
-export default function Pagination(data: { pageData: PaginationProps }) {
-
-    let page = data.pageData;
+export default function Pagination(props: { pageData: PaginationProps }) {
 
     function createPaginationNumbers(totalPages: number, currentPage: number) {
         let pagesArr = [];
@@ -23,28 +20,34 @@ export default function Pagination(data: { pageData: PaginationProps }) {
 
 
             if (pageNumber === currentPage) {
-                return <button key={"page-number-" + index} className="page-disabled" >{pageNumber}</button>
+                return (
+                    <button key={"page-number-" + index} className="button-disabled" value={pageNumber} onClick={(e) => { changePage(e) }}>
+                        {pageNumber}
+                    </button>
+                )
             } else {
-                return <button key={"page-number-" + index} className="page-active"> {pageNumber}</button>
+                return (
+                    <button key={"page-number-" + index} className="button-active" value={pageNumber} onClick={(e) => { changePage(e) }}>
+                        {pageNumber}
+                    </button>
+                )
             }
         })
+
     }
 
     function changePage(event: any) {
-
-
-        if (data.pageData.isDoneLoading === true) {
-            page.setCurrentPage(event.target.innerHTML as number);
-        }
+        props.pageData.abortController.abort();
+        props.pageData.setCurrentPage(parseInt(event.target.value));
     }
 
 
     return (
-        <div>
-            <ul id="pagination-container" onClick={(e) => { changePage(e) }}>
-                {createPaginationNumbers(page.totalPages, page.currentPage)}
+        <>
+            <ul id="pagination-container">
+                {createPaginationNumbers(props.pageData.totalPages, props.pageData.currentPage)}
             </ul>
-        </div>
+        </>
     );
 }
 

@@ -5,12 +5,21 @@
     flex-direction: row;
     flex-wrap: nowrap;
 
-    li {
+    button {
         list-style-type: none;
         padding-left: 10px;
         cursor: pointer;
         color: $sky-blue;
         font-family: ff-font;
         font-size: 3rem;
+        background-color: transparent;
+        border: none;
+    }
+
+    .button-active {
+    }
+    .button-disabled {
+        color: $gold;
+        cursor: default;
     }
 }

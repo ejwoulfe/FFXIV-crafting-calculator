@@ -1,6 +1,6 @@
 import './recipes-list.scss';
 import { useParams, useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import RecipeObject from '../../interfaces/recipe-interface';
 import RecipeRow from './recipe-row/recipe-row';
 import Pagination from './pagination/pagination';
@@ -12,9 +12,13 @@ export default function RecipesList() {
     const { name } = location.state;
     const discipleImages = require.context('../../assets/disciple-icons/', true);
     let filePath = discipleImages(`./${name}.png`).default;
-    const [recipeList, setRecipeList] = useState<Array<RecipeObject>>();
-    const [isCanceled, setIsCanceled] = useState<boolean>(false);
-    const [isDoneLoading, setIsDoneLoading] = useState<boolean>(false);
+    const [recipeList, setRecipeList] = useState<Array<RecipeObject>>([]);
+    // const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [recipesLoaded, setRecipesLoaded] = useState<boolean>(false);
+    const [abortController, setAbortController] = useState<AbortController>();
+
+
+
 
     // Current per page limit is 100.
     const rowLimit = 100;
@@ -28,32 +32,32 @@ export default function RecipesList() {
     // We need a number ID in order to fetch from our database, switch statement to assign a number depending on the disciple.
     useEffect(() => {
         const controller = new AbortController();
-        console.log("Page has changed. Page is: " + currentPage);
-        setIsDoneLoading(false);
+        setAbortController(controller);
+        (async () => {
 
-        fetch('http://localhost:5000/disciple/id&=' + disciple + '/page&=' + currentPage, { signal: controller.signal })
-            .then((response) => {
-                return response.json();
-            })
-            .then((recipes) => {
+            setRecipesLoaded(false);
+            try {
+                const respone = await fetch('http://localhost:5000/disciple/id&=' + disciple + '/page&=' + currentPage, { signal: controller.signal });
+                const recipes = await respone.json();
                 setRecipeList(recipes);
-                setIsCanceled(false);
-            })
-            .catch((error) => {
-                if (error.name === "AbortError") {
-                    setIsCanceled(true);
-                    console.log(error.message)
+                setRecipesLoaded(true);
+
+            } catch (error: any) {
+                if (error.name === 'AbortError') {
+                    console.log('Request aborted.')
                 } else {
-                    console.log(error.message)
+                    console.log(error)
                 }
-            });
+            }
+        })();
 
         return () => {
             controller.abort();
-        };
+        }
 
-    }, [disciple, currentPage]);
+    }, [currentPage, disciple])
 
+    // Whenever the user navigates to a new disciple, we want to calculate the total amount of pages we will need for our pagination.
     useEffect(() => {
 
         fetch('http://localhost:5000/disciple/id&=' + disciple)
@@ -68,30 +72,36 @@ export default function RecipesList() {
 
 
 
-    function createRecipesList(recipesList: Array<RecipeObject>) {
+    function createRecipesList(list: Array<RecipeObject>) {
+        let listLength = list.length - 1;
 
-        // console.log("calling create")
-
-        let rows = recipesList.map((recipe: RecipeObject, index: number) => {
-
-            return (
-                <RecipeRow currentRecipe={{ recipe, index, setIsDoneLoading }} key={"recipe-row-" + index} />
-            )
+        return list.map((recipe: RecipeObject, index: number) => {
+            if (abortController !== undefined) {
+                return (
+                    <RecipeRow currentRecipe={{ recipe, index, listLength, abortController }} key={"recipe-row-" + index} />
+                )
+            } else {
+                return null;
+            }
 
         });
-
-        return rows;
     }
 
 
     return (
         <div id="list-container">
             <img id="disciple-icon" src={filePath} alt={disciple + "icon"} />
-            {totalPages !== undefined ? <Pagination pageData={{ currentPage, setCurrentPage, totalPages, isDoneLoading }} /> : null}
+
+            {totalPages !== undefined && abortController !== undefined
+                ? <Pagination pageData={{ currentPage, setCurrentPage, totalPages, abortController }} />
+                : null}
+
             <div id="rows-container">
-                {recipeList !== undefined && isCanceled === false
+
+                {recipesLoaded && abortController !== undefined
                     ? createRecipesList(recipeList)
                     : <div className="loading-spinner"></div>}
+
             </div>
         </div>
     );
