@@ -1,19 +1,16 @@
 import './recipes-list.scss';
-import { useParams, useLocation } from 'react-router-dom'
-import { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react';
 import RecipeObject from '../../interfaces/recipe-interface';
 import RecipeRow from './recipe-row/recipe-row';
 import Pagination from './pagination/pagination';
 
 export default function RecipesList() {
 
+    // Router Variable
     const { disciple } = useParams();
-    const location = useLocation();
-    const { name } = location.state;
-    const discipleImages = require.context('../../assets/disciple-icons/', true);
-    let filePath = discipleImages(`./${name}.png`).default;
+
     const [recipeList, setRecipeList] = useState<Array<RecipeObject>>([]);
-    // const [isLoading, setIsLoading] = useState<boolean>(true);
     const [recipesLoaded, setRecipesLoaded] = useState<boolean>(false);
     const [abortController, setAbortController] = useState<AbortController>();
 
@@ -90,7 +87,6 @@ export default function RecipesList() {
 
     return (
         <div id="list-container">
-            <img id="disciple-icon" src={filePath} alt={disciple + "icon"} />
 
             {totalPages !== undefined && abortController !== undefined
                 ? <Pagination pageData={{ currentPage, setCurrentPage, totalPages, abortController }} />

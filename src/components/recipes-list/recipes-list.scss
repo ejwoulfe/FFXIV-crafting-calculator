@@ -12,11 +12,10 @@
     flex-wrap: nowrap;
     flex-direction: column;
     width: 100%;
+    min-height: 100vh;
 }
 
-#disciple-icon {
-    margin-bottom: 30px;
-}
 .loading-spinner {
     @include loader;
+    margin-top: 150px;
 }

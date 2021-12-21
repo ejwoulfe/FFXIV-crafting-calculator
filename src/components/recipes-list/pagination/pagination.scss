@@ -7,19 +7,20 @@
 
     button {
         list-style-type: none;
-        padding-left: 10px;
         cursor: pointer;
         color: $sky-blue;
         font-family: ff-font;
-        font-size: 3rem;
+        font-size: 2rem;
         background-color: transparent;
         border: none;
+        border-bottom: 2px solid $sky-blue;
+        margin: 0px 5px 0px 5px;
+        padding: 3px;
     }
 
-    .button-active {
-    }
     .button-disabled {
         color: $gold;
         cursor: default;
+        border-bottom: none;
     }
 }
