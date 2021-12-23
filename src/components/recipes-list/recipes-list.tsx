@@ -11,12 +11,10 @@ export default function RecipesList() {
     // Router Variable
     const { disciple } = useParams();
 
+    // Component State
     const [recipeList, setRecipeList] = useState<Array<RecipeObject>>([]);
     const [recipesLoaded, setRecipesLoaded] = useState<boolean>(false);
     const [abortController, setAbortController] = useState<AbortController>();
-
-
-
 
     // Current per page limit is 100.
     const rowLimit = 100;
@@ -34,6 +32,7 @@ export default function RecipesList() {
         setAbortController(controller);
         (async () => {
 
+            console.log(typeof sortByQuery)
             setRecipesLoaded(false);
             try {
 
@@ -64,10 +63,6 @@ export default function RecipesList() {
         }
 
     }, [currentPage, disciple, sortByQuery])
-
-    useEffect(() => {
-        console.log(sortByQuery)
-    }, [sortByQuery])
 
     // Whenever the user navigates to a new disciple, we want to calculate the total amount of pages we will need for our pagination.
     useEffect(() => {

@@ -12,7 +12,7 @@ function Filter(props: { options: FilterProps }) {
         props.options.setSortByQuery(event.target.value);
     }
 
-    function createSortByDropDown(selected: string | null) {
+    function createSortByDropDown(selected: string) {
         let options = ["-", "Recipe Level - Ascending", "Recipe Level - Descending", "Recipe Names A-Z", "Recipe Names Z-A"];
 
 
