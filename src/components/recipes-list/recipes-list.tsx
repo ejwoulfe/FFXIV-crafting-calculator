@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import RecipeObject from '../../interfaces/recipe-interface';
 import RecipeRow from './recipe-row/recipe-row';
 import Pagination from './pagination/pagination';
+import Filter from './filter/filter';
 
 export default function RecipesList() {
 
@@ -21,9 +22,10 @@ export default function RecipesList() {
     const rowLimit = 100;
 
     // State that is changed by its children components
-
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>();
+    const [filterQuery, setFilterQuery] = useState<string | null>(null);
+    const [sortByQuery, setSortByQuery] = useState<string>("0");
 
 
     // We need a number ID in order to fetch from our database, switch statement to assign a number depending on the disciple.
@@ -34,10 +36,19 @@ export default function RecipesList() {
 
             setRecipesLoaded(false);
             try {
-                const respone = await fetch('http://localhost:5000/disciple/id&=' + disciple + '/page&=' + currentPage, { signal: controller.signal });
-                const recipes = await respone.json();
-                setRecipeList(recipes);
-                setRecipesLoaded(true);
+
+                if (sortByQuery === "0") {
+                    const respone = await fetch('http://localhost:5000/disciple/id&=' + disciple + '/page&=' + currentPage, { signal: controller.signal });
+                    const recipes = await respone.json();
+                    setRecipeList(recipes);
+                    setRecipesLoaded(true);
+                } else {
+                    const respone = await fetch('http://localhost:5000/disciple/id&=' + disciple + '/page&=' + currentPage + '/order&=' + sortByQuery, { signal: controller.signal });
+                    const recipes = await respone.json();
+                    setRecipeList(recipes);
+                    setRecipesLoaded(true);
+                }
+
 
             } catch (error: any) {
                 if (error.name === 'AbortError') {
@@ -52,7 +63,11 @@ export default function RecipesList() {
             controller.abort();
         }
 
-    }, [currentPage, disciple])
+    }, [currentPage, disciple, sortByQuery])
+
+    useEffect(() => {
+        console.log(sortByQuery)
+    }, [sortByQuery])
 
     // Whenever the user navigates to a new disciple, we want to calculate the total amount of pages we will need for our pagination.
     useEffect(() => {
@@ -87,13 +102,12 @@ export default function RecipesList() {
 
     return (
         <div id="list-container">
-
             {totalPages !== undefined && abortController !== undefined
                 ? <Pagination pageData={{ currentPage, setCurrentPage, totalPages, abortController }} />
                 : null}
 
+            {recipesLoaded ? <Filter options={{ setFilterQuery, sortByQuery, setSortByQuery }} /> : null}
             <div id="rows-container">
-
                 {recipesLoaded && abortController !== undefined
                     ? createRecipesList(recipeList)
                     : <div className="loading-spinner"></div>}

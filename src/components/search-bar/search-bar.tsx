@@ -42,6 +42,6 @@ export default function SearchBar({ setList }: { setList: React.Dispatch<React.S
     }
 
     return (
-        <input id="search-bar" autoComplete="false" onKeyUp={event => handleSearch(event)} type="text" placeholder="SEARCH FOR AN ITEM..." />
+        <input id="search-bar" autoComplete="false" onKeyUp={event => handleSearch(event)} type="text" placeholder="SEARCH FOR A RECIPE..." />
     )
 }
