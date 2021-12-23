@@ -97,11 +97,13 @@ export default function RecipesList() {
 
     return (
         <div id="list-container">
-            {totalPages !== undefined && abortController !== undefined
-                ? <Pagination pageData={{ currentPage, setCurrentPage, totalPages, abortController }} />
-                : null}
+            <div id="pagination-and-filter">
+                {totalPages !== undefined && abortController !== undefined
+                    ? <Pagination pageData={{ currentPage, setCurrentPage, totalPages, abortController }} />
+                    : null}
 
-            {recipesLoaded ? <Filter options={{ setFilterQuery, sortByQuery, setSortByQuery }} /> : null}
+                {recipesLoaded ? <Filter options={{ setFilterQuery, sortByQuery, setSortByQuery }} /> : null}
+            </div>
             <div id="rows-container">
                 {recipesLoaded && abortController !== undefined
                     ? createRecipesList(recipeList)

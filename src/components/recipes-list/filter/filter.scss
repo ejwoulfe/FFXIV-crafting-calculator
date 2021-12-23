@@ -1,0 +1,9 @@
+@import "../../../util/variables";
+@import "../../../util/mixins";
+
+#filter-and-sort {
+    position: absolute;
+    right: 10px;
+    @include title-style;
+    letter-spacing: 1px;
+}

@@ -1,4 +1,4 @@
-
+import './filter.scss';
 
 interface FilterProps {
     setFilterQuery: React.Dispatch<React.SetStateAction<string | null>>,
@@ -17,13 +17,11 @@ function Filter(props: { options: FilterProps }) {
 
 
         return (
-            <select id="sort-drop-down" onChange={(e) => { sortOptionChanged(e) }}>
+            <select id="sort-drop-down" defaultValue={selected} onChange={(e) => { sortOptionChanged(e) }}>
                 {options.map((text, index) => {
-                    if (index.toString() === selected) {
-                        return <option key={"option-" + index} selected value={index}>{text}</option>
-                    } else {
-                        return <option key={"option-" + index} value={index}>{text}</option>
-                    }
+
+                    return <option key={"option-" + index} value={index}>{text}</option>
+
                 })}
             </select>
         )
