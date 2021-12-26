@@ -18,4 +18,21 @@ router.get("/id/:recipeId", (req, res) => {
     })
 });
 
+// This request is when a user wants to filter recipes by a keyword.
+// This keyword can be contained in a material name which is involed in creating a recipe.
+
+router.get("/name/:keyword", (req, res) => {
+
+    db.query(`SELECT materials_list.recipe_id FROM materials INNER JOIN materials_list ON materials.material_id = materials_list.material_id AND materials.name LIKE "%${req.params.keyword}%"`, (err, results) => {
+
+        if (err) {
+
+            throw err;
+        }
+
+        res.send(JSON.parse(JSON.stringify(results)));
+    })
+});
+
+
 module.exports = router;

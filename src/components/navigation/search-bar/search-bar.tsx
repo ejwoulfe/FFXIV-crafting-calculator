@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './search-bar.scss';
-import RecipeObject from '../../interfaces/recipe-interface';
+import RecipeObject from '../../../interfaces/recipe-interface';
 
 
 

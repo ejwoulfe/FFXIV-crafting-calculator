@@ -75,5 +75,14 @@ router.get("/id&=:discipeId/page&=:page/order&=:order", (req, res) => {
     })
 });
 
+// SELECT materials_list.recipe_id
+// FROM materials
+// INNER JOIN materials_list ON materials.material_id = materials_list.material_id 
+// AND materials.name LIKE "%Maple%"
+// INNER JOIN recipes ON materials_list.recipe_id = recipes.recipe_id
+// AND recipes.disciple_id = 2
+// UNION select recipes.recipe_id from recipes where recipes.name LIKE "%Maple%" AND recipes.disciple_id = 2;
+
+
 
 module.exports = router;

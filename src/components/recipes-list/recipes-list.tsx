@@ -32,7 +32,6 @@ export default function RecipesList() {
         setAbortController(controller);
         (async () => {
 
-            console.log(typeof sortByQuery)
             setRecipesLoaded(false);
             try {
 
@@ -102,7 +101,7 @@ export default function RecipesList() {
                     ? <Pagination pageData={{ currentPage, setCurrentPage, totalPages, abortController }} />
                     : null}
 
-                {recipesLoaded ? <Filter options={{ setFilterQuery, sortByQuery, setSortByQuery }} /> : null}
+                {recipesLoaded && abortController !== undefined ? <Filter options={{ setFilterQuery, sortByQuery, setSortByQuery, abortController }} /> : null}
             </div>
             <div id="rows-container">
                 {recipesLoaded && abortController !== undefined
