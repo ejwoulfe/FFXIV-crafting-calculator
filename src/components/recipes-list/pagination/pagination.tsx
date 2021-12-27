@@ -1,13 +1,24 @@
+import { useEffect, useState } from 'react';
+import RecipeObject from '../../../interfaces/recipe-interface';
 import './pagination.scss';
 
 interface PaginationProps {
-    currentPage: number,
-    setCurrentPage: React.Dispatch<React.SetStateAction<number>>,
-    totalPages: number,
-    abortController: AbortController
+    recipesList: Array<RecipeObject>,
+    setSlicedRecipesList: React.Dispatch<React.SetStateAction<Array<RecipeObject>>>,
+    abortController: AbortController,
+    setAbortController: React.Dispatch<React.SetStateAction<AbortController>>,
 }
 
-export default function Pagination(props: { pageData: PaginationProps }) {
+export default function Pagination(props: { data: PaginationProps }) {
+
+    const rowLimit = 100;
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState<number>(Math.ceil(props.data.recipesList.length / rowLimit));
+
+    // Whenever the recipes list changes, either a new disciple or a keyword filter calculate a new totalPages.
+    useEffect(() => {
+        setTotalPages(Math.ceil(props.data.recipesList.length / rowLimit));
+    }, [props.data.recipesList])
 
     function createPaginationNumbers(totalPages: number, currentPage: number) {
         let pagesArr = [];
@@ -37,15 +48,19 @@ export default function Pagination(props: { pageData: PaginationProps }) {
     }
 
     function changePage(event: any) {
-        props.pageData.abortController.abort();
-        props.pageData.setCurrentPage(parseInt(event.target.value));
+        props.data.abortController.abort();
+        props.data.setAbortController(new AbortController());
+        setCurrentPage(parseInt(event.target.value));
+        let startIndex = (parseInt(event.target.value) - 1) * 100;
+        let endIndex = startIndex + 100;
+        props.data.setSlicedRecipesList(props.data.recipesList.slice(startIndex, endIndex));
     }
 
 
     return (
         <>
             <ul id="pagination-container">
-                {createPaginationNumbers(props.pageData.totalPages, props.pageData.currentPage)}
+                {createPaginationNumbers(totalPages, currentPage)}
             </ul>
         </>
     );

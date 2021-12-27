@@ -12,41 +12,67 @@ export default function RecipesList() {
     const { disciple } = useParams();
 
     // Component State
-    const [recipeList, setRecipeList] = useState<Array<RecipeObject>>([]);
+    const [recipesList, setRecipesList] = useState<Array<RecipeObject>>([]);
+    const [slicedRecipesList, setSlicedRecipesList] = useState<Array<RecipeObject>>([]);
     const [recipesLoaded, setRecipesLoaded] = useState<boolean>(false);
-    const [abortController, setAbortController] = useState<AbortController>();
+    const [abortController, setAbortController] = useState<AbortController>(new AbortController());
 
-    // Current per page limit is 100.
-    const rowLimit = 100;
 
     // State that is changed by its children components
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [totalPages, setTotalPages] = useState<number>();
+
     const [filterQuery, setFilterQuery] = useState<string | null>(null);
     const [sortByQuery, setSortByQuery] = useState<string>("0");
 
 
     // We need a number ID in order to fetch from our database, switch statement to assign a number depending on the disciple.
+    // useEffect(() => {
+    //     const controller = new AbortController();
+    //     setAbortController(controller);
+    //     (async () => {
+
+    //         setRecipesLoaded(false);
+    //         try {
+
+    //             if (sortByQuery === "0") {
+    //                 const respone = await fetch('http://localhost:5000/disciple/id&=' + disciple + '/page&=' + currentPage, { signal: controller.signal });
+    //                 const recipes = await respone.json();
+    //                 setRecipeList(recipes);
+    //                 setRecipesLoaded(true);
+    //             } else {
+    //                 const respone = await fetch('http://localhost:5000/disciple/id&=' + disciple + '/page&=' + currentPage + '/order&=' + sortByQuery, { signal: controller.signal });
+    //                 const recipes = await respone.json();
+    //                 setRecipeList(recipes);
+    //                 setRecipesLoaded(true);
+    //             }
+
+
+    //         } catch (error: any) {
+    //             if (error.name === 'AbortError') {
+    //                 console.log('Request aborted.')
+    //             } else {
+    //                 console.log(error)
+    //             }
+    //         }
+    //     })();
+
+    //     return () => {
+    //         controller.abort();
+    //     }
+
+    // }, [currentPage, disciple, sortByQuery])
+
     useEffect(() => {
         const controller = new AbortController();
-        setAbortController(controller);
         (async () => {
 
             setRecipesLoaded(false);
             try {
 
-                if (sortByQuery === "0") {
-                    const respone = await fetch('http://localhost:5000/disciple/id&=' + disciple + '/page&=' + currentPage, { signal: controller.signal });
-                    const recipes = await respone.json();
-                    setRecipeList(recipes);
-                    setRecipesLoaded(true);
-                } else {
-                    const respone = await fetch('http://localhost:5000/disciple/id&=' + disciple + '/page&=' + currentPage + '/order&=' + sortByQuery, { signal: controller.signal });
-                    const recipes = await respone.json();
-                    setRecipeList(recipes);
-                    setRecipesLoaded(true);
-                }
-
+                const respone = await fetch('http://localhost:5000/disciple/id&=' + disciple + '/recipes', { signal: controller.signal });
+                const recipes = await respone.json();
+                setRecipesList(recipes);
+                setSlicedRecipesList(recipes.slice(0, 100));
+                setRecipesLoaded(true);
 
             } catch (error: any) {
                 if (error.name === 'AbortError') {
@@ -60,54 +86,38 @@ export default function RecipesList() {
         return () => {
             controller.abort();
         }
+    }, [disciple]);
 
-    }, [currentPage, disciple, sortByQuery])
-
-    // Whenever the user navigates to a new disciple, we want to calculate the total amount of pages we will need for our pagination.
-    useEffect(() => {
-
-        fetch('http://localhost:5000/disciple/id&=' + disciple)
-            .then((response) => response.json())
-            .then((rows) => {
-
-                let numOfRows = (Object.values(rows[0])[0]) as number
-                setTotalPages(Math.ceil(numOfRows / rowLimit))
-            })
-            .catch((error) => console.log(error.message));
-    }, [disciple])
-
-
-
-    function createRecipesList(list: Array<RecipeObject>) {
+    function createRecipesList(list: Array<RecipeObject>, controller: AbortController) {
         let listLength = list.length - 1;
 
-        return list.map((recipe: RecipeObject, index: number) => {
-            if (abortController !== undefined) {
+        if (controller.signal.aborted !== true) {
+            return list.map((recipe: RecipeObject, index: number) => {
                 return (
                     <RecipeRow currentRecipe={{ recipe, index, listLength, abortController }} key={"recipe-row-" + index} />
                 )
-            } else {
-                return null;
-            }
-
-        });
+            })
+        } else {
+            return null;
+        }
     }
 
 
     return (
         <div id="list-container">
             <div id="pagination-and-filter">
-                {totalPages !== undefined && abortController !== undefined
-                    ? <Pagination pageData={{ currentPage, setCurrentPage, totalPages, abortController }} />
+                {recipesLoaded && abortController !== undefined
+                    ? <Pagination data={{ recipesList, setSlicedRecipesList, abortController, setAbortController }} />
                     : null}
 
-                {recipesLoaded && abortController !== undefined ? <Filter options={{ setFilterQuery, sortByQuery, setSortByQuery, abortController }} /> : null}
+                {recipesLoaded && abortController !== undefined
+                    ? <Filter options={{ setFilterQuery, sortByQuery, setSortByQuery, abortController }} />
+                    : null}
             </div>
             <div id="rows-container">
-                {recipesLoaded && abortController !== undefined
-                    ? createRecipesList(recipeList)
+                {recipesLoaded && abortController.signal.aborted !== true
+                    ? createRecipesList(slicedRecipesList, abortController)
                     : <div className="loading-spinner"></div>}
-
             </div>
         </div>
     );

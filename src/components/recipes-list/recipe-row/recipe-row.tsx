@@ -19,6 +19,7 @@ function RecipeRow(props: { currentRecipe: RowProps }) {
 
 
     useEffect(() => {
+        setCrystalsArr(null);
         (async () => {
 
             try {
@@ -27,11 +28,7 @@ function RecipeRow(props: { currentRecipe: RowProps }) {
                 setCrystalsArr(crystals)
 
             } catch (error: any) {
-                if (error.name === 'AbortError') {
-                    console.log('Request aborted.')
-                } else {
-                    console.log(error)
-                }
+                console.log(error)
             }
         })();
 
@@ -41,6 +38,7 @@ function RecipeRow(props: { currentRecipe: RowProps }) {
     }, [recipe.recipe_id, props.currentRecipe.abortController])
 
     useEffect(() => {
+        setMaterialsArr(null);
         (async () => {
 
             try {
@@ -49,11 +47,10 @@ function RecipeRow(props: { currentRecipe: RowProps }) {
                 setMaterialsArr(materials)
 
             } catch (error: any) {
-                if (error.name === 'AbortError') {
-                    console.log('Request aborted.')
-                } else {
-                    console.log(error)
+                if (error.name === "AbortError") {
+
                 }
+                console.log(error)
             }
         })();
 
@@ -111,10 +108,14 @@ function RecipeRow(props: { currentRecipe: RowProps }) {
                 </span>
             </div>
             <div className="recipe-materials">
-                {materialsArr !== null ? createItemsList(materialsArr, "material") : <div className="loading-spinner"></div>}
+                {materialsArr !== null
+                    ? createItemsList(materialsArr, "material")
+                    : <div className="loading-spinner"></div>}
             </div>
             <div className="recipe-crystals">
-                {crystalsArr !== null ? createItemsList(crystalsArr, "crystal") : <div className="loading-spinner"></div>}
+                {crystalsArr !== null
+                    ? createItemsList(crystalsArr, "crystal")
+                    : <div className="loading-spinner"></div>}
             </div>
         </div>
     );
