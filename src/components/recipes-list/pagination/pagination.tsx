@@ -18,6 +18,7 @@ export default function Pagination(props: { data: PaginationProps }) {
     // Whenever the recipes list changes, either a new disciple or a keyword filter calculate a new totalPages.
     useEffect(() => {
         setTotalPages(Math.ceil(props.data.recipesList.length / rowLimit));
+        setCurrentPage(1);
     }, [props.data.recipesList])
 
     function createPaginationNumbers(totalPages: number, currentPage: number) {
@@ -51,11 +52,12 @@ export default function Pagination(props: { data: PaginationProps }) {
         props.data.abortController.abort();
         props.data.setAbortController(new AbortController());
         setCurrentPage(parseInt(event.target.value));
+
+        // Starting index will be the page the user clicked on - 1 * 100, and the endIndex is the start index plus the rowLimit, aka 100.
         let startIndex = (parseInt(event.target.value) - 1) * 100;
-        let endIndex = startIndex + 100;
+        let endIndex = startIndex + rowLimit;
         props.data.setSlicedRecipesList(props.data.recipesList.slice(startIndex, endIndex));
     }
-
 
     return (
         <>

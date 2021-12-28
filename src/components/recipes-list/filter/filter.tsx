@@ -1,18 +1,53 @@
 import { useEffect, useState } from 'react';
+import RecipeObject from '../../../interfaces/recipe-interface';
 import './filter.scss';
 
 interface FilterProps {
-    setFilterQuery: React.Dispatch<React.SetStateAction<string | null>>,
-    sortByQuery: string,
-    setSortByQuery: React.Dispatch<React.SetStateAction<string>>,
-    abortController: AbortController
+    recipesList: Array<RecipeObject>,
+    setRecipesList: React.Dispatch<React.SetStateAction<Array<RecipeObject>>>,
+    setSlicedRecipesList: React.Dispatch<React.SetStateAction<Array<RecipeObject>>>,
+    abortController: AbortController,
+    setAbortController: React.Dispatch<React.SetStateAction<AbortController>>
 }
 
-function Filter(props: { options: FilterProps }) {
+function Filter(props: { data: FilterProps }) {
 
+
+    const [filterQuery, setFilterQuery] = useState<string | null>(null);
+    const [sortByQuery, setSortByQuery] = useState<string>("0");
 
     function sortOptionChanged(event: any) {
-        props.options.setSortByQuery(event.target.value);
+
+        //setSortByQuery(event.target.value);
+        // 1: Recipe Level Ascending
+        // 2: Recipe Level Descending
+        // 3: Recipe Names A-Z
+        // 4: Recipe Names Z-A
+        switch (event.target.value) {
+            case "0":
+                console.log("0")
+                break;
+            case "1":
+                break;
+            case "2":
+                let arr = [{
+                    disciple_id: 3, icon: "blacksmith/dwarven-mythril-saw.png", item_level: "430", level: "80", link: "https://na.finalfantasyxiv.com/lodestone/playguide/db/recipe/2d42e70f0c1/", name: "Dwarven Mythril Saw", recipe_id: 545, total_crafted: 1, type: "null"
+                }];
+                // props.data.setRecipesList(props.data.recipesList.sort((a, b) => (a.level > b.level ? -1 : 1)));
+                props.data.setRecipesList(arr);
+                props.data.setSlicedRecipesList(arr.slice(0, 100));
+                break;
+            case "3":
+                console.log("3")
+                break;
+            case "4":
+                console.log("4")
+                break;
+            default:
+                console.log("default")
+
+        }
+
     }
 
     function createSortByDropDown(selected: string) {
@@ -35,7 +70,7 @@ function Filter(props: { options: FilterProps }) {
         event.preventDefault();
         // Cast the target to an html input element to get the value.
         const target = event.target as HTMLInputElement;
-        props.options.setFilterQuery(target.value);
+        setFilterQuery(target.value);
     }
 
     return (
@@ -46,7 +81,7 @@ function Filter(props: { options: FilterProps }) {
             </div>
             <div id="sort-by-container">
                 <label>Sort By: </label>
-                {createSortByDropDown(props.options.sortByQuery)}
+                {createSortByDropDown(sortByQuery)}
             </div>
         </div>
     );
