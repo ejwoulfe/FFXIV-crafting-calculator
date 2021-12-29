@@ -18,6 +18,8 @@ function Filter(props: { data: FilterProps }) {
 
     function sortOptionChanged(event: any) {
 
+        props.data.abortController.abort();
+        props.data.setAbortController(new AbortController());
         //setSortByQuery(event.target.value);
         // 1: Recipe Level Ascending
         // 2: Recipe Level Descending
@@ -30,12 +32,9 @@ function Filter(props: { data: FilterProps }) {
             case "1":
                 break;
             case "2":
-                let arr = [{
-                    disciple_id: 3, icon: "blacksmith/dwarven-mythril-saw.png", item_level: "430", level: "80", link: "https://na.finalfantasyxiv.com/lodestone/playguide/db/recipe/2d42e70f0c1/", name: "Dwarven Mythril Saw", recipe_id: 545, total_crafted: 1, type: "null"
-                }];
-                // props.data.setRecipesList(props.data.recipesList.sort((a, b) => (a.level > b.level ? -1 : 1)));
-                props.data.setRecipesList(arr);
-                props.data.setSlicedRecipesList(arr.slice(0, 100));
+                let newRecipesList = props.data.recipesList.sort((a, b) => (a.level > b.level ? -1 : 1));
+                props.data.setRecipesList(newRecipesList);
+                props.data.setSlicedRecipesList(newRecipesList.slice(0, 100));
                 break;
             case "3":
                 console.log("3")

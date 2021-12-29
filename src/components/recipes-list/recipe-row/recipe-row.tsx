@@ -8,7 +8,7 @@ interface RowProps {
     recipe: RecipeObject,
     index: number,
     listLength: number,
-    abortController: AbortController
+    controller: AbortController
 }
 
 function RecipeRow(props: { data: RowProps }) {
@@ -17,44 +17,45 @@ function RecipeRow(props: { data: RowProps }) {
     const [crystalsLoaded, setCrystalsLoaded] = useState<boolean>(false);
     const [crystalsArr, setCrystalsArr] = useState<Array<CrystalObject> | null>(null);
 
+
     useEffect(() => {
-        setMaterialsLoaded(false);
-        setCrystalsLoaded(false);
 
-        (async () => {
+        if (props.data.controller.signal.aborted === false) {
+            (async () => {
+                try {
 
-            try {
-                const crystalFetch = await fetch(`http://localhost:5000/crystals/id/${props.data.recipe.recipe_id}`, { signal: props.data.abortController.signal })
-                const crystals = await crystalFetch.json();
-                setCrystalsArr(crystals);
-                setCrystalsLoaded(true);
+                    const crystalFetch = await fetch(`http://localhost:5000/crystals/id/${props.data.recipe.recipe_id}`, { signal: props.data.controller.signal })
+                    const crystals = await crystalFetch.json();
+                    setCrystalsArr(crystals);
+                    setCrystalsLoaded(true);
 
-                const materialFetch = await fetch(`http://localhost:5000/materials/id/${props.data.recipe.recipe_id}`, { signal: props.data.abortController.signal })
-                const materials = await materialFetch.json();
-                setMaterialsArr(materials)
-                setMaterialsLoaded(true);
+                    const materialFetch = await fetch(`http://localhost:5000/materials/id/${props.data.recipe.recipe_id}`, { signal: props.data.controller.signal })
+                    const materials = await materialFetch.json();
+                    setMaterialsArr(materials)
+                    setMaterialsLoaded(true);
 
 
-            } catch (error: any) {
-                console.log(error)
-            }
-        })();
+
+                } catch (error: any) {
+                    return;
+
+                }
+            })();
+
+        }
 
         return () => {
-            props.data.abortController.abort();
-        }
-    }, [props.data.recipe.recipe_id, props.data.abortController])
+            props.data.controller.abort();
 
-    useEffect(() => {
-        console.log("Rendering")
-    })
+        }
+    }, [props.data.recipe.recipe_id, props.data.controller])
+
 
 
     const recipeImages = require.context('../../../assets/recipe-icons/', true);
     let filePath = recipeImages(`./${props.data.recipe.icon}`).default;
     const materialImages = require.context('../../../assets/material-icons/', true);
     const crystalImages = require.context('../../../assets/crystal-icons/', true);
-
 
     function createItemsList(itemArray: Array<MaterialObject> | Array<CrystalObject>, itemType: string) {
 
@@ -82,31 +83,37 @@ function RecipeRow(props: { data: RowProps }) {
     return (
         <div className="recipe-row">
             <div className="recipe-details">
-                <h2>{props.data.recipe.name}</h2>
-                <span className="img-and-details">
-                    <img src={filePath} alt={`${props.data.recipe.name} icon`} />
-                    <span className="details">
-                        <p>- Recipe Level: {props.data.recipe.level}</p>
-                        {(props.data.recipe.item_level !== null && props.data.recipe.item_level !== "null")
-                            ? <p>- Recipe Item Level: {props.data.recipe.item_level}</p>
-                            : null}
-                        {(props.data.recipe.type !== "null" && props.data.recipe.type !== null)
-                            ? <p>- {props.data.recipe.type}</p>
-                            : null}
-                    </span>
-                </span>
+                {materialsLoaded === true && crystalsLoaded === true ?
+                    <>
+                        <h2>{props.data.recipe.name}</h2>
+                        <span className="img-and-details">
+                            <img src={filePath} alt={`${props.data.recipe.name} icon`} />
+                            <span className="details">
+                                <p>- Recipe Level: {props.data.recipe.level}</p>
+                                {(props.data.recipe.item_level !== null && props.data.recipe.item_level !== "null")
+                                    ? <p>- Recipe Item Level: {props.data.recipe.item_level}</p>
+                                    : null}
+                                {(props.data.recipe.type !== "null" && props.data.recipe.type !== null)
+                                    ? <p>- {props.data.recipe.type}</p>
+                                    : null}
+                            </span>
+                        </span>
+                    </>
+                    : <div className="loading-spinner"></div>}
+
             </div>
             <div className="recipe-materials">
-                {materialsArr !== null
+                {materialsLoaded === true && materialsArr !== null
                     ? createItemsList(materialsArr, "material")
                     : <div className="loading-spinner"></div>}
             </div>
             <div className="recipe-crystals">
-                {crystalsArr !== null
+                {crystalsLoaded === true && crystalsArr !== null
                     ? createItemsList(crystalsArr, "crystal")
                     : <div className="loading-spinner"></div>}
             </div>
         </div>
+
     );
 }
 

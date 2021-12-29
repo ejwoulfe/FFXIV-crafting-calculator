@@ -10,7 +10,6 @@ router.get("/id/:recipeId", (req, res) => {
     db.query(`select M.name, M.icon, ML.quantity from materials_list as ML INNER JOIN materials as M ON ML.material_id = M.material_id AND ML.recipe_id = ${req.params.recipeId}`, (err, results) => {
 
         if (err) {
-
             throw err;
         }
 
