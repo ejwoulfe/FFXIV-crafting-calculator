@@ -13,8 +13,9 @@ interface FilterProps {
 function Filter(props: { data: FilterProps }) {
 
 
-    const [filterQuery, setFilterQuery] = useState<string | null>(null);
     const [sortByQuery, setSortByQuery] = useState<string>("0");
+    const [keyword, setKeyword] = useState<string | null>(null);
+
 
     function sortOptionChanged(event: any) {
 
@@ -69,11 +70,26 @@ function Filter(props: { data: FilterProps }) {
     }
 
 
+    useEffect(() => {
+        const timer = setTimeout(() => console.log(keyword), 2000);
+        return () => clearTimeout(timer);
+    }, [keyword])
+
+    useEffect(() => {
+        console.log("rendering")
+    })
+
     function handleKeyword(event: React.KeyboardEvent<HTMLInputElement>) {
+
         event.preventDefault();
         // Cast the target to an html input element to get the value.
         const target = event.target as HTMLInputElement;
-        setFilterQuery(target.value);
+
+        let input = target.value;
+        if (input !== null && input.length >= 1) {
+            setKeyword(input);
+        }
+
     }
 
     return (
