@@ -17,7 +17,7 @@
         background-position: 50% 40%;
         cursor: pointer;
     }
-    #nav-list {
+    #nav-items {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
@@ -32,8 +32,7 @@
             padding: 0px 15px 0px 15px;
         }
         #search-bar-container {
-            width: 350px;
-            position: relative;
+            flex-basis: 350px;
         }
 
         #server {

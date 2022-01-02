@@ -13,7 +13,6 @@ interface FilterProps {
 function Filter(props: { data: FilterProps }) {
 
 
-    const [sortByQuery, setSortByQuery] = useState<string>("0");
     const [keyword, setKeyword] = useState<string | null>(null);
 
 
@@ -54,12 +53,12 @@ function Filter(props: { data: FilterProps }) {
         }
     }
 
-    function createSortByDropDown(selected: string) {
+    function createSortByDropDown() {
         let options = ["-", "Recipe Level - Ascending", "Recipe Level - Descending", "Recipe Names A-Z", "Recipe Names Z-A"];
 
 
         return (
-            <select id="sort-drop-down" defaultValue={selected} onChange={(e) => { sortOptionChanged(e) }}>
+            <select id="sort-drop-down" onChange={(e) => { sortOptionChanged(e) }}>
                 {options.map((text, index) => {
 
                     return <option key={"option-" + index} value={index}>{text}</option>
@@ -95,12 +94,15 @@ function Filter(props: { data: FilterProps }) {
     return (
         <div id="filter-and-sort">
             <div id="filter-container">
-                <input id="keyword-input" autoComplete="false" onKeyUp={event => handleKeyword(event)} type="text" placeholder="ENTER A KEYWORD..." />
+                <input id="keyword-input" autoComplete="false" onKeyUp={(event) => {
+
+                    handleKeyword(event)
+                }} type="text" placeholder="ENTER A KEYWORD..." />
 
             </div>
             <div id="sort-by-container">
                 <label>Sort By: </label>
-                {createSortByDropDown(sortByQuery)}
+                {createSortByDropDown()}
             </div>
         </div>
     );

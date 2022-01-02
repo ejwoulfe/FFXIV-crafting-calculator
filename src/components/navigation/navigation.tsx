@@ -50,19 +50,19 @@ export default function Navigation() {
         <nav id="navigation">
             <Link to="/" id="logo" />
 
-            <ul id="nav-list">
-                <li id="search-bar-container">
+            <div id="nav-items">
+                <div id="search-bar-container">
                     <SearchBar setList={setSearchResults} />
                     {showRecipeList ? <SearchList recipes={searchResults} /> : null}
-                </li>
-                <li id="server">
+                </div>
+                <div id="server">
                     {server}
-                </li>
-                <li id="crystal" onClick={() => { setShowServerList(!showServerList) }} >
+                </div>
+                <div id="crystal" onClick={() => { setShowServerList(!showServerList) }} >
                     <img id="crystal-image" src={crystal} alt="crystal" />
-                </li>
+                </div>
                 {showServerList ? <ServerList /> : null}
-            </ul>
+            </div>
         </nav>
     )
 }

@@ -1,7 +1,10 @@
 @import "../../../util/variables";
 
-#search-bar {
-    width: 100%;
-    height: 25px;
+#search-form {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
     font-family: $main-font;
+    flex-basis: 100%;
 }
