@@ -5,7 +5,7 @@ import './filter.scss';
 interface FilterProps {
     recipesList: Array<RecipeObject>,
     setRecipesList: React.Dispatch<React.SetStateAction<Array<RecipeObject>>>,
-    setSlicedRecipesList: React.Dispatch<React.SetStateAction<Array<RecipeObject>>>,
+    setSlicedList: React.Dispatch<React.SetStateAction<Array<RecipeObject>>>,
     abortController: AbortController,
     setAbortController: React.Dispatch<React.SetStateAction<AbortController>>
 }
@@ -27,26 +27,30 @@ function Filter(props: { data: FilterProps }) {
         // 4: Recipe Names Z-A
         switch (event.target.value) {
             case "0":
-                console.log("0")
                 break;
             case "1":
+                let ascendingList = [...props.data.recipesList.sort((a, b) => (a.level > b.level ? 1 : -1))];
+                props.data.setRecipesList(ascendingList);
+                props.data.setSlicedList(ascendingList.slice(0, 100));
                 break;
             case "2":
-                let newRecipesList = props.data.recipesList.sort((a, b) => (a.level > b.level ? -1 : 1));
-                props.data.setRecipesList(newRecipesList);
-                props.data.setSlicedRecipesList(newRecipesList.slice(0, 100));
+                let descendingList = [...props.data.recipesList.sort((a, b) => (a.level > b.level ? -1 : 1))];
+                props.data.setRecipesList(descendingList);
+                props.data.setSlicedList(descendingList.slice(0, 100));
                 break;
             case "3":
-                console.log("3")
+                let aToZList = [...props.data.recipesList.sort((a, b) => (a.name > b.name ? 1 : -1))];
+                props.data.setRecipesList(aToZList);
+                props.data.setSlicedList(aToZList.slice(0, 100));
                 break;
             case "4":
-                console.log("4")
+                let zToAList = [...props.data.recipesList.sort((a, b) => (a.name > b.name ? -1 : 1))];
+                props.data.setRecipesList(zToAList);
+                props.data.setSlicedList(zToAList.slice(0, 100));
                 break;
             default:
-                console.log("default")
-
+                break;
         }
-
     }
 
     function createSortByDropDown(selected: string) {

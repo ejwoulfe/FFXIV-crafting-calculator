@@ -6,8 +6,6 @@ import './recipe-row.scss';
 
 interface RowProps {
     recipe: RecipeObject,
-    index: number,
-    listLength: number,
     controller: AbortController
 }
 
@@ -20,6 +18,8 @@ function RecipeRow(props: { data: RowProps }) {
 
     useEffect(() => {
 
+        setCrystalsLoaded(false);
+        setMaterialsLoaded(false);
         if (props.data.controller.signal.aborted === false) {
             (async () => {
                 try {
@@ -61,8 +61,6 @@ function RecipeRow(props: { data: RowProps }) {
 
 
         return itemArray.map((item: MaterialObject | CrystalObject, index: number) => {
-
-
             let filePath = null;
 
             if (itemType === "material") {
