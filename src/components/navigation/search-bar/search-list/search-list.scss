@@ -1,5 +1,5 @@
-@import "../../../util/variables";
-@import "../../../util/mixins";
+@import "../../../../util/variables";
+@import "../../../../util/mixins";
 
 #recipe-list {
     position: absolute;
@@ -17,6 +17,10 @@
     padding: 0px;
     max-height: 500px;
     overflow-y: auto;
+    margin-top: 0px;
+}
+#no-search-results {
+    text-align: center;
 }
 .recipe-list-item {
     margin-left: 10px;

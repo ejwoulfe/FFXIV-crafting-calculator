@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import RecipeObject from '../../../interfaces/recipe-interface';
+import createDropDown from '../../dropdown';
 import './filter.scss';
 
 interface FilterProps {
@@ -53,21 +54,6 @@ function Filter(props: { data: FilterProps }) {
         }
     }
 
-    function createSortByDropDown() {
-        let options = ["-", "Recipe Level - Ascending", "Recipe Level - Descending", "Recipe Names A-Z", "Recipe Names Z-A"];
-
-
-        return (
-            <select id="sort-drop-down" onChange={(e) => { sortOptionChanged(e) }}>
-                {options.map((text, index) => {
-
-                    return <option key={"option-" + index} value={index}>{text}</option>
-
-                })}
-            </select>
-        )
-    }
-
 
     useEffect(() => {
         const timer = setTimeout(() => console.log(keyword), 2000);
@@ -102,7 +88,7 @@ function Filter(props: { data: FilterProps }) {
             </div>
             <div id="sort-by-container">
                 <label>Sort By: </label>
-                {createSortByDropDown()}
+                {createDropDown(["-", "Recipe Level - Ascending", "Recipe Level - Descending", "Recipe Names A-Z", "Recipe Names Z-A"], sortOptionChanged)}
             </div>
         </div>
     );

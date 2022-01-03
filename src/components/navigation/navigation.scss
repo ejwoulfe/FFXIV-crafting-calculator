@@ -26,13 +26,15 @@
         justify-content: flex-end;
         flex: 85%;
 
-        #search-bar-container,
         #server,
         #crystal {
             padding: 0px 15px 0px 15px;
         }
         #search-bar-container {
-            flex-basis: 350px;
+            width: 40%;
+            height: 35px;
+            border-radius: 5px;
+            position: relative;
         }
 
         #server {

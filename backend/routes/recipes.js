@@ -32,5 +32,18 @@ router.get("/id/:recipeId", (req, res) => {
     })
 });
 
+router.get("/:id/name/:recipeName", (req, res) => {
+
+    db.query(`SELECT * FROM recipes WHERE disciple_id = ${req.params.id} AND name LIKE "%${req.params.recipeName}%"`, (err, results) => {
+
+        if (err) {
+
+            throw err;
+        }
+
+        res.send(JSON.parse(JSON.stringify(results)));
+    })
+});
+
 
 module.exports = router

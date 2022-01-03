@@ -5,6 +5,48 @@
     flex-wrap: nowrap;
     flex-direction: row;
     align-items: center;
-    font-family: $main-font;
     flex-basis: 100%;
+    height: 100%;
+
+    #sort-drop-down {
+        width: min-content;
+        height: 100%;
+        background-color: $faded-brown;
+        font-family: $main-font;
+        text-align: center;
+        border: 2px solid white;
+        color: $gold;
+        font-size: 16px;
+
+        option {
+            background-color: black;
+        }
+        &:focus {
+            outline: none;
+        }
+    }
+    #search-bar {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        padding-left: 5px;
+        border: none;
+        outline: none;
+
+        &:active {
+            border: none;
+            outline: none;
+        }
+    }
+    #search-button {
+        background: url("../../../assets/ui-icons/search.svg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 25px;
+        background-color: $faded-brown;
+        text-align: center;
+        border: 2px solid white;
+        height: 100%;
+        width: 60px;
+    }
 }
