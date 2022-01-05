@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import RecipeObject from '../../../interfaces/recipe-interface';
-import searchIcon from '../../../assets/ui-icons/search.svg';
 import createDropDown from '../../dropdown';
 import SearchList from './search-list/search-list';
 import './search-bar.scss';
@@ -12,6 +11,8 @@ export default function SearchBar() {
     const [discipleOption, setDiscipleOption] = useState<number>(0);
     const [searchResults, setSearchResults] = useState<Array<RecipeObject>>([]);
     const [showRecipeList, setShowRecipeList] = useState<boolean>(false);
+    const [filteredSearchResults, setFilteredSearchResults] = useState<Array<RecipeObject>>([]);
+
 
     function handleChange(event: any) {
         setSearchTerm(event.target.value);
@@ -20,47 +21,59 @@ export default function SearchBar() {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         if (searchTerm !== null && searchTerm.length >= 2) {
-            // If disciple option is 0 we look through all the recipes.
-            if (discipleOption === 0) {
-                fetch(`http://localhost:5000/recipes/name/${searchTerm}`)
-                    .then(response => response.json())
-                    .then((results) => {
-                        setSearchResults(results)
-                        setShowRecipeList(true);
-                    })
-                    .catch((error) => {
-                        throw new Error(error);
-                    })
-
-                // if disciple option has a value we look through all recipes within that disciple
-            } else {
-                fetch(`http://localhost:5000/recipes/${discipleOption}/name/${searchTerm}`)
-                    .then(response => response.json())
-                    .then((results) => {
-                        setSearchResults(results)
-                        setShowRecipeList(true);
-                    })
-                    .catch((error) => {
-                        throw new Error(error);
-                    })
-            }
+            fetch(`http://localhost:5000/recipes/name/${searchTerm}`)
+                .then(response => response.json())
+                .then((results) => {
+                    setSearchResults(results)
+                    setFilteredSearchResults(results)
+                    setShowRecipeList(true);
+                })
+                .catch((error) => {
+                    throw new Error(error);
+                })
 
         }
 
     }
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     window.addEventListener('click', detectClick)
 
-    //     return () => {
+        //  Whenever search results changes or disciple options changes we will filter the results gathered by our api,which is held within the searchReults state array.
+        //  This filter will be based off which disciple the user wants to browse recipes in.
+        if (searchResults.length > 0) {
+            setShowRecipeList(true);
+            if (discipleOption === 0) {
+                setFilteredSearchResults([...searchResults]);
+            } else {
+                setFilteredSearchResults(searchResults.filter(recipes => recipes.disciple_id === discipleOption));
+            }
+        }
+    }, [discipleOption, searchResults])
 
-    //         window.removeEventListener('click', detectClick);
-    //     }
-    // }, []);
+    // When the user clicks on anything outside of the search form, we hide the search list.
+    useEffect(() => {
+
+        let detectClick = (event: any) => {
+
+            if (event.path.includes(document.getElementById('search-form'))) {
+                setShowRecipeList(true)
+            } else {
+                setShowRecipeList(false);
+            }
+        }
+
+        window.addEventListener('click', detectClick)
+
+        return () => {
+
+            window.removeEventListener('click', detectClick);
+        }
+    }, []);
+
 
     function dropDownOptionChanged(event: any) {
-        setDiscipleOption(event.target.value)
+        setDiscipleOption(parseInt(event.target.value));
     }
 
     return (
@@ -74,7 +87,7 @@ export default function SearchBar() {
                     placeholder="SEARCH FOR A RECIPE..." />
                 <input id="search-button" type="submit" value="" />
             </form>
-            {showRecipeList ? <SearchList recipes={searchResults} /> : null}
+            {showRecipeList ? <SearchList data={{ filteredSearchResults, discipleOption }} /> : null}
         </>
     )
 }

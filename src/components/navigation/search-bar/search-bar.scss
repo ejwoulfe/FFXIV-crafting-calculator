@@ -32,6 +32,7 @@
         padding-left: 5px;
         border: none;
         outline: none;
+        font-family: $main-font;
 
         &:active {
             border: none;
@@ -48,5 +49,6 @@
         border: 2px solid white;
         height: 100%;
         width: 60px;
+        cursor: pointer;
     }
 }

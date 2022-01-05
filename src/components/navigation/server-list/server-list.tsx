@@ -2,8 +2,10 @@ import { useContext, useEffect, useState } from "react"
 import './server-list.scss';
 import { ServerContext } from '../../../context/ServerContext';
 
-
-export default function ServerList() {
+interface ServerListProps {
+    setShowServerList: React.Dispatch<React.SetStateAction<boolean>>
+}
+export default function ServerList(toggle: ServerListProps) {
 
     const [naServerList, setNAServerList] = useState<object>({});
     const { setServer } = useContext(ServerContext);
@@ -16,6 +18,25 @@ export default function ServerList() {
             Crystal: ["Balmung", "Brynhildr", "Coeurl", "Diabolos", "Goblin", "Malboro", "Mateus", "Zalera"]
         })
     }, [])
+
+
+
+    useEffect(() => {
+
+        let detectClick = (event: any) => {
+
+            if (event.target.id !== 'crystal-image') {
+                toggle.setShowServerList(false);
+            }
+        }
+
+        window.addEventListener('click', detectClick)
+
+        return () => {
+
+            window.removeEventListener('click', detectClick);
+        }
+    }, []);
 
 
     function createListOfServers(servers: object) {
