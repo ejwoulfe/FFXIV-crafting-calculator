@@ -1,13 +1,13 @@
 
-import { useEffect, useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import SearchBar from './search-bar/search-bar';
 import crystal from '../../assets/navigation-icons/crystal.png';
 import './navigation.scss';
 import ServerList from './server-list/server-list';
-import SearchList from './search-bar/search-list/search-list';
+
 import { ServerContext } from '../../context/ServerContext';
-import RecipeObject from '../../interfaces/recipe-interface';
+
 
 export default function Navigation() {
 

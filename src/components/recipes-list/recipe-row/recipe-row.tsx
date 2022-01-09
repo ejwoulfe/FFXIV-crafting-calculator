@@ -17,7 +17,6 @@ function RecipeRow(props: { data: RowProps }) {
 
 
     useEffect(() => {
-
         setCrystalsLoaded(false);
         setMaterialsLoaded(false);
         if (props.data.controller.signal.aborted === false) {

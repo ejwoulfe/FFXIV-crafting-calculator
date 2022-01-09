@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navigation from './components/navigation/navigation';
 import { ServerContext } from './context/ServerContext';
-import DisciplesRecipeList from './routes/disciple-recipes-list/disciple-recipes.list';
-import Home from './routes/home/home';
+import DisciplesRecipeList from './containers/disciple-recipes-list/disciple-recipes.list';
+import Home from './containers/home/home';
 
 function App() {
 
@@ -25,6 +25,7 @@ function App() {
           <Routes>
 
             <Route path="/" element={<Home />} />
+
             <Route path="/disciple/:disciple/recipes" element={<DisciplesRecipeList />} />
 
 

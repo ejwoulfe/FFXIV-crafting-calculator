@@ -5,47 +5,98 @@ import RecipeObject from '../../interfaces/recipe-interface';
 import RecipeRow from './recipe-row/recipe-row';
 import Pagination from './pagination/pagination';
 import Filter from './filter/filter';
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from '../../redux/store';
+import { fetchAsyncRecipes, reset } from '../../redux/reducers/recipes-slice';
+
 
 
 export default function RecipesList() {
 
+
     // Router Variable
     const { disciple } = useParams();
+    const filter = useSelector((state: RootState) => state.recipesData);
+    // Redux
+    const dispatch = useDispatch();
+
+
 
     // Component State
-    const [recipesList, setRecipesList] = useState<Array<RecipeObject>>([]);
+    const [filteredList, setFilteredList] = useState<Array<RecipeObject>>([]);
+    const [displayList, setDisplayList] = useState<Array<RecipeObject>>([]);
     const [abortController, setAbortController] = useState<AbortController>(new AbortController());
-    const [slicedList, setSlicedList] = useState<Array<RecipeObject>>([]);
+    const [loaded, setLoaded] = useState<boolean>(false);
 
+
+
+
+    // useEffect(() => {
+    //     setCurrentPage(1)
+    //     setTotalPages(Math.ceil(filteredList.length / rowLimit))
+    // }, [filteredList])
+
+    // useEffect(() => {
+
+    //     let startIndex = (currentPage - 1) * 100;
+    //     let endIndex = startIndex + 100;
+    //     setDisplayList([...filteredList.slice(startIndex, endIndex)])
+
+    // }, [currentPage, filteredList])
+
+    // Whenever we have a new disciple, which is only when a user goes to a different disciple page,
+    // reset all values back to default and fetch the new recipes.
+    useEffect(() => {
+        if (disciple !== undefined) {
+            dispatch(reset())
+            dispatch(fetchAsyncRecipes(disciple))
+            setLoaded(true)
+        }
+    }, [disciple, dispatch])
 
     useEffect(() => {
-        const controller = new AbortController();
-        (async () => {
-            try {
-                const respone = await fetch('http://localhost:5000/disciple/id&=' + disciple + '/recipes', { signal: controller.signal });
-                const recipes = await respone.json();
-                setRecipesList(recipes);
-                setSlicedList(recipes.slice(0, 100))
+        console.log("something changed")
+    }, [filter])
 
-            } catch (error: any) {
-                if (error.name === 'AbortError') {
-                    console.log('Request aborted.')
-                } else {
-                    console.log(error)
-                }
-            }
-        })();
+    // 1: Recipe Level Ascending
+    // 2: Recipe Level Descending
+    // 3: Recipe Names A-Z
+    // 4: Recipe Names Z-A
+    // switch (event.target.value) {
+    //     case "0":
+    //         break;
+    //     case "1":
+    //         let ascendingList = [...props.data.recipesList.sort((a, b) => (a.level > b.level ? 1 : -1))];
+    //         props.data.setFilteredList(ascendingList);
+    //         break;
+    //     case "2":
+    //         let descendingList = [...props.data.recipesList.sort((a, b) => (a.level > b.level ? -1 : 1))];
+    //         props.data.setFilteredList(descendingList);
 
-        return () => {
-            controller.abort();
-        }
-    }, [disciple]);
+    //         break;
+    //     case "3":
+    //         let aToZList = [...props.data.recipesList.sort((a, b) => (a.name > b.name ? 1 : -1))];
+    //         props.data.setFilteredList(aToZList);
+
+    //         break;
+    //     case "4":
+    //         let zToAList = [...props.data.recipesList.sort((a, b) => (a.name > b.name ? -1 : 1))];
+    //         props.data.setFilteredList(zToAList);
+
+    //         break;
+    //     default:
+    //         break;
+    // }
+
+
+
 
 
     function createRecipesList(list: Array<RecipeObject>, controller: AbortController) {
-        if (controller.signal.aborted !== true) {
 
+        if (controller.signal.aborted !== true) {
             return list.map((recipe: RecipeObject, index: number) => {
+
                 return (
                     <RecipeRow data={{ recipe, controller }} key={"recipe-row-" + index} />
                 )
@@ -56,20 +107,20 @@ export default function RecipesList() {
 
     return (
         <div id="list-container">
-            <div id="pagination-and-filter">
-                {slicedList.length > 0 && abortController !== undefined
-                    ? <Pagination data={{ recipesList, setSlicedList, abortController, setAbortController }} />
-                    : null}
 
-                {slicedList.length > 0 && abortController !== undefined
-                    ? <Filter data={{ recipesList, setRecipesList, setSlicedList, abortController, setAbortController }} />
+            <div id="pagination-and-filter">
+                {loaded === true ? <Pagination data={{ abortController, setAbortController }} /> : null}
+
+                {loaded === true
+                    ? <Filter data={{ abortController, setAbortController }} />
                     : null}
             </div>
+            {/*
             <div id="rows-container">
-                {(slicedList.length > 0 && abortController.signal.aborted !== true)
-                    ? createRecipesList(slicedList, abortController)
+                {(displayList.length > 0 && abortController.signal.aborted !== true)
+                    ? createRecipesList(displayList, abortController)
                     : <div className="loading-spinner"></div>}
-            </div>
+            </div> */}
         </div>
     );
 }

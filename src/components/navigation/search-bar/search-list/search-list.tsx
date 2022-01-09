@@ -1,13 +1,11 @@
 import './search-list.scss';
 import RecipeObject from '../../../../interfaces/recipe-interface';
-import { useEffect } from 'react';
 
 interface SearchListProps {
-    filteredSearchResults: Array<RecipeObject>,
-    discipleOption: number
+    searchResults: Array<RecipeObject>
 }
 
-export default function SearchList(props: { data: SearchListProps }) {
+export default function SearchList(recipes: SearchListProps) {
 
     // Given the array of recipe objects, create a list item for each showing an image and name.
     function createListOfRecipes(list: Array<RecipeObject>) {
@@ -68,7 +66,7 @@ export default function SearchList(props: { data: SearchListProps }) {
 
     return (
         <ul id="recipe-list">
-            {createListOfRecipes(props.data.filteredSearchResults)}
+            {createListOfRecipes(recipes.searchResults)}
         </ul>
     )
 }

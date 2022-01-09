@@ -87,7 +87,7 @@ export default function SearchBar() {
                     placeholder="SEARCH FOR A RECIPE..." />
                 <input id="search-button" type="submit" value="" />
             </form>
-            {showRecipeList ? <SearchList data={{ filteredSearchResults, discipleOption }} /> : null}
+            {showRecipeList ? <SearchList searchResults={filteredSearchResults} /> : null}
         </>
     )
 }
