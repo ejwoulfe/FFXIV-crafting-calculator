@@ -34,6 +34,7 @@ function Filter(props: { data: FilterProps }) {
     return (
         <div id="filter-and-sort">
             <div id="filter-container">
+                <label>Keyword: </label>
                 <form id="filter-form" onSubmit={(e) => { handleSubmit(e) }}>
                     <input id="filter-bar"
                         autoComplete="false"
