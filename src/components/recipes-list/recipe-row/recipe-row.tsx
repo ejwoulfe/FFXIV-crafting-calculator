@@ -16,38 +16,39 @@ function RecipeRow(props: { data: RowProps }) {
     const [crystalsArr, setCrystalsArr] = useState<Array<CrystalObject> | null>(null);
 
 
+
     useEffect(() => {
         setCrystalsLoaded(false);
         setMaterialsLoaded(false);
-        if (props.data.controller.signal.aborted === false) {
-            (async () => {
-                try {
+        // if (props.data.controller.signal.aborted === false) {
+        (async () => {
+            try {
 
-                    const crystalFetch = await fetch(`http://localhost:5000/crystals/id/${props.data.recipe.recipe_id}`, { signal: props.data.controller.signal })
-                    const crystals = await crystalFetch.json();
-                    setCrystalsArr(crystals);
-                    setCrystalsLoaded(true);
+                const crystalFetch = await fetch(`http://localhost:5000/crystals/id/${props.data.recipe.recipe_id}`)
+                const crystals = await crystalFetch.json();
+                setCrystalsArr(crystals);
+                setCrystalsLoaded(true);
 
-                    const materialFetch = await fetch(`http://localhost:5000/materials/id/${props.data.recipe.recipe_id}`, { signal: props.data.controller.signal })
-                    const materials = await materialFetch.json();
-                    setMaterialsArr(materials)
-                    setMaterialsLoaded(true);
+                const materialFetch = await fetch(`http://localhost:5000/materials/id/${props.data.recipe.recipe_id}`)
+                const materials = await materialFetch.json();
+                setMaterialsArr(materials)
+                setMaterialsLoaded(true);
 
 
 
-                } catch (error: any) {
-                    return;
+            } catch (error: any) {
+                return;
 
-                }
-            })();
+            }
+        })();
 
-        }
+        // }
 
-        return () => {
-            props.data.controller.abort();
+        // return () => {
+        //     props.data.controller.abort();
 
-        }
-    }, [props.data.recipe.recipe_id, props.data.controller])
+        // }
+    }, [props.data.recipe.recipe_id])
 
 
 

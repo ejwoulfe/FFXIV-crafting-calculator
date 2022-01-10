@@ -18,7 +18,7 @@ function Filter(props: { data: FilterProps }) {
 
         // props.data.abortController.abort();
         // props.data.setAbortController(new AbortController());
-        dispatch(changeSortNumber(event.target.value));
+        dispatch(changeSortNumber(parseInt(event.target.value)));
 
     }
 

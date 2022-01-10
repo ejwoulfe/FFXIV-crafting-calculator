@@ -5,6 +5,7 @@ import { changePage } from '../../../redux/reducers/page-slice';
 import './pagination.scss';
 
 interface PaginationProps {
+    totalRecipes: number,
     abortController: AbortController,
     setAbortController: React.Dispatch<React.SetStateAction<AbortController>>,
 }
@@ -14,13 +15,13 @@ export default function Pagination(props: { data: PaginationProps }) {
     const dispatch = useDispatch();
     const rowLimit = 100;
     const page = useSelector((state: RootState) => state.pageData.page);
-    const totalRecipes = useSelector((state: RootState) => state.recipesData.recipes.length);
     const [totalPages, setTotalPages] = useState<number>(0);
 
 
     useEffect(() => {
-        setTotalPages(Math.ceil(totalRecipes / rowLimit))
-    }, [totalRecipes]);
+        setTotalPages(Math.ceil(props.data.totalRecipes / rowLimit))
+        dispatch(changePage(1));
+    }, [props.data.totalRecipes]);
 
     function createPaginationNumbers(totalPages: number, currentPage: number) {
         let pagesArr = [];

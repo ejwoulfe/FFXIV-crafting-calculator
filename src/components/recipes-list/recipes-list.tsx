@@ -17,6 +17,7 @@ export default function RecipesList() {
     // Router Variable
     const { disciple } = useParams();
     const filter = useSelector((state: RootState) => state.recipesData);
+    const currentPage = useSelector((state: RootState) => state.pageData.page);
     // Redux
     const dispatch = useDispatch();
 
@@ -24,9 +25,10 @@ export default function RecipesList() {
 
     // Component State
     const [filteredList, setFilteredList] = useState<Array<RecipeObject>>([]);
+    const [totalRecipes, setTotalRecipes] = useState<number>(0);
     const [displayList, setDisplayList] = useState<Array<RecipeObject>>([]);
     const [abortController, setAbortController] = useState<AbortController>(new AbortController());
-    const [loaded, setLoaded] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
 
 
@@ -50,77 +52,114 @@ export default function RecipesList() {
         if (disciple !== undefined) {
             dispatch(reset())
             dispatch(fetchAsyncRecipes(disciple))
-            setLoaded(true)
         }
     }, [disciple, dispatch])
 
     useEffect(() => {
-        console.log("something changed")
+
+        function filterList(list: Array<RecipeObject>, keyword: string, sort: number) {
+
+            let newList: Array<RecipeObject> = [];
+            let keywordList: Array<RecipeObject> = [];
+
+            if (keyword !== "" && keyword.length >= 2) {
+                keywordList = list.filter((recipe) => recipe.name.includes(keyword));
+
+            } else {
+                keywordList = [...list];
+            }
+
+
+
+
+
+            // 1: Recipe Level Ascending
+            // 2: Recipe Level Descending
+            // 3: Recipe Names A-Z
+            // 4: Recipe Names Z-A
+            switch (sort) {
+                case 0:
+                    newList = [...keywordList];
+                    break;
+                case 1:
+                    newList = [...keywordList].sort((a, b) => (a.level > b.level ? 1 : -1));
+                    break;
+                case 2:
+                    newList = [...keywordList].sort((a, b) => (a.level > b.level ? -1 : 1));
+                    break;
+                case 3:
+                    newList = [...keywordList].sort((a, b) => (a.name > b.name ? 1 : -1));
+                    break;
+                case 4:
+                    newList = [...keywordList].sort((a, b) => (a.name > b.name ? -1 : 1));
+                    break;
+                default:
+                    newList = ([...keywordList]);
+                    break;
+            }
+
+
+            setFilteredList(newList)
+            setTotalRecipes(newList.length);
+        }
+
+
+        filterList(filter.recipes, filter.keyword, filter.sortNumber)
+
     }, [filter])
 
-    // 1: Recipe Level Ascending
-    // 2: Recipe Level Descending
-    // 3: Recipe Names A-Z
-    // 4: Recipe Names Z-A
-    // switch (event.target.value) {
-    //     case "0":
-    //         break;
-    //     case "1":
-    //         let ascendingList = [...props.data.recipesList.sort((a, b) => (a.level > b.level ? 1 : -1))];
-    //         props.data.setFilteredList(ascendingList);
-    //         break;
-    //     case "2":
-    //         let descendingList = [...props.data.recipesList.sort((a, b) => (a.level > b.level ? -1 : 1))];
-    //         props.data.setFilteredList(descendingList);
+    useEffect(() => {
+        setLoading(true);
+        if (filteredList.length > 0) {
+            let startIndex = (currentPage - 1) * 100;
+            let endIndex = startIndex + 100;
+            setDisplayList(filteredList.slice(startIndex, endIndex))
+        }
+    }, [currentPage, filteredList])
 
-    //         break;
-    //     case "3":
-    //         let aToZList = [...props.data.recipesList.sort((a, b) => (a.name > b.name ? 1 : -1))];
-    //         props.data.setFilteredList(aToZList);
+    useEffect(() => {
+        if (displayList.length > 0) {
+            setLoading(false);
+        }
+    }, [displayList]);
 
-    //         break;
-    //     case "4":
-    //         let zToAList = [...props.data.recipesList.sort((a, b) => (a.name > b.name ? -1 : 1))];
-    //         props.data.setFilteredList(zToAList);
 
-    //         break;
-    //     default:
-    //         break;
-    // }
+
 
 
 
 
 
     function createRecipesList(list: Array<RecipeObject>, controller: AbortController) {
+        // let startIndex = (currentPage - 1) * 100;
+        // let endIndex = startIndex + 100;
+        // let displayList = list.slice(startIndex, endIndex);
+        return list.map((recipe: RecipeObject, index: number) => {
 
-        if (controller.signal.aborted !== true) {
-            return list.map((recipe: RecipeObject, index: number) => {
+            return (
+                <RecipeRow data={{ recipe, controller }} key={"recipe-row-" + index} />
+            )
+        })
 
-                return (
-                    <RecipeRow data={{ recipe, controller }} key={"recipe-row-" + index} />
-                )
-            })
 
-        }
     }
 
     return (
         <div id="list-container">
 
             <div id="pagination-and-filter">
-                {loaded === true ? <Pagination data={{ abortController, setAbortController }} /> : null}
+                {filteredList.length > 0 ? <Pagination data={{ totalRecipes, abortController, setAbortController }} /> : null}
 
-                {loaded === true
+                {filteredList.length > 0
                     ? <Filter data={{ abortController, setAbortController }} />
                     : null}
             </div>
-            {/*
+
             <div id="rows-container">
-                {(displayList.length > 0 && abortController.signal.aborted !== true)
+                {loading === false
                     ? createRecipesList(displayList, abortController)
-                    : <div className="loading-spinner"></div>}
-            </div> */}
+                    : null}
+            </div>
         </div>
     );
 }

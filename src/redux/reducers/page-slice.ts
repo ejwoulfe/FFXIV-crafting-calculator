@@ -16,7 +16,6 @@ export const pageSlice = createSlice({
             return initialState
         },
         changePage: (state, action) => {
-            console.log(action.payload)
             state.page = action.payload;
         }
     },
