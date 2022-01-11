@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import RecipeObject from '../../../interfaces/recipe-interface';
 import MaterialObject from '../../../interfaces/material-interface';
 import CrystalObject from '../../../interfaces/crystal-interface';
@@ -78,7 +79,7 @@ function RecipeRow(props: { data: RowProps }) {
     }
 
     return (
-        <div className="recipe-row">
+        <Link to={`recipe/${props.data.recipe.recipe_id}`} className="recipe-row" state={{ recipe: props.data.recipe, img: filePath }}>
             <div className="recipe-details">
                 {materialsLoaded === true && crystalsLoaded === true ?
                     <>
@@ -109,8 +110,7 @@ function RecipeRow(props: { data: RowProps }) {
                     ? createItemsList(crystalsArr, "crystal")
                     : <div className="loading-spinner"></div>}
             </div>
-        </div>
-
+        </Link>
     );
 }
 

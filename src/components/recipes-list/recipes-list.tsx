@@ -108,13 +108,6 @@ export default function RecipesList() {
         }
     }, [displayList]);
 
-
-
-
-
-
-
-
     function createRecipesList(list: Array<RecipeObject>, controller: AbortController) {
 
         return list.map((recipe: RecipeObject, index: number) => {

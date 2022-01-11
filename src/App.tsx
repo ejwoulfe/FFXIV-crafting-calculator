@@ -5,6 +5,7 @@ import Navigation from './components/navigation/navigation';
 import { ServerContext } from './context/ServerContext';
 import DisciplesRecipeList from './containers/disciple-recipes-list/disciple-recipes.list';
 import Home from './containers/home/home';
+import RecipeInformation from './containers/recipe-information/recipe-information';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/" element={<Home />} />
 
             <Route path="/disciple/:disciple/recipes" element={<DisciplesRecipeList />} />
+            <Route path="/disciple/:disciple/recipes/recipe/:recipe" element={<RecipeInformation />} />
 
 
           </Routes>
