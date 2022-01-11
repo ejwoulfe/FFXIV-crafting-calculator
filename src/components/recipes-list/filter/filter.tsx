@@ -1,6 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../redux/store';
+import { useDispatch } from 'react-redux';
 import createDropDown from '../../dropdown';
 import { keywordSubmitted, changeSortNumber } from '../../../redux/reducers/recipes-slice';
 import './filter.scss';
@@ -15,11 +13,7 @@ function Filter(props: { data: FilterProps }) {
     const dispatch = useDispatch();
 
     function sortOptionChanged(event: any) {
-
-        // props.data.abortController.abort();
-        // props.data.setAbortController(new AbortController());
         dispatch(changeSortNumber(parseInt(event.target.value)));
-
     }
 
 
@@ -28,7 +22,6 @@ function Filter(props: { data: FilterProps }) {
         let target = event.target as HTMLFormElement;
         let keyword = target.keyword.value;
         dispatch(keywordSubmitted(keyword))
-
     }
 
     return (

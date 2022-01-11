@@ -7,7 +7,6 @@ import './pagination.scss';
 interface PaginationProps {
     totalRecipes: number,
     abortController: AbortController,
-    setAbortController: React.Dispatch<React.SetStateAction<AbortController>>,
 }
 
 export default function Pagination(props: { data: PaginationProps }) {
@@ -21,7 +20,7 @@ export default function Pagination(props: { data: PaginationProps }) {
     useEffect(() => {
         setTotalPages(Math.ceil(props.data.totalRecipes / rowLimit))
         dispatch(changePage(1));
-    }, [props.data.totalRecipes]);
+    }, [props.data.totalRecipes, dispatch]);
 
     function createPaginationNumbers(totalPages: number, currentPage: number) {
         let pagesArr = [];
@@ -51,6 +50,7 @@ export default function Pagination(props: { data: PaginationProps }) {
     }
 
     function pageNumberClicked(event: any) {
+        props.data.abortController.abort();
         let value = parseInt(event.target.value)
         dispatch(changePage(value));
     }

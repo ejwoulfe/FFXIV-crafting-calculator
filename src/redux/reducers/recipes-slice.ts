@@ -8,7 +8,11 @@ export interface RecipesState {
 }
 
 export const fetchAsyncRecipes = createAsyncThunk('recipes/fetchAsyncRecipes', async (discipleId: string) => {
-    const response = await fetch(`http://localhost:5000/disciple/id&=${discipleId}/recipes`);
+    const controller = new AbortController();
+    const response = await fetch(`http://localhost:5000/disciple/id&=${discipleId}/recipes`, { signal: controller.signal });
+    if (!response.ok) {
+        controller.abort();
+    }
     return await response.json() as Array<RecipeObject>;
 })
 
@@ -35,13 +39,13 @@ export const recipesSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fetchAsyncRecipes.pending, (state, action) => {
-            console.log("Pending")
+
         })
         builder.addCase(fetchAsyncRecipes.fulfilled, (state: RecipesState, action) => {
             state.recipes.push(...action.payload)
         })
         builder.addCase(fetchAsyncRecipes.rejected, (state, action) => {
-            console.log("Rejected")
+            console.log("There was an error while retrieving data.")
         })
     }
 

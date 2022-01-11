@@ -5,7 +5,7 @@ import { ServerContext } from '../../../context/ServerContext';
 interface ServerListProps {
     setShowServerList: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function ServerList(toggle: ServerListProps) {
+export default function ServerList(props: ServerListProps) {
 
     const [naServerList, setNAServerList] = useState<object>({});
     const { setServer } = useContext(ServerContext);
@@ -26,7 +26,7 @@ export default function ServerList(toggle: ServerListProps) {
         let detectClick = (event: any) => {
 
             if (event.target.id !== 'crystal-image') {
-                toggle.setShowServerList(false);
+                props.setShowServerList(false);
             }
         }
 
@@ -36,7 +36,7 @@ export default function ServerList(toggle: ServerListProps) {
 
             window.removeEventListener('click', detectClick);
         }
-    }, []);
+    }, [props]);
 
 
     function createListOfServers(servers: object) {
