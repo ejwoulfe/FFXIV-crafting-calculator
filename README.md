@@ -1,7 +1,7 @@
 ## Built With
-Front End: HTML, Sass, ReactJS, TypeScript
+Front End: HTML, Sass, ReactJS, Redux Toolkit, TypeScript
 
-Back End: Node.js, MySQL
+Back End: Node.js, Express, MySQL
 
 ## UML Diagram
 
