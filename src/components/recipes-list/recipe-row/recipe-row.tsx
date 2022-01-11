@@ -79,7 +79,7 @@ function RecipeRow(props: { data: RowProps }) {
     }
 
     return (
-        <Link to={`recipe/${props.data.recipe.recipe_id}`} className="recipe-row" state={{ recipe: props.data.recipe, img: filePath }}>
+        <Link to={`recipe/${props.data.recipe.recipe_id}`} className="recipe-row" state={{ recipe: props.data.recipe, materials: materialsArr, crystals: crystalsArr, img: filePath }}>
             <div className="recipe-details">
                 {materialsLoaded === true && crystalsLoaded === true ?
                     <>
