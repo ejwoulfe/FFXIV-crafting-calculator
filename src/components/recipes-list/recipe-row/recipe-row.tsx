@@ -69,11 +69,11 @@ function RecipeRow(props: { data: RowProps }) {
                 filePath = crystalImages(`./${item.icon}`).default;
             }
             return (
-                <li key={'item-' + index}>
-                    <img className="item-image" src={filePath} alt={`${item.name} + icon`} />
+                <span className="item-container" key={'item-' + index}>
+                    <img className="item-img" src={filePath} alt={`${item.name} + icon`} />
                     <p className="item-quantity"><span className="x-marker">x</span>{item.quantity}</p>
                     <p className="item-name">{item.name}</p>
-                </li>
+                </span>
             )
         })
     }
@@ -85,7 +85,9 @@ function RecipeRow(props: { data: RowProps }) {
                     <>
                         <h2>{props.data.recipe.name}</h2>
                         <span className="img-and-details">
-                            <img src={filePath} alt={`${props.data.recipe.name} icon`} />
+                            <span className="img-container">
+                                <img src={filePath} alt={`${props.data.recipe.name} icon`} />
+                            </span>
                             <span className="details">
                                 <p>- Recipe Level: {props.data.recipe.level}</p>
                                 {(props.data.recipe.item_level !== null && props.data.recipe.item_level !== "null")

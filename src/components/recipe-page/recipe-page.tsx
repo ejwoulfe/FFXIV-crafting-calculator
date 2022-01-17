@@ -17,10 +17,9 @@ function RecipePage(props: { data: RecipePageProps }) {
     const materialImages = require.context('../../assets/material-icons/', true);
     // const crystalImages = require.context('../../../assets/crystal-icons/', true);
 
-    console.log(props.data.img)
     // Must be type item
     // https://xivapi.com/search?string_algo=match&string=${itemName}
-    // Get item ID then retrieve MB data.
+    // Get item ID then retrieve Marketboard data.
     // https://universalis.app/api/${server}/${itemID}
 
     function createMaterialDivs(materials: Array<MaterialObject>) {

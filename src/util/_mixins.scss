@@ -14,28 +14,32 @@
     color: rgb(211, 198, 125);
 }
 
-@mixin item-list {
-    list-style: none;
+@mixin item {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    align-items: baseline;
-    margin: 3px 0px 3px 0px;
+    align-items: center;
+    flex: 1 1 50%;
+    padding-left: 5px;
 
-    .item-image {
-        height: 50px;
-        width: 50px;
+    .item-img {
+        width: 40px;
+        height: 40px;
     }
+
     .item-quantity {
-        margin: 0px 0px 0px 5px;
-        font-size: 26px;
-    }
-    .x-marker {
-        font-size: 12px;
+        font-size: 1.5em;
+        margin: 0px;
+        .x-marker {
+            font-size: 0.5em;
+        }
     }
     .item-name {
-        margin: 0px 0px 0px 10px;
-        font-size: 18px;
+        font-size: 1em;
+        margin: 0px;
+    }
+    @media (max-width: 1200px) and (min-width: 500px) {
+        flex: 1 1 25%;
     }
 }
 

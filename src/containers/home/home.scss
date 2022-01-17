@@ -10,7 +10,7 @@
     text-align: center;
 
     #title {
-        font-size: 96px;
+        font-size: 3.2em;
         @include title-style;
     }
     #disciples-title {
@@ -48,7 +48,7 @@
         p {
             @include title-style;
             letter-spacing: 0.5px;
-            font-size: 26px;
+            font-size: 1.3em;
             margin-top: 0px;
         }
     }
