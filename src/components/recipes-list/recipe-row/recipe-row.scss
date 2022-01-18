@@ -17,87 +17,94 @@
     &:nth-child(even) {
         background-color: $nav-background;
     }
+}
 
-    .recipe-details {
+.recipe-details {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    flex: 20% 1;
+    height: 80%;
+    border-right: solid 2px #d1fcff;
+
+    h2 {
+        font-size: 100%;
+        font-weight: 200;
+        text-decoration: underline;
+        white-space: normal;
+        margin: 0;
+    }
+
+    .img-and-details {
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        flex: 20% 1;
-        height: 80%;
-        border-right: solid 2px #d1fcff;
-
-        h2 {
-            font-size: 100%;
-            font-weight: 200;
-            text-decoration: underline;
-            white-space: normal;
-            margin: 0;
-        }
-
-        .img-and-details {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            align-items: center;
-
-            .img-container {
-                flex: 0 1 25%;
-
-                img {
-                    width: 100%;
-                }
-            }
-
-            .details {
-                display: flex;
-                flex-direction: column;
-                flex: 1 1 75%;
-                align-items: flex-start;
-                justify-content: flex-end;
-
-                p {
-                    font-size: 100%;
-                    margin: 3px 0px 3px 3px;
-                }
-            }
-        }
-    }
-
-    .recipe-materials {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        justify-content: flex-start;
-        align-content: flex-start;
-        height: 80%;
-        flex: 60% 1;
-        border-right: solid 2px #d1fcff;
-
-        .item-container {
-            @include item;
-        }
-    }
-    .recipe-crystals {
-        height: 80%;
-        display: flex;
-        flex-direction: column;
         flex-wrap: nowrap;
-        align-items: flex-start;
-        justify-content: center;
-        flex: 20%;
+        align-items: center;
 
-        .item-container {
-            @include item;
+        .img-container {
+            flex: 0 1 25%;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        .details {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 75%;
+            align-items: flex-start;
+            justify-content: flex-end;
+
+            p {
+                font-size: 100%;
+                margin: 3px 0px 3px 3px;
+            }
         }
     }
-    .loading-spinner {
-        @include loader;
-        border: 8px solid $gold;
-        border-top: 8px solid $sky-blue;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
+}
+
+.recipe-materials {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    align-content: flex-start;
+    height: 80%;
+    flex: 60% 1;
+    border-right: solid 2px #d1fcff;
+
+    .item-container {
+        @include item;
     }
+}
+.recipe-crystals {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    justify-content: center;
+    flex: 20%;
+
+    .item-container {
+        @include item;
+    }
+}
+.loading-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.loading-spinner {
+    @include loader;
+    border: 8px solid $gold;
+    border-top: 8px solid $sky-blue;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
 }

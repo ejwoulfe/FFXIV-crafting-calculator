@@ -103,14 +103,18 @@ function RecipeRow(props: { data: RowProps }) {
 
             </div>
             <div className="recipe-materials">
+
                 {materialsLoaded === true && materialsArr !== null
                     ? createItemsList(materialsArr, "material")
-                    : <div className="loading-spinner"></div>}
+                    : <div className="loading-container">
+                        <div className="loading-spinner"></div>
+                    </div>}
             </div>
             <div className="recipe-crystals">
                 {crystalsLoaded === true && crystalsArr !== null
                     ? createItemsList(crystalsArr, "crystal")
-                    : <div className="loading-spinner"></div>}
+                    : <div className="loading-container">
+                        <div className="loading-spinner"></div></div>}
             </div>
         </Link>
     );

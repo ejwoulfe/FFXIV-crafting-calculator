@@ -128,11 +128,11 @@ export default function RecipesList() {
                     : null}
             </div>
 
-            <div id="rows-container">
+            {/* <div id="rows-container">
                 {loading === false
                     ? createRecipesList(displayList, abortController)
                     : null}
-            </div>
+            </div> */}
         </div>
     );
 }
