@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import SearchBar from './search-bar/search-bar';
 import crystal from '../../assets/navigation-icons/crystal.png';
 import './navigation.scss';
+import Logo from '../../assets/logo/logo.png';
 import ServerList from './server-list/server-list';
 
 import { ServerContext } from '../../context/ServerContext';
@@ -18,18 +19,23 @@ export default function Navigation() {
 
     return (
         <nav id="navigation">
-            <Link to="/" id="logo" />
-
+            <div id="logo-container">
+                <Link to="/" id="logo-link" >
+                    <h1 id="logo-text">
+                        FFXIV<span id="CC-text">CC</span>
+                    </h1>
+                </Link>
+            </div>
             <div id="nav-items">
                 <div id="search-bar-container">
                     <SearchBar />
 
                 </div>
-                <div id="server">
-                    {server}
-                </div>
-                <div id="crystal" onClick={() => { setShowServerList(!showServerList) }} >
-                    <img id="crystal-image" src={crystal} alt="crystal" />
+                <div id="server-container">
+                    <span id="server">{server}</span>
+                    <div id="crystal" onClick={() => { setShowServerList(!showServerList) }} >
+                        <img id="crystal-image" src={crystal} alt="crystal" />
+                    </div>
                 </div>
                 {showServerList ? <ServerList setShowServerList={setShowServerList} /> : null}
             </div>

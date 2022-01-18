@@ -16,7 +16,7 @@
         text-align: center;
         border: 2px solid white;
         color: $gold;
-        font-size: 16px;
+        font-size: 1em;
 
         option {
             background-color: black;
@@ -50,5 +50,12 @@
         height: 100%;
         width: 60px;
         cursor: pointer;
+    }
+}
+@media (max-width: 600px) {
+    #search-form {
+        #sort-drop-down {
+            font-size: 0.6em;
+        }
     }
 }

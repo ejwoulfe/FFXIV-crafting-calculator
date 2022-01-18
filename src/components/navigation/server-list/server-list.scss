@@ -2,24 +2,24 @@
 @import "../../../util/mixins";
 
 #server-list {
-    position: absolute;
-    top: 100px;
-    right: 22px;
-    background-color: #000000;
-    list-style: none;
-    text-align: left;
-    padding: 30px;
-    border: solid 1px $sky-blue;
-    width: 12rem;
-    color: $sky-blue;
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
-    width: auto;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    position: absolute;
+
+    top: 100px;
+    right: 5px;
+
+    list-style: none;
+    text-align: left;
+    border: solid 1px $sky-blue;
+    color: $sky-blue;
     font-family: $main-font;
     z-index: 99;
+    background-color: #000000;
+    min-width: $min-width;
 }
 
 .data-center-list {
@@ -42,5 +42,13 @@
 
     &:hover {
         @include list-hover;
+    }
+}
+
+@media (max-width: 400px) {
+    #server-list {
+        top: 133px;
+        right: 0px;
+        flex-direction: column;
     }
 }

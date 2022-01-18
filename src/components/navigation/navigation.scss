@@ -8,48 +8,95 @@
     align-items: center;
     height: 120px;
     background-color: $nav-background;
+}
+#logo-container {
+    flex: 1 1 50%;
+    height: 100%;
+    display: flex;
+    padding-left: 20px;
+    align-items: center;
+}
+#logo-link {
+    text-decoration: none;
+}
+#logo-text {
+    font-family: $ff-font;
+    margin: 0;
+    color: #2e9aff;
+    font-size: 4em;
+    font-weight: 100;
+    #CC-text {
+        color: $gold;
+    }
+}
 
-    #logo {
-        height: 100%;
-        flex: 15%;
-        background-image: url("../../assets/logo/logo.png");
-        background-repeat: no-repeat;
-        background-position: 50% 40%;
+#nav-items {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    list-style: none;
+    justify-content: space-between;
+    flex: 1 1 50%;
+
+    #search-bar-container {
+        height: 35px;
+        border-radius: 5px;
+        position: relative;
+        flex-grow: 5;
+    }
+
+    #server-container {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        flex-grow: 1;
+        justify-content: center;
+        flex-shrink: 1;
+    }
+    #server {
+        @include title-style;
+        letter-spacing: 1px;
+        font-size: 26px;
+        padding-right: 0px;
+    }
+    #crystal {
+        padding-left: 0px;
         cursor: pointer;
+        img {
+            height: 36px;
+        }
+    }
+}
+
+@media (max-width: 825px) {
+    #nav-items {
+        flex-direction: column-reverse;
+        flex-wrap: nowrap;
+        align-items: flex-end;
+        flex: 1 1 75%;
+    }
+    #logo-container {
+        flex: 1 1 25%;
+        padding-left: 5px;
+    }
+}
+
+@media (max-width: 400px) {
+    #navigation {
+        flex-direction: column;
+        height: auto;
+    }
+
+    #logo-container {
+        flex: 1 1 25%;
+        text-align: center;
     }
     #nav-items {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        list-style: none;
-        justify-content: flex-end;
-        flex: 85%;
-
-        #server,
-        #crystal {
-            padding: 0px 15px 0px 15px;
-        }
-        #search-bar-container {
-            width: 40%;
-            height: 35px;
-            border-radius: 5px;
-            position: relative;
-        }
-
-        #server {
-            @include title-style;
-            letter-spacing: 1px;
-            font-size: 26px;
-            padding-right: 0px;
-        }
-        #crystal {
-            padding-left: 0px;
-            padding-right: 3%;
-            cursor: pointer;
-            img {
-                height: 36px;
-            }
-        }
+        flex: 1 1 75%;
+        width: 100%;
+    }
+    #search-bar-container {
+        width: 100%;
     }
 }
