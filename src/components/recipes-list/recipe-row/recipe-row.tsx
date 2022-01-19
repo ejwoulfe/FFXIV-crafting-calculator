@@ -71,8 +71,8 @@ function RecipeRow(props: { data: RowProps }) {
             return (
                 <span className="item-container" key={'item-' + index}>
                     <img className="item-img" src={filePath} alt={`${item.name} + icon`} />
-                    <p className="item-quantity"><span className="x-marker">x</span>{item.quantity}</p>
-                    <p className="item-name">{item.name}</p>
+                    <h6 className="item-quantity"><span className="x-marker">x</span>{item.quantity}</h6>
+                    <h5 className="item-name">{item.name}</h5>
                 </span>
             )
         })
@@ -89,12 +89,12 @@ function RecipeRow(props: { data: RowProps }) {
                                 <img src={filePath} alt={`${props.data.recipe.name} icon`} />
                             </span>
                             <span className="details">
-                                <p>- Recipe Level: {props.data.recipe.level}</p>
+                                <h5>- Recipe Level: {props.data.recipe.level}</h5>
                                 {(props.data.recipe.item_level !== null && props.data.recipe.item_level !== "null")
-                                    ? <p>- Recipe Item Level: {props.data.recipe.item_level}</p>
+                                    ? <h5>- Recipe Item Level: {props.data.recipe.item_level}</h5>
                                     : null}
                                 {(props.data.recipe.type !== "null" && props.data.recipe.type !== null)
-                                    ? <p>- {props.data.recipe.type}</p>
+                                    ? <h5>- {props.data.recipe.type}</h5>
                                     : null}
                             </span>
                         </span>

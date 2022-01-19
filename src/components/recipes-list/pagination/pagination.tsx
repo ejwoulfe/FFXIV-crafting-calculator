@@ -83,23 +83,25 @@ export default function Pagination(props: { data: PaginationProps }) {
         <>
             <ul id="pagination-container">
                 {page > 1 ? (
-                    <button id="first-page-button" onClick={() => { goToFirstPage() }}>
-                        <b>{`<<`}</b>
-                    </button>
+                    <>
+                        <button id="first-page-button" onClick={() => { goToFirstPage() }}>
+                            <b>{`<<`}</b>
+                        </button>
+                        <button id="prev-button" onClick={() => { goToPreviousPage() }}>
+                            <b>{`<`}</b>
+                        </button>
+                    </>
                 ) : (
-                    <button id="first-page-disabled" disabled>
-                        <b>{`<<`}</b>
-                    </button>
+                    <>
+                        <button id="first-page-disabled" disabled>
+                            <b>{`<<`}</b>
+                        </button>
+                        <button id="prev-disabled" disabled>
+                            <b>{`<`}</b>
+                        </button>
+                    </>
                 )}
-                {page > 1 ? (
-                    <button id="prev-button" onClick={() => { goToPreviousPage() }}>
-                        <b>{`<`}</b>
-                    </button>
-                ) : (
-                    <button id="prev-disabled" disabled>
-                        <b>{`<`}</b>
-                    </button>
-                )}
+
                 {createPaginationNumbers(totalPages, page).map((value, index) => (
                     <button
                         key={index}
@@ -109,23 +111,25 @@ export default function Pagination(props: { data: PaginationProps }) {
                     </button>
                 ))}
                 {page !== totalPages ? (
-                    <button id="next-button" onClick={() => { goToNextPage() }}>
-                        <b>{`>`}</b>
-                    </button>
+                    <>
+                        <button id="next-button" onClick={() => { goToNextPage() }}>
+                            <b>{`>`}</b>
+                        </button>
+                        <button id="last-page-button" onClick={() => { goToLastPage() }}>
+                            <b>{`>>`}</b>
+                        </button>
+                    </>
                 ) : (
-                    <button id="next-disabled" disabled>
-                        <b>{`>`}</b>
-                    </button>
+                    <>
+                        <button id="next-disabled" disabled>
+                            <b>{`>`}</b>
+                        </button>
+                        <button id="last-page-disabled" disabled>
+                            <b>{`>>`}</b>
+                        </button>
+                    </>
                 )}
-                {page !== totalPages ? (
-                    <button id="last-page-button" onClick={() => { goToLastPage() }}>
-                        <b>{`>>`}</b>
-                    </button>
-                ) : (
-                    <button id="last-page-disabled" disabled>
-                        <b>{`>>`}</b>
-                    </button>
-                )}
+
             </ul>
         </>
     );
