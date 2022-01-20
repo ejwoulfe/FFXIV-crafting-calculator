@@ -5,7 +5,6 @@
     display: flex;
     flex-wrap: nowrap;
     flex-direction: row;
-    align-items: center;
     width: 100%;
     background-color: #473c2a46;
     text-decoration: none;
@@ -13,7 +12,6 @@
     font-family: staatliches;
     letter-spacing: 1px;
     margin: 1rem 0rem 1rem 0rem;
-    padding: 2rem 0rem 2rem 0rem;
 
     &:nth-child(even) {
         background-color: $nav-background;
@@ -23,24 +21,23 @@
 .recipe-materials,
 .recipe-crystals {
     min-height: 180px;
+    padding: 1rem 1rem 1rem 1rem;
 }
 
 .recipe-details {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     flex: 20% 1;
-    height: 80%;
-    border-right: solid 2px #d1fcff;
     padding-left: 0.5rem;
 
     h2 {
         font-size: 1.5rem;
         font-weight: 200;
         text-decoration: underline;
-        white-space: normal;
-        margin: 0;
+        flex: 20%;
+        margin: 0rem 0rem 1rem 0rem;
     }
 }
 
@@ -49,6 +46,7 @@
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: flex-start;
+    flex: 80%;
 
     .img-container {
         img {
@@ -72,13 +70,13 @@
 
 .recipe-materials {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: flex-start;
+    align-items: center;
     flex: 1 1 60%;
-    max-height: 180px;
+
     border-right: solid 2px #d1fcff;
+    border-left: solid 2px #d1fcff;
 }
 .item-container {
     @include item;
@@ -86,9 +84,8 @@
 .recipe-crystals {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: flex-start;
-    justify-content: flex-start;
     flex: 20%;
 
     .item-container {
@@ -111,9 +108,43 @@
     height: 60px;
 }
 
-@media (max-width: 1085px) {
+@media (max-width: 1000px) {
+    .recipe-details,
+    .recipe-materials,
+    .recipe-crystals {
+        padding: 1rem 0.5rem 1rem 0.5rem;
+    }
+}
+@media (max-width: 750px) {
+    .recipe-row {
+        flex-direction: column;
+    }
     .recipe-materials {
-        max-height: none;
+        border-top: solid 2px #d1fcff;
+        border-bottom: solid 2px #d1fcff;
+        border-right: none;
+        border-left: none;
+    }
+    .recipe-crystals {
         flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .recipe-details {
+        align-items: center;
+        .img-and-details {
+            align-items: center;
+            .details {
+                align-items: center;
+            }
+        }
+    }
+
+    .recipe-details,
+    .recipe-materials,
+    .recipe-crystals {
+        min-height: fit-content;
+        padding: 1rem 1rem 1rem 1rem;
+        width: 85%;
+        margin: auto;
     }
 }
