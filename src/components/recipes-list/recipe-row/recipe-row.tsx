@@ -11,15 +11,24 @@ interface RowProps {
 }
 
 function RecipeRow(props: { data: RowProps }) {
-    const [materialsArr, setMaterialsArr] = useState<Array<MaterialObject> | null>(null);
+
+    // State
     const [materialsLoaded, setMaterialsLoaded] = useState<boolean>(false);
     const [crystalsLoaded, setCrystalsLoaded] = useState<boolean>(false);
+    const [materialsArr, setMaterialsArr] = useState<Array<MaterialObject> | null>(null);
     const [crystalsArr, setCrystalsArr] = useState<Array<CrystalObject> | null>(null);
 
+    // Image Paths
+    const recipeImagesPath = require.context('../../../assets/recipe-icons/', true);
+    const materialImagesPath = require.context('../../../assets/material-icons/', true);
+    const crystalImagesPath = require.context('../../../assets/crystal-icons/', true);
+    let recipeImage = recipeImagesPath(`./${props.data.recipe.icon}`).default;
 
     useEffect(() => {
         setCrystalsLoaded(false);
         setMaterialsLoaded(false);
+
+
         if (props.data.controller.signal.aborted === false) {
             (async () => {
                 try {
@@ -33,6 +42,7 @@ function RecipeRow(props: { data: RowProps }) {
                     const materials = await materialFetch.json();
                     setMaterialsArr(materials)
                     setMaterialsLoaded(true);
+
 
 
 
@@ -52,25 +62,23 @@ function RecipeRow(props: { data: RowProps }) {
 
 
 
-    const recipeImages = require.context('../../../assets/recipe-icons/', true);
-    let filePath = recipeImages(`./${props.data.recipe.icon}`).default;
-    const materialImages = require.context('../../../assets/material-icons/', true);
-    const crystalImages = require.context('../../../assets/crystal-icons/', true);
 
     function createItemsList(itemArray: Array<MaterialObject> | Array<CrystalObject>, itemType: string) {
 
 
         return itemArray.map((item: MaterialObject | CrystalObject, index: number) => {
-            let filePath = null;
+            let src: string = "";
 
             if (itemType === "material") {
-                filePath = materialImages(`./${item.icon}`).default;
+                src = materialImagesPath(`./${item.icon}`).default;
+
+
             } else {
-                filePath = crystalImages(`./${item.icon}`).default;
+                src = crystalImagesPath(`./${item.icon}`).default;
             }
             return (
                 <span className="item-container" key={'item-' + index}>
-                    <img className="item-img" src={filePath} alt={`${item.name} + icon`} />
+                    <img className="item-img" src={src} alt={`${item.name} + icon`} />
                     <h6 className="item-quantity"><span className="x-marker">x</span>{item.quantity}</h6>
                     <h5 className="item-name">{item.name}</h5>
                 </span>
@@ -78,15 +86,24 @@ function RecipeRow(props: { data: RowProps }) {
         })
     }
 
+
+
     return (
-        <Link to={`recipe/${props.data.recipe.recipe_id}`} className="recipe-row" state={{ recipe: props.data.recipe, materials: materialsArr, crystals: crystalsArr, img: filePath }}>
+        <Link to={`recipe/${props.data.recipe.recipe_id}`}
+            className="recipe-row"
+            state={{
+                recipe: props.data.recipe,
+                recipeImage: recipeImage,
+                materials: materialsArr,
+                crystals: crystalsArr
+            }}>
             <div className="recipe-details">
                 {materialsLoaded === true && crystalsLoaded === true ?
                     <>
                         <h2>{props.data.recipe.name}</h2>
                         <span className="img-and-details">
                             <span className="img-container">
-                                <img src={filePath} alt={`${props.data.recipe.name} icon`} />
+                                <img src={recipeImage} alt={`${props.data.recipe.name} icon`} />
                             </span>
                             <span className="details">
                                 <h5>- Recipe Level: {props.data.recipe.level}</h5>

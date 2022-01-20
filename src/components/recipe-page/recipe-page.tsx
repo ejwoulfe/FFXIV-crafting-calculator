@@ -7,15 +7,16 @@ import './recipe-page.scss';
 
 interface RecipePageProps {
     recipe: RecipeObject,
-    img: string,
+    recipeImage: string,
     materials: Array<MaterialObject>,
     crystals: Array<CrystalObject>
 }
 
 function RecipePage(props: { data: RecipePageProps }) {
 
-    const materialImages = require.context('../../assets/material-icons/', true);
-    // const crystalImages = require.context('../../../assets/crystal-icons/', true);
+
+    const materialImagesPath = require.context('../../assets/material-icons/', true);
+    const crystalImagesPath = require.context('../../assets/crystal-icons/', true);
 
     // Must be type item
     // https://xivapi.com/search?string_algo=match&string=${itemName}
@@ -31,7 +32,7 @@ function RecipePage(props: { data: RecipePageProps }) {
                     <span className="material-details">
                         <p>HQ?</p>
                         <img className="hq-img" src={highQuality} alt="high quality item" />
-                        <img src={materialImages(`./${material.icon}`).default} alt={material.name} />
+                        <img src={materialImagesPath(`./${material.icon}`).default} alt={material.name} />
                         <h4>{material.quantity}</h4>
                         <h4>{material.name}</h4>
                     </span>
@@ -50,7 +51,7 @@ function RecipePage(props: { data: RecipePageProps }) {
         <div id="recipe-info">
             <h1 id="recipe-title">{props.data.recipe.name}</h1>
             <div id="recipe-craft-info">
-                <img id="recipe-img" src={props.data.img} alt={`${props.data.recipe.name} recipe`} />
+                <img id="recipe-img" src={props.data.recipeImage} alt={`${props.data.recipe.name} recipe`} />
                 <div id="recipe-details">
                     <p>- Recipe Level: {props.data.recipe.level}</p>
                     {(props.data.recipe.item_level !== null && props.data.recipe.item_level !== "null")

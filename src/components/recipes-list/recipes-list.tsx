@@ -20,6 +20,7 @@ export default function RecipesList() {
     // Redux
     const dispatch = useDispatch();
     const filter = useSelector((state: RootState) => state.recipesData);
+    const recipes = useSelector((state: RootState) => state.recipesData.recipes);
     const currentPage = useSelector((state: RootState) => state.pageData.page);
 
     // Component State
@@ -121,9 +122,9 @@ export default function RecipesList() {
         <div id="list-container">
 
             <div id="pagination-and-filter">
-                {filteredList.length > 0 ? <Pagination data={{ totalRecipes, abortController }} /> : null}
+                {recipes !== undefined ? <Pagination data={{ totalRecipes, abortController }} /> : null}
 
-                {filteredList.length > 0
+                {recipes !== undefined
                     ? <Filter data={{ abortController, setAbortController }} />
                     : null}
             </div>
