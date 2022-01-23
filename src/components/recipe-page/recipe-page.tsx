@@ -26,23 +26,28 @@ function RecipePage(props: { data: RecipePageProps }) {
     function createMaterialDivs(materials: Array<MaterialObject>) {
 
         return materials.map((material, index) => {
-            console.log(material)
             return (
                 <div className="material-row" key={'material-' + index}>
                     <span className="material-details">
-                        <p>HQ?</p>
-                        <img className="hq-img" src={highQuality} alt="high quality item" />
+                        <span className="hq-checkbox-container">
+                            <label>HQ?</label>
+                            <input type="checkbox" className="hq-checkbox" name="hq checkbox" value="hq" />
+                        </span>
                         <img src={materialImagesPath(`./${material.icon}`).default} alt={material.name} />
-                        <h4>{material.quantity}</h4>
-                        <h4>{material.name}</h4>
+                        <h3>x{material.quantity}</h3>
+                        <h3 className="material-name">{material.name}</h3>
                     </span>
-                    <ul className="material-calculations">
-                        <li className="hq">HQ</li>
-                        <li className="price-per">Price Per</li>
-                        <li className="quantity">QTY</li>
-                        <li className="total">TOTAL</li>
-                        <li className="arrow">arrow</li>
-                    </ul>
+                    <div className="material-calculations">
+                        <span className="hq">
+                            <h4>HQ</h4>
+                            <img className="hq-img" src={highQuality} alt="high quality item" />
+                        </span>
+
+                        <span className="price-per"><h4>Price Per</h4></span>
+                        <span className="quantity"><h4>QTY</h4></span>
+                        <span className="total"><h4>TOTAL</h4></span>
+                        <span className="arrow"><h4>arrow</h4></span>
+                    </div>
                 </div>)
         })
     }
