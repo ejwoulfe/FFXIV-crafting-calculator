@@ -2,8 +2,9 @@ import RecipeObject from "../../interfaces/recipe-interface";
 import websiteIcon from '../../assets/ui-icons/playguide.png';
 import MaterialObject from "../../interfaces/material-interface";
 import CrystalObject from "../../interfaces/crystal-interface";
-import highQuality from '../../assets/ui-icons/hq.png';
 import './recipe-page.scss';
+import { useState } from "react";
+import MaterialRow from "./material-row/material-row";
 
 interface RecipePageProps {
     recipe: RecipeObject,
@@ -15,42 +16,17 @@ interface RecipePageProps {
 function RecipePage(props: { data: RecipePageProps }) {
 
 
-    const materialImagesPath = require.context('../../assets/material-icons/', true);
     const crystalImagesPath = require.context('../../assets/crystal-icons/', true);
-
-    // Must be type item
-    // https://xivapi.com/search?string_algo=match&string=${itemName}
-    // Get item ID then retrieve Marketboard data.
-    // https://universalis.app/api/${server}/${itemID}
 
     function createMaterialDivs(materials: Array<MaterialObject>) {
 
         return materials.map((material, index) => {
-            return (
-                <div className="material-row" key={'material-' + index}>
-                    <span className="material-details">
-                        <span className="hq-checkbox-container">
-                            <label>HQ?</label>
-                            <input type="checkbox" className="hq-checkbox" name="hq checkbox" value="hq" />
-                        </span>
-                        <img src={materialImagesPath(`./${material.icon}`).default} alt={material.name} />
-                        <h3>x{material.quantity}</h3>
-                        <h3 className="material-name">{material.name}</h3>
-                    </span>
-                    <div className="material-calculations">
-                        <span className="hq">
-                            <h4>HQ</h4>
-                            <img className="hq-img" src={highQuality} alt="high quality item" />
-                        </span>
 
-                        <span className="price-per"><h4>Price Per</h4></span>
-                        <span className="quantity"><h4>QTY</h4></span>
-                        <span className="total"><h4>TOTAL</h4></span>
-                        <span className="arrow"><h4>arrow</h4></span>
-                    </div>
-                </div>)
+            return <MaterialRow material={material} key={"material-row-" + index} />
+
         })
     }
+
 
     return (
         <div id="recipe-info">
@@ -78,11 +54,13 @@ function RecipePage(props: { data: RecipePageProps }) {
                 <div id="costs"></div>
             </div>
             <div id="materials-container">
+                <h1 id="materials-title">Materials</h1>
                 {createMaterialDivs(props.data.materials)}
 
             </div>
         </div>
     );
 };
+
 
 export default RecipePage;

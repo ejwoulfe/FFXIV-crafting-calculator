@@ -17,15 +17,16 @@
     align-items: flex-end;
     width: 35%;
     margin: auto;
+    margin-bottom: 2rem;
 
     #recipe-img,
     #recipe-details,
     #recipe-link {
-        margin: 5px 0px 5px 0px;
+        margin: 0.5rem 0rem 0.5rem 0rem;
     }
 
     #recipe-img {
-        border-radius: 10px;
+        border-radius: 1rem;
         box-shadow: 2px 2px 2px #000000;
     }
     #recipe-details {
@@ -54,6 +55,10 @@
     flex-flow: column nowrap;
     align-items: center;
 }
+
+#materials-title {
+    @include title-style;
+}
 .material-row {
     display: flex;
     flex-flow: row nowrap;
@@ -71,41 +76,67 @@
     &:nth-child(even) {
         background-color: $nav-background;
     }
+}
 
-    .material-details,
-    .material-calculations {
-        padding: 0.5rem;
+.material-details,
+.material-calculations {
+    padding: 1.5rem 1rem 1.5rem 1rem;
+}
+
+.material-details {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 1 1 50%;
+    .x-marker {
+        font-size: 0.5em;
     }
 
-    .material-details {
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: flex-start;
-        align-items: center;
-        flex: 1 1 50%;
-
-        & > * {
-            padding-right: 1rem;
-        }
+    & > * {
+        padding-right: 1rem;
     }
-    .hq-checkbox-container {
+}
+.hq-checkbox-container {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding-left: 1rem;
+    input[type="checkbox"]:checked {
+        color: hotpink;
+    }
+}
+.hq-checkbox {
+    margin: 0;
+}
+
+.material-calculations {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+    flex: 1 1 50%;
+
+    span {
         display: flex;
         flex-flow: column nowrap;
         align-items: center;
-    }
-    .hq-checkbox {
-        margin: 0;
-    }
-
-    .material-calculations {
-        display: flex;
-        flex-flow: row nowrap;
+        min-height: 50px;
         justify-content: space-evenly;
-        align-items: center;
-        flex: 1 1 50%;
+
+        h4 {
+            margin: 0rem;
+        }
     }
-    .hq-img {
-        height: 30px;
-        width: 18px;
+    .arrow-svg {
+        width: 3rem;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
+}
+.hq-img {
+    height: 30px;
+    width: 18px;
 }
