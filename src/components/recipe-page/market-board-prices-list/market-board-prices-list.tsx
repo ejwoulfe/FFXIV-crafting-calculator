@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { ServerContext } from "../../../context/ServerContext";
+import './market-board-prices-list.scss';
 
 interface MarketBoardPricesListProps {
     name: string
@@ -21,6 +22,8 @@ function MarketBoardPricesList(material: MarketBoardPricesListProps) {
 
     const materialName = material.name;
     const [abortController, setAbortController] = useState<AbortController>(new AbortController());
+    const [lastUpdateTime, setLastUpdateTime] = useState<number>();
+    const [pricesList, setPricesList] = useState<Array<object>>([]);
     const [pricesLoaded, setPricesLoaded] = useState<boolean>(false);
     const { server } = useContext(ServerContext);
 
@@ -33,6 +36,8 @@ function MarketBoardPricesList(material: MarketBoardPricesListProps) {
         // https://xivapi.com/search?string_algo=match&string=${itemName}
         // Get item ID then retrieve Marketboard data.
         // https://universalis.app/api/${server}/${itemID}
+        // Filter for hq only
+        // https://universalis.app/api/${server}/${itemID}?hq=hq
 
         if (abortController.signal.aborted === false) {
             (async () => {
@@ -44,7 +49,8 @@ function MarketBoardPricesList(material: MarketBoardPricesListProps) {
 
                     const pricesFetch = await fetch(`https://universalis.app/api/${server}/${materialId}`, { signal: abortController.signal })
                     const prices = await pricesFetch.json();
-                    console.log(prices)
+                    setPricesList(prices.listings)
+                    setLastUpdateTime(prices.lastUploadTime)
                     setPricesLoaded(true);
 
                 } catch (error: any) {
@@ -75,6 +81,7 @@ function MarketBoardPricesList(material: MarketBoardPricesListProps) {
 
     return (
         <div className="prices-container">
+            {pricesLoaded === true ? <h1>Loaded</h1> : <div className="loading-spinner"></div>}
         </div>
     );
 }

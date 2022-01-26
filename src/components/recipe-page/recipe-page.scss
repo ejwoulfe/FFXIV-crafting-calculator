@@ -54,6 +54,8 @@
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+    width: 65%;
+    margin: auto;
 }
 
 #materials-title {
@@ -64,17 +66,13 @@
     flex-flow: row nowrap;
     align-items: center;
     justify-content: space-between;
-    width: 65%;
-    background-color: $faded-brown;
-    margin: 1rem 0rem 1rem 0rem;
+    width: 100%;
+    background-color: $nav-background;
+    margin: 1rem 0rem 0rem 0rem;
 
     h3,
     h4 {
         font-weight: 100;
-    }
-
-    &:nth-child(even) {
-        background-color: $nav-background;
     }
 }
 

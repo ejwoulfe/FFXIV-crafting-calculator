@@ -1,0 +1,14 @@
+@import "../../../util/variables";
+@import "../../../util/mixins";
+
+.prices-container {
+    display: flex;
+    flex-flow: column nowrap;
+    min-height: 200px;
+    width: 100%;
+    background-color: $faded-brown;
+    border-top: 2px solid $gold;
+}
+.spinning-loader {
+    @include loader;
+}
