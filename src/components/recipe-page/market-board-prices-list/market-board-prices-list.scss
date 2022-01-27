@@ -33,6 +33,16 @@
         align-items: center;
         justify-content: center;
     }
+    thead {
+        display: flex;
+        flex-flow: row nowrap;
+        width: 100%;
+    }
+    tbody {
+        display: flex;
+        flex-flow: column nowrap;
+        width: 100%;
+    }
 }
 
 .listing-row {

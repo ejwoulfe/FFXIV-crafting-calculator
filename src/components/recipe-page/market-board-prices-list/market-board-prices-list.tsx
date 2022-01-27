@@ -4,7 +4,8 @@ import hqIcon from '../../../assets/ui-icons/hq.png';
 import './market-board-prices-list.scss';
 
 interface MarketBoardPricesListProps {
-    name: string
+    materialName: string,
+    highQualityChecked: boolean
 }
 interface FetchObject {
     Pagination: object,
@@ -27,9 +28,9 @@ interface MarketObject {
     retainerCity: number,
     total: number
 }
-function MarketBoardPricesList(material: MarketBoardPricesListProps) {
+function MarketBoardPricesList(props: { data: MarketBoardPricesListProps }) {
 
-    const materialName = material.name;
+    const materialName = props.data.materialName;
     const [abortController, setAbortController] = useState<AbortController>(new AbortController());
     const [lastUpdateTime, setLastUpdateTime] = useState<number>();
     const [pricesList, setPricesList] = useState<Array<MarketObject>>([]);
@@ -88,43 +89,92 @@ function MarketBoardPricesList(material: MarketBoardPricesListProps) {
         })
     }
 
-    function createMarketBoardListings(list: Array<MarketObject>) {
+    function createMarketBoardListings(list: Array<MarketObject>, hqRequired: boolean) {
+
+        if (hqRequired === true) {
+            const hqList = list.filter((marketItem: MarketObject, index: number) => marketItem.hq === true);
+            return <table className="listing-table">
+                <thead>
+                    <tr className="listing-table-headings">
+                        <th>HQ</th>
+                        <th>City</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {hqList.map((marketItem: MarketObject, index: number) => {
+                        return <tr className="listing-row" key={'pricing-number-' + index}>
+                            <td className="listing-hq">
+                                {marketItem.hq === true ? <img src={hqIcon} alt="high quality" /> : null}
+                            </td>
+                            <td className="listing-city">
+                                <span className="table-border">
+                                    {marketItem.retainerCity}
+                                </span>
+                            </td>
+                            <td className="listing-price-per">
+                                <span className="table-border">
+                                    {marketItem.pricePerUnit.toLocaleString()}
+                                </span>
+                            </td>
+                            <td className="listing-quantity">
+                                <span className="table-border">
+                                    {marketItem.quantity}
+                                </span>
+                            </td>
+                            <td className="listing-price-total">
+                                <span className="table-border">
+                                    {marketItem.total.toLocaleString()}
+                                </span>
+                            </td>
+                        </tr>
+                    })}
+                </tbody>
+            </table>
+
+        }
 
         return <table className="listing-table">
-            <tr className="listing-table-headings">
-                <th>HQ</th>
-                <th>City</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-            </tr>
-            {list.map((marketItem: MarketObject, index: number) => {
-                return <tr className="listing-row" key={'pricing-number-' + index}>
-                    <td className="listing-hq">
-                        {marketItem.hq === true ? <img src={hqIcon} alt="high quality" /> : null}
-                    </td>
-                    <td className="listing-city">
-                        <span className="table-border">
-                            {marketItem.retainerCity}
-                        </span>
-                    </td>
-                    <td className="listing-price-per">
-                        <span className="table-border">
-                            {marketItem.pricePerUnit.toLocaleString()}
-                        </span>
-                    </td>
-                    <td className="listing-quantity">
-                        <span className="table-border">
-                            {marketItem.quantity}
-                        </span>
-                    </td>
-                    <td className="listing-price-total">
-                        <span className="table-border">
-                            {marketItem.total.toLocaleString()}
-                        </span>
-                    </td>
+            <thead>
+                <tr className="listing-table-headings">
+                    <th>HQ</th>
+                    <th>City</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
                 </tr>
-            })}
+            </thead>
+            <tbody>
+                {list.map((marketItem: MarketObject, index: number) => {
+                    return <tr className="listing-row" key={'pricing-number-' + index}>
+                        <td className="listing-hq">
+                            {marketItem.hq === true ? <img src={hqIcon} alt="high quality" /> : null}
+                        </td>
+                        <td className="listing-city">
+                            <span className="table-border">
+                                {marketItem.retainerCity}
+                            </span>
+                        </td>
+                        <td className="listing-price-per">
+                            <span className="table-border">
+                                {marketItem.pricePerUnit.toLocaleString()}
+                            </span>
+                        </td>
+                        <td className="listing-quantity">
+                            <span className="table-border">
+                                {marketItem.quantity}
+                            </span>
+                        </td>
+                        <td className="listing-price-total">
+                            <span className="table-border">
+                                {marketItem.total.toLocaleString()}
+                            </span>
+                        </td>
+                    </tr>
+                })}
+            </tbody>
         </table>
     }
 
@@ -139,7 +189,7 @@ function MarketBoardPricesList(material: MarketBoardPricesListProps) {
             <div className="last-updated-container">
                 {lastUpdateTime !== undefined ? convertTimeToLocal(lastUpdateTime) : null}
             </div>
-            {pricesLoaded === true ? createMarketBoardListings(pricesList) : <div className="loading-spinner"></div>}
+            {pricesLoaded === true ? createMarketBoardListings(pricesList, props.data.highQualityChecked) : <div className="loading-spinner"></div>}
 
         </div>
     );

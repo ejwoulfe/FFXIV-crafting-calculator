@@ -1,7 +1,7 @@
 import highQuality from '../../../assets/ui-icons/hq.png';
 import arrowDown from '../../../assets/ui-icons/arrow-down.svg';
 import MarketBoardPricesList from '../market-board-prices-list/market-board-prices-list';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface MaterialRowProps {
     name: string,
@@ -12,14 +12,17 @@ interface MaterialRowProps {
 function MaterialRow(props: { material: MaterialRowProps }) {
 
     const [showPrices, setShowPrices] = useState<boolean>(false);
+    const [highQualityChecked, setHighQualityChecked] = useState<boolean>(false);
     const materialImagesPath = require.context('../../../assets/material-icons/', true);
+    const materialName = props.material.name;
+
     return (
         <>
             <div className="material-row">
                 <span className="material-details">
                     <span className="hq-checkbox-container">
                         <label>HQ?</label>
-                        <input type="checkbox" className="hq-checkbox" name="hq checkbox" value="hq" />
+                        <input type="checkbox" className="hq-checkbox" name="hq checkbox" value="hq" onClick={() => setHighQualityChecked(!highQualityChecked)} />
                     </span>
                     <img src={materialImagesPath(`./${props.material.icon}`).default} alt={props.material.name} />
                     <h3>
@@ -61,7 +64,7 @@ function MaterialRow(props: { material: MaterialRowProps }) {
                     </span>
                 </div>
             </div>
-            {showPrices === true ? <MarketBoardPricesList name={props.material.name} /> : null}
+            {showPrices === true ? <MarketBoardPricesList data={{ materialName, highQualityChecked }} /> : null}
         </>)
 }
 
