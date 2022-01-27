@@ -14,7 +14,7 @@
     margin: 1rem 0rem 1rem 0rem;
 
     &:nth-child(even) {
-        background-color: $nav-background;
+        background-color: $dark-gray;
     }
 }
 .recipe-details,
@@ -75,8 +75,8 @@
     align-items: center;
     flex: 1 1 60%;
 
-    border-right: solid 2px #d1fcff;
-    border-left: solid 2px #d1fcff;
+    border-right: solid 2px $sky-blue;
+    border-left: solid 2px $sky-blue;
 }
 .item-container {
     @include item;

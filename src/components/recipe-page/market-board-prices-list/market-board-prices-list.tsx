@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { ServerContext } from "../../../context/ServerContext";
+import hqIcon from '../../../assets/ui-icons/hq.png';
 import './market-board-prices-list.scss';
 
 interface MarketBoardPricesListProps {
@@ -18,12 +19,20 @@ interface ItemObject {
     UrlType: string,
     additionalProperties: { [prop: string]: string };
 }
+
+interface MarketObject {
+    pricePerUnit: number,
+    quantity: number,
+    hq: boolean,
+    retainerCity: number,
+    total: number
+}
 function MarketBoardPricesList(material: MarketBoardPricesListProps) {
 
     const materialName = material.name;
     const [abortController, setAbortController] = useState<AbortController>(new AbortController());
     const [lastUpdateTime, setLastUpdateTime] = useState<number>();
-    const [pricesList, setPricesList] = useState<Array<object>>([]);
+    const [pricesList, setPricesList] = useState<Array<MarketObject>>([]);
     const [pricesLoaded, setPricesLoaded] = useState<boolean>(false);
     const { server } = useContext(ServerContext);
 
@@ -79,9 +88,59 @@ function MarketBoardPricesList(material: MarketBoardPricesListProps) {
         })
     }
 
+    function createMarketBoardListings(list: Array<MarketObject>) {
+
+        return <table className="listing-table">
+            <tr className="listing-table-headings">
+                <th>HQ</th>
+                <th>City</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+            {list.map((marketItem: MarketObject, index: number) => {
+                return <tr className="listing-row" key={'pricing-number-' + index}>
+                    <td className="listing-hq">
+                        {marketItem.hq === true ? <img src={hqIcon} alt="high quality" /> : null}
+                    </td>
+                    <td className="listing-city">
+                        <span className="table-border">
+                            {marketItem.retainerCity}
+                        </span>
+                    </td>
+                    <td className="listing-price-per">
+                        <span className="table-border">
+                            {marketItem.pricePerUnit.toLocaleString()}
+                        </span>
+                    </td>
+                    <td className="listing-quantity">
+                        <span className="table-border">
+                            {marketItem.quantity}
+                        </span>
+                    </td>
+                    <td className="listing-price-total">
+                        <span className="table-border">
+                            {marketItem.total.toLocaleString()}
+                        </span>
+                    </td>
+                </tr>
+            })}
+        </table>
+    }
+
+    function convertTimeToLocal(time: number) {
+        const date = new Date(time);
+        const dateToString = 'Last Time Listing was updated: ' + date.toLocaleString();
+        return <h5 className="last-updated">{dateToString}</h5>
+    }
+
     return (
         <div className="prices-container">
-            {pricesLoaded === true ? <h1>Loaded</h1> : <div className="loading-spinner"></div>}
+            <div className="last-updated-container">
+                {lastUpdateTime !== undefined ? convertTimeToLocal(lastUpdateTime) : null}
+            </div>
+            {pricesLoaded === true ? createMarketBoardListings(pricesList) : <div className="loading-spinner"></div>}
+
         </div>
     );
 }
