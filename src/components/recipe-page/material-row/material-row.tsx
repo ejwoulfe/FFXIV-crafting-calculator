@@ -1,20 +1,30 @@
 import highQuality from '../../../assets/ui-icons/hq.png';
 import arrowDown from '../../../assets/ui-icons/arrow-down.svg';
 import MarketBoardPricesList from '../market-board-prices-list/market-board-prices-list';
+import getRetainerCityIcon from '../getRetainerCityIcon';
 import { useEffect, useState } from 'react';
+import MarketItemDetails from '../../../interfaces/market-item-interface';
 
 interface MaterialRowProps {
     name: string,
     icon: string,
     quantity: number
-
 }
+
 function MaterialRow(props: { material: MaterialRowProps }) {
 
     const [showPrices, setShowPrices] = useState<boolean>(false);
     const [highQualityChecked, setHighQualityChecked] = useState<boolean>(false);
     const materialImagesPath = require.context('../../../assets/material-icons/', true);
     const materialName = props.material.name;
+    const quantityRequired = props.material.quantity;
+    const [marketItemDetails, setMarketItemDetails] = useState<MarketItemDetails>({
+        hq: false,
+        city: "",
+        price: 0,
+        quantity: 0,
+        total: 0
+    });
 
     return (
         <>
@@ -35,26 +45,32 @@ function MaterialRow(props: { material: MaterialRowProps }) {
                 </span>
                 <div className="material-calculations">
                     <span className="hq">
-                        <h4>HQ</h4>
+                        <h4 className="calculation-title">HQ</h4>
                         <span className="calculation-value">
                             <img className="hq-img" src={highQuality} alt="high quality item" />
                         </span>
                     </span>
+                    <span className="city">
+                        <h4 className="calculation-title">City</h4>
+                        <span className="calculation-value">
+                            {getRetainerCityIcon(1)}
+                        </span>
+                    </span>
 
                     <span className="price-per">
-                        <h4>Price Per</h4>
+                        <h4 className="calculation-title">Price Per</h4>
                         <span className="calculation-value">
                             <h4>0</h4>
                         </span>
                     </span>
                     <span className="quantity">
-                        <h4>QTY</h4>
+                        <h4 className="calculation-title">QTY</h4>
                         <span className="calculation-value">
                             <h4>0</h4>
                         </span>
                     </span>
                     <span className="total">
-                        <h4>TOTAL</h4>
+                        <h4 className="calculation-title">TOTAL</h4>
                         <span className="calculation-value">
                             <h4>0</h4>
                         </span>
@@ -64,7 +80,7 @@ function MaterialRow(props: { material: MaterialRowProps }) {
                     </span>
                 </div>
             </div>
-            {showPrices === true ? <MarketBoardPricesList data={{ materialName, highQualityChecked }} /> : null}
+            {showPrices === true ? <MarketBoardPricesList data={{ materialName, highQualityChecked, quantityRequired, setMarketItemDetails }} /> : null}
         </>)
 }
 
