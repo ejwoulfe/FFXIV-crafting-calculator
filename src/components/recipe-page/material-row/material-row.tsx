@@ -1,30 +1,109 @@
-import highQuality from '../../../assets/ui-icons/hq.png';
-import arrowDown from '../../../assets/ui-icons/arrow-down.svg';
-import MarketBoardPricesList from '../market-board-prices-list/market-board-prices-list';
-import getRetainerCityIcon from '../getRetainerCityIcon';
-import { useEffect, useState } from 'react';
-import MarketItemDetails from '../../../interfaces/market-item-interface';
+import MarketBoardPricesList from './market-board-prices-list/market-board-prices-list';
+import { useEffect, useState, useContext } from 'react';
+import MarketObject from '../../../interfaces/market-object';
+import { ServerContext } from "../../../context/ServerContext";
+import calculateCheapestOption from './material-calculations/calculateCheapestOption';
+import MaterialCalculations from './material-calculations/material-calculations';
 
 interface MaterialRowProps {
     name: string,
     icon: string,
     quantity: number
 }
+interface ItemObject {
+    ID: number,
+    Icon: string,
+    Name: string,
+    Url: string,
+    UrlType: string,
+    additionalProperties: { [prop: string]: string };
+}
+interface FetchObject {
+    Pagination: object,
+    Results: Array<ItemObject>,
+    SpeedMS: number
+}
 
 function MaterialRow(props: { material: MaterialRowProps }) {
 
+    // State
     const [showPrices, setShowPrices] = useState<boolean>(false);
     const [highQualityChecked, setHighQualityChecked] = useState<boolean>(false);
+    const [abortController, setAbortController] = useState<AbortController>(new AbortController());
+    const [pricesList, setPricesList] = useState<Array<MarketObject>>([]);
+    const [marketDataLoaded, setMarketDataLoaded] = useState<boolean>(false);
+    const [lastUpdateTime, setLastUpdateTime] = useState<number>(0);
+
+    // Context
+    const { server } = useContext(ServerContext);
+
+
+
+    // Variables
     const materialImagesPath = require.context('../../../assets/material-icons/', true);
     const materialName = props.material.name;
     const quantityRequired = props.material.quantity;
-    const [marketItemDetails, setMarketItemDetails] = useState<MarketItemDetails>({
-        hq: false,
-        city: "",
-        price: 0,
-        quantity: 0,
-        total: 0
-    });
+
+
+
+    useEffect(() => {
+
+        setMarketDataLoaded(false);
+
+
+        // Must be type item
+        // https://xivapi.com/search?string_algo=match&string=${itemName}
+        // Get item ID then retrieve Marketboard data.
+        // https://universalis.app/api/${server}/${itemID}
+        // Filter for hq only
+        // https://universalis.app/api/${server}/${itemID}?hq=hq
+
+        if (abortController.signal.aborted === false) {
+            (async () => {
+                try {
+
+                    const fetchMaterialId = await fetch(`https://xivapi.com/search?string_algo=match&string=${materialName}`, { signal: abortController.signal })
+                    const fetchObject = await fetchMaterialId.json();
+                    const materialId = (await getMaterialID(fetchObject));
+
+                    const pricesFetch = await fetch(`https://universalis.app/api/${server}/${materialId}`, { signal: abortController.signal })
+                    const pricingData = await pricesFetch.json();
+                    setPricesList(pricingData.listings)
+                    setLastUpdateTime(pricingData.lastUploadTime)
+                    setMarketDataLoaded(true);
+
+                } catch (error: any) {
+                    return;
+
+                }
+            })();
+
+        }
+
+        return () => {
+            abortController.abort();
+
+        }
+    }, [materialName, abortController, server])
+
+
+    function getMaterialID(fetchObject: FetchObject) {
+
+        return fetchObject.Results.map((item) => {
+
+            if (item.UrlType === "Item") {
+                return item.ID
+            } else {
+                return null;
+            }
+        })
+    }
+
+    useEffect(() => {
+        if (pricesList.length > 0) {
+            calculateCheapestOption(highQualityChecked, pricesList);
+        }
+    }, [pricesList, highQualityChecked])
 
     return (
         <>
@@ -43,44 +122,10 @@ function MaterialRow(props: { material: MaterialRowProps }) {
                     </h3>
                     <h3 className="material-name">{props.material.name}</h3>
                 </span>
-                <div className="material-calculations">
-                    <span className="hq">
-                        <h4 className="calculation-title">HQ</h4>
-                        <span className="calculation-value">
-                            <img className="hq-img" src={highQuality} alt="high quality item" />
-                        </span>
-                    </span>
-                    <span className="city">
-                        <h4 className="calculation-title">City</h4>
-                        <span className="calculation-value">
-                            {getRetainerCityIcon(1)}
-                        </span>
-                    </span>
+                {marketDataLoaded === true ? <MaterialCalculations data={{ showPrices, setShowPrices }} /> : null}
 
-                    <span className="price-per">
-                        <h4 className="calculation-title">Price Per</h4>
-                        <span className="calculation-value">
-                            <h4>0</h4>
-                        </span>
-                    </span>
-                    <span className="quantity">
-                        <h4 className="calculation-title">QTY</h4>
-                        <span className="calculation-value">
-                            <h4>0</h4>
-                        </span>
-                    </span>
-                    <span className="total">
-                        <h4 className="calculation-title">TOTAL</h4>
-                        <span className="calculation-value">
-                            <h4>0</h4>
-                        </span>
-                    </span>
-                    <span className="arrow">
-                        <img className="arrow-svg" src={arrowDown} alt="expand down arrow" onClick={() => setShowPrices(!showPrices)} />
-                    </span>
-                </div>
             </div>
-            {showPrices === true ? <MarketBoardPricesList data={{ materialName, highQualityChecked, quantityRequired, setMarketItemDetails }} /> : null}
+            {marketDataLoaded === true && showPrices === true ? <MarketBoardPricesList data={{ pricesList, lastUpdateTime, highQualityChecked }} /> : null}
         </>)
 }
 
