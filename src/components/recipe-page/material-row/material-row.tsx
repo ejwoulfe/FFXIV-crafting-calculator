@@ -2,7 +2,7 @@ import MarketBoardPricesList from './market-board-prices-list/market-board-price
 import { useEffect, useState, useContext } from 'react';
 import MarketObject from '../../../interfaces/market-object';
 import { ServerContext } from "../../../context/ServerContext";
-import calculateCheapestOption from './material-calculations/calculateCheapestOption';
+import arrowDown from '../../../assets/ui-icons/arrow-down.svg';
 import MaterialCalculations from './material-calculations/material-calculations';
 
 interface MaterialRowProps {
@@ -99,12 +99,6 @@ function MaterialRow(props: { material: MaterialRowProps }) {
         })
     }
 
-    useEffect(() => {
-        if (pricesList.length > 0) {
-            calculateCheapestOption(highQualityChecked, pricesList);
-        }
-    }, [pricesList, highQualityChecked])
-
     return (
         <>
             <div className="material-row">
@@ -122,7 +116,13 @@ function MaterialRow(props: { material: MaterialRowProps }) {
                     </h3>
                     <h3 className="material-name">{props.material.name}</h3>
                 </span>
-                {marketDataLoaded === true ? <MaterialCalculations data={{ showPrices, setShowPrices }} /> : null}
+                <div className="material-calculations">
+                    {marketDataLoaded === true ? <MaterialCalculations data={{ highQualityChecked, pricesList, quantityRequired }} />
+                        : <div className="loading-spinner"></div>}
+                    <span className="arrow">
+                        <img className="arrow-svg" src={arrowDown} alt="expand down arrow" onClick={() => setShowPrices(!showPrices)} />
+                    </span>
+                </div>
 
             </div>
             {marketDataLoaded === true && showPrices === true ? <MarketBoardPricesList data={{ pricesList, lastUpdateTime, highQualityChecked }} /> : null}

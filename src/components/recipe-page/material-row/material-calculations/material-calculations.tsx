@@ -1,14 +1,26 @@
-import arrowDown from '../../../../assets/ui-icons/arrow-down.svg';
+
 import getRetainerCityIcon from '../../getRetainerCityIcon';
 import highQuality from '../../../../assets/ui-icons/hq.png';
+import calculateCheapestOption from './calculateCheapestOption';
+import MarketObject from '../../../../interfaces/market-object';
+import { useEffect } from 'react';
 
 interface MaterialCalculationsProps {
-    showPrices: boolean,
-    setShowPrices: React.Dispatch<React.SetStateAction<boolean>>
+    highQualityChecked: boolean,
+    pricesList: Array<MarketObject>,
+    quantityRequired: number
+
 }
 function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
+
+    useEffect(() => {
+
+        calculateCheapestOption(props.data.highQualityChecked, props.data.pricesList, props.data.quantityRequired);
+
+    }, [props.data.highQualityChecked, props.data.pricesList, props.data.quantityRequired])
+
     return (
-        <div className="material-calculations">
+        <>
             <span className="hq">
                 <h4 className="calculation-title">HQ</h4>
                 <span className="calculation-value">
@@ -40,10 +52,8 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
                     <h4>0</h4>
                 </span>
             </span>
-            <span className="arrow">
-                <img className="arrow-svg" src={arrowDown} alt="expand down arrow" onClick={() => props.data.setShowPrices(!props.data.showPrices)} />
-            </span>
-        </div>
+
+        </>
     );
 }
 

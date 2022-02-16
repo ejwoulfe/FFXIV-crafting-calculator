@@ -3,7 +3,6 @@ import websiteIcon from '../../assets/ui-icons/playguide.png';
 import MaterialObject from "../../interfaces/material-interface";
 import CrystalObject from "../../interfaces/crystal-interface";
 import './recipe-page.scss';
-import { useState } from "react";
 import MaterialRow from "./material-row/material-row";
 
 interface RecipePageProps {
