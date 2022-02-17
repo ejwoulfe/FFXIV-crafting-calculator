@@ -1,55 +1,61 @@
 import MarketObject from "../../../../interfaces/market-object"
 export default function calculateCheapestOption(hqRequired: boolean, listOfItems: Array<MarketObject>, targetQuantity: number) {
 
-    const possibleOptions = [];
-    console.log('--------------------------------------------');
+    const possibleOptions: Array<Array<MarketObject>> = [];
+
     for (let i = 0; i < listOfItems.length; i++) {
 
-        // if (i !== 0) {
-        //     console.log("Next iteration.")
-        // }
-
-
-        // console.log("Target Quantity: ")
-        // console.log(targetQuantity)
-
         let currentQuantity = listOfItems[i].quantity;
-        // console.log("current quantity: ")
-        // console.log(currentQuantity)
 
 
         if (currentQuantity >= targetQuantity) {
-            possibleOptions.push(listOfItems[i]);
+            possibleOptions.push([listOfItems[i]]);
 
         } else {
 
             let currentOptions = [listOfItems[i]];
-            for (let z = i + 1; z < listOfItems.length - 1; z++) {
-                console.log("The Current list index: ")
-                console.log(i)
+            for (let z = i + 1; z <= listOfItems.length - 1; z++) {
+
                 currentQuantity += listOfItems[z].quantity;
+
                 if (currentQuantity >= targetQuantity) {
+
                     currentOptions.push(listOfItems[z]);
                     possibleOptions.push(currentOptions);
-                    // console.log("pushing")
-                    // console.log(currentOptions)
-                    // console.log("result")
-                    // console.log(purchaseOptions)
                     break;
+
                 } else {
 
                     currentOptions.push(listOfItems[z]);
                 }
-
             }
+        }
+    }
 
+
+    let indexOfCheapestOption = 0;
+    let cheapestPrice = null;
+
+    for (let k = 0; k < possibleOptions.length; k++) {
+
+        let totalPrice = 0;
+        for (let j = 0; j < possibleOptions[k].length; j++) {
+
+            totalPrice += (possibleOptions[k][j].pricePerUnit * possibleOptions[k][j].quantity);
+
+        }
+        if (cheapestPrice === null || totalPrice < cheapestPrice) {
+
+            cheapestPrice = totalPrice;
+            indexOfCheapestOption = k;
         }
 
 
     }
-
-    console.log("FINAL ARRAY: ")
-    console.log(possibleOptions)
+    console.log("Cheapest Price Found: " + cheapestPrice);
+    console.log("Cheapest Price Found At Index: " + indexOfCheapestOption);
+    console.log("Options at the Cheapest Price: ");
+    console.log(possibleOptions[indexOfCheapestOption]);
 
     console.log('--------------------------------------------');
 
