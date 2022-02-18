@@ -3,5 +3,6 @@ export default interface MarketObject {
     quantity: number,
     hq: boolean,
     retainerCity: number,
-    total: number
+    total: number,
+    index: number
 }

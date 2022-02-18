@@ -33,6 +33,7 @@ function MaterialRow(props: { material: MaterialRowProps }) {
     const [pricesList, setPricesList] = useState<Array<MarketObject>>([]);
     const [marketDataLoaded, setMarketDataLoaded] = useState<boolean>(false);
     const [lastUpdateTime, setLastUpdateTime] = useState<number>(0);
+    const [purchaseIndexes, setPurchaseIndexes] = useState<Array<number>>([]);
 
     // Context
     const { server } = useContext(ServerContext);
@@ -117,7 +118,7 @@ function MaterialRow(props: { material: MaterialRowProps }) {
                     <h3 className="material-name">{props.material.name}</h3>
                 </span>
                 <div className="material-calculations">
-                    {marketDataLoaded === true ? <MaterialCalculations data={{ highQualityChecked, pricesList, quantityRequired }} />
+                    {marketDataLoaded === true ? <MaterialCalculations data={{ highQualityChecked, pricesList, quantityRequired, setPurchaseIndexes }} />
                         : <div className="loading-spinner"></div>}
                     <span className="arrow">
                         <img className="arrow-svg" src={arrowDown} alt="expand down arrow" onClick={() => setShowPrices(!showPrices)} />

@@ -3,15 +3,22 @@ import getRetainerCityIcon from '../../getRetainerCityIcon';
 import highQuality from '../../../../assets/ui-icons/hq.png';
 import calculateCheapestOption from './calculateCheapestOption';
 import MarketObject from '../../../../interfaces/market-object';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface MaterialCalculationsProps {
     highQualityChecked: boolean,
     pricesList: Array<MarketObject>,
-    quantityRequired: number
+    quantityRequired: number,
+    setPurchaseIndexes: React.Dispatch<React.SetStateAction<Array<number>>>
 
 }
 function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
+
+    const [HQ, setHQ] = useState<boolean>(false);
+    const [city, setCity] = useState<number>();
+    const [avgPricePer, setAvgPricePer] = useState<number>();
+    const [quantity, setQuantity] = useState<number>();
+    const [total, setTotal] = useState<number>();
 
     useEffect(() => {
 
@@ -35,7 +42,7 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
             </span>
 
             <span className="price-per">
-                <h4 className="calculation-title">Price Per</h4>
+                <h4 className="calculation-title">Avg Price Per</h4>
                 <span className="calculation-value">
                     <h4>0</h4>
                 </span>
