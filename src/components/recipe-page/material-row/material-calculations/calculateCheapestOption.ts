@@ -70,8 +70,11 @@ export default function calculateCheapestOption(hqRequired: boolean, listOfItems
     // Flatten the chosen array in order to return just an array of objects.
     const cheapestOptions = possibleOptions.flat();
 
+
     return cheapestOptions;
 
+
+    console.log('--------------------------------------------');
 
 
 

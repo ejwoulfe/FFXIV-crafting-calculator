@@ -14,8 +14,8 @@ interface MaterialCalculationsProps {
 }
 function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
 
-    const [HQ, setHQ] = useState<boolean>(false);
-    const [city, setCity] = useState<number>();
+    const [highQuality, setHighQuality] = useState<string>();
+    const [city, setCity] = useState<Array<number>>([]);
     const [avgPricePer, setAvgPricePer] = useState<number>();
     const [quantity, setQuantity] = useState<number>();
     const [totalPrice, setTotalPrice] = useState<number>();
@@ -30,11 +30,31 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
     useEffect(() => {
         if (cheapestOptionsArray.length > 0) {
             let total = 0;
+            let quantity = 0;
+            let cities = [];
+            let amountOfHighQualities = 0;
+
             for (let i = 0; i < cheapestOptionsArray.length; i++) {
                 total += cheapestOptionsArray[i].total;
+                quantity += cheapestOptionsArray[i].quantity;
+                cities.push(cheapestOptionsArray[i].retainerCity);
+                if (cheapestOptionsArray[i].hq === true) {
+                    amountOfHighQualities += 1;
+                }
+
 
             }
             setTotalPrice(total);
+            setAvgPricePer(total / cheapestOptionsArray.length);
+            setQuantity(quantity);
+            setCity(cities)
+            if (amountOfHighQualities === 0) {
+                setHighQuality("No")
+            } else if (amountOfHighQualities !== cheapestOptionsArray.length) {
+                setHighQuality("Mix")
+            } else if (amountOfHighQualities === cheapestOptionsArray.length) {
+                setHighQuality("Yes")
+            }
         }
     }, [cheapestOptionsArray])
 
