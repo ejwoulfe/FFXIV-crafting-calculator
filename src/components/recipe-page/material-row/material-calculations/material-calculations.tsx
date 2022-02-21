@@ -18,13 +18,27 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
     const [city, setCity] = useState<number>();
     const [avgPricePer, setAvgPricePer] = useState<number>();
     const [quantity, setQuantity] = useState<number>();
-    const [total, setTotal] = useState<number>();
+    const [totalPrice, setTotalPrice] = useState<number>();
+    const [cheapestOptionsArray, setCheapestOptionsArray] = useState<Array<MarketObject>>([]);
 
     useEffect(() => {
 
-        calculateCheapestOption(props.data.highQualityChecked, props.data.pricesList, props.data.quantityRequired);
+        setCheapestOptionsArray(calculateCheapestOption(props.data.highQualityChecked, props.data.pricesList, props.data.quantityRequired));
 
-    }, [props.data.highQualityChecked, props.data.pricesList, props.data.quantityRequired])
+    }, [props.data.highQualityChecked, props.data.pricesList, props.data.quantityRequired]);
+
+    useEffect(() => {
+        if (cheapestOptionsArray.length > 0) {
+            let total = 0;
+            for (let i = 0; i < cheapestOptionsArray.length; i++) {
+                total += cheapestOptionsArray[i].total;
+
+            }
+            setTotalPrice(total);
+        }
+    }, [cheapestOptionsArray])
+
+
 
     return (
         <>

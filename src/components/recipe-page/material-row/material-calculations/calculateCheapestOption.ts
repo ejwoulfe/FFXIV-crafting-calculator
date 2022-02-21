@@ -44,42 +44,34 @@ export default function calculateCheapestOption(hqRequired: boolean, listOfItems
 
     // After gathering all the possible purchasing options we need to find the cheapest one.
     let cheapestPrice = null;
-    let indexofCheapestOption = -1;
-    let indexesOfCheapestOption = [];
-    let final: Array<number> = [];
 
     for (let k = 0; k < possibleOptions.length; k++) {
-
         let totalPrice = 0;
-        indexesOfCheapestOption = [];
+
         // Loop through all of the items the user will need to purchase and add up to total by multilpy the price per unit and the quantity of all the items.
         for (let j = 0; j < possibleOptions[k].length; j++) {
-
             totalPrice += possibleOptions[k][j].total;
-            indexesOfCheapestOption.push(possibleOptions[k][j].index);
 
         }
 
+        // Whenever we find a new cheapest price, we splice the array from the 0 index up to the index where we found the new price.
         if (cheapestPrice === null || totalPrice < cheapestPrice) {
             cheapestPrice = totalPrice;
-            indexofCheapestOption = k;
-            final = [...indexesOfCheapestOption]
-
-
+            possibleOptions.splice(0, k);
         }
 
 
     }
 
-    console.log("Cheapest Price Found: " + cheapestPrice);
-    console.log("Cheapest Option from all Possible Options: ")
-    console.log(possibleOptions[indexofCheapestOption]);
+    // Once we have gone through all the possible options, we will have trimmed the array so that the cheapest option will be at the 0 index.
+    // So set the array to a length of 1 to trim all other possible options and we will be left with our cheapest and final option.
+    possibleOptions.length = 1;
 
-    console.log("indexes: ")
-    console.log(final)
+    // Flatten the chosen array in order to return just an array of objects.
+    const cheapestOptions = possibleOptions.flat();
 
+    return cheapestOptions;
 
-    console.log('--------------------------------------------');
 
 
 
