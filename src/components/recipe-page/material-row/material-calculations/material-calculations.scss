@@ -1,0 +1,38 @@
+.material-calculations {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+    flex: 1 1 65%;
+
+    .calculation-title {
+        text-decoration: underline;
+    }
+
+    span {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        min-height: 50px;
+        justify-content: space-evenly;
+
+        h4 {
+            margin: 0rem;
+        }
+    }
+    .arrow-svg {
+        width: 3rem;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+#city-icons {
+    display: flex;
+    flex-direction: row;
+}
+.hq-img {
+    height: 30px;
+    width: 18px;
+}

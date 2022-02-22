@@ -88,7 +88,7 @@
     flex-flow: row nowrap;
     justify-content: flex-start;
     align-items: center;
-    flex: 1 1 50%;
+    flex: 1 1 35%;
     .x-marker {
         font-size: 0.5em;
     }
@@ -108,39 +108,4 @@
 }
 .hq-checkbox {
     margin: 0;
-}
-
-.material-calculations {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-evenly;
-    align-items: center;
-    flex: 1 1 50%;
-
-    .calculation-title {
-        text-decoration: underline;
-    }
-
-    span {
-        display: flex;
-        flex-flow: column nowrap;
-        align-items: center;
-        min-height: 50px;
-        justify-content: space-evenly;
-
-        h4 {
-            margin: 0rem;
-        }
-    }
-    .arrow-svg {
-        width: 3rem;
-
-        &:hover {
-            cursor: pointer;
-        }
-    }
-}
-.hq-img {
-    height: 30px;
-    width: 18px;
 }

@@ -1,9 +1,9 @@
 
 import getRetainerCityIcon from '../../getRetainerCityIcon';
-import highQuality from '../../../../assets/ui-icons/hq.png';
 import calculateCheapestOption from './calculateCheapestOption';
 import MarketObject from '../../../../interfaces/market-object';
 import { useEffect, useState } from 'react';
+import './material-calculations.scss';
 
 interface MaterialCalculationsProps {
     highQualityChecked: boolean,
@@ -15,7 +15,7 @@ interface MaterialCalculationsProps {
 function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
 
     const [highQuality, setHighQuality] = useState<string>();
-    const [city, setCity] = useState<Array<number>>([]);
+    const [cities, setCities] = useState<Array<number>>([]);
     const [avgPricePer, setAvgPricePer] = useState<number>();
     const [quantity, setQuantity] = useState<number>();
     const [totalPrice, setTotalPrice] = useState<number>();
@@ -31,13 +31,13 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
         if (cheapestOptionsArray.length > 0) {
             let total = 0;
             let quantity = 0;
-            let cities = [];
+            let retainerCities = [];
             let amountOfHighQualities = 0;
 
             for (let i = 0; i < cheapestOptionsArray.length; i++) {
                 total += cheapestOptionsArray[i].total;
                 quantity += cheapestOptionsArray[i].quantity;
-                cities.push(cheapestOptionsArray[i].retainerCity);
+                retainerCities.push(cheapestOptionsArray[i].retainerCity);
                 if (cheapestOptionsArray[i].hq === true) {
                     amountOfHighQualities += 1;
                 }
@@ -47,7 +47,7 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
             setTotalPrice(total);
             setAvgPricePer(total / cheapestOptionsArray.length);
             setQuantity(quantity);
-            setCity(cities)
+            setCities(retainerCities)
             if (amountOfHighQualities === 0) {
                 setHighQuality("No")
             } else if (amountOfHighQualities !== cheapestOptionsArray.length) {
@@ -65,32 +65,36 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
             <span className="hq">
                 <h4 className="calculation-title">HQ</h4>
                 <span className="calculation-value">
-                    <img className="hq-img" src={highQuality} alt="high quality item" />
+                    {highQuality}
                 </span>
             </span>
             <span className="city">
                 <h4 className="calculation-title">City</h4>
                 <span className="calculation-value">
-                    {getRetainerCityIcon(1)}
+                    <div id="city-icons">
+                        {cities.map((cityNumber) => {
+                            return getRetainerCityIcon(cityNumber)
+                        })}
+                    </div>
                 </span>
             </span>
 
             <span className="price-per">
                 <h4 className="calculation-title">Avg Price Per</h4>
                 <span className="calculation-value">
-                    <h4>0</h4>
+                    <h4>{avgPricePer}</h4>
                 </span>
             </span>
             <span className="quantity">
                 <h4 className="calculation-title">QTY</h4>
                 <span className="calculation-value">
-                    <h4>0</h4>
+                    <h4>{quantity}</h4>
                 </span>
             </span>
             <span className="total">
                 <h4 className="calculation-title">TOTAL</h4>
                 <span className="calculation-value">
-                    <h4>0</h4>
+                    <h4>{totalPrice}</h4>
                 </span>
             </span>
 
