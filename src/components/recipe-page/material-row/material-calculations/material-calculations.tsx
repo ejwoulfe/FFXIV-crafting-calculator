@@ -7,7 +7,7 @@ import './material-calculations.scss';
 
 interface MaterialCalculationsProps {
     highQualityChecked: boolean,
-    pricesList: Array<MarketObject>,
+    filteredList: Array<MarketObject>,
     quantityRequired: number,
     setPurchaseIndexes: React.Dispatch<React.SetStateAction<Array<number>>>
 
@@ -23,9 +23,9 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
 
     useEffect(() => {
 
-        setCheapestOptionsArray(calculateCheapestOption(props.data.highQualityChecked, props.data.pricesList, props.data.quantityRequired));
+        setCheapestOptionsArray(calculateCheapestOption(props.data.highQualityChecked, props.data.filteredList, props.data.quantityRequired));
 
-    }, [props.data.highQualityChecked, props.data.pricesList, props.data.quantityRequired]);
+    }, [props.data.highQualityChecked, props.data.filteredList, props.data.quantityRequired]);
 
     useEffect(() => {
         if (cheapestOptionsArray.length > 0) {
@@ -33,11 +33,13 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
             let quantity = 0;
             let retainerCities = [];
             let amountOfHighQualities = 0;
+            let indexes = [];
 
             for (let i = 0; i < cheapestOptionsArray.length; i++) {
                 total += cheapestOptionsArray[i].total;
                 quantity += cheapestOptionsArray[i].quantity;
                 retainerCities.push(cheapestOptionsArray[i].retainerCity);
+                indexes.push(cheapestOptionsArray[i].index);
                 if (cheapestOptionsArray[i].hq === true) {
                     amountOfHighQualities += 1;
                 }
@@ -45,9 +47,10 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
 
             }
             setTotalPrice(total);
-            setAvgPricePer(total / cheapestOptionsArray.length);
+            setAvgPricePer(total / quantity);
             setQuantity(quantity);
             setCities(retainerCities)
+            props.data.setPurchaseIndexes(indexes)
             if (amountOfHighQualities === 0) {
                 setHighQuality("No")
             } else if (amountOfHighQualities !== cheapestOptionsArray.length) {

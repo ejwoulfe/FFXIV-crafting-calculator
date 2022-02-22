@@ -31,6 +31,7 @@ function MaterialRow(props: { material: MaterialRowProps }) {
     const [highQualityChecked, setHighQualityChecked] = useState<boolean>(false);
     const [abortController, setAbortController] = useState<AbortController>(new AbortController());
     const [pricesList, setPricesList] = useState<Array<MarketObject>>([]);
+    const [filteredList, setFilteredList] = useState<Array<MarketObject>>([]);
     const [marketDataLoaded, setMarketDataLoaded] = useState<boolean>(false);
     const [lastUpdateTime, setLastUpdateTime] = useState<number>(0);
     const [purchaseIndexes, setPurchaseIndexes] = useState<Array<number>>([]);
@@ -44,6 +45,7 @@ function MaterialRow(props: { material: MaterialRowProps }) {
     const materialImagesPath = require.context('../../../assets/material-icons/', true);
     const materialName = props.material.name;
     const quantityRequired = props.material.quantity;
+
 
 
 
@@ -85,7 +87,15 @@ function MaterialRow(props: { material: MaterialRowProps }) {
             abortController.abort();
 
         }
-    }, [materialName, abortController, server])
+    }, [materialName, abortController, server]);
+
+    useEffect(() => {
+        if (highQualityChecked === true) {
+            setFilteredList(pricesList.filter((marketItem: MarketObject) => marketItem.hq === true));
+        } else {
+            setFilteredList(pricesList)
+        }
+    }, [highQualityChecked, pricesList]);
 
 
     function getMaterialID(fetchObject: FetchObject) {
@@ -118,7 +128,7 @@ function MaterialRow(props: { material: MaterialRowProps }) {
                     <h3 className="material-name">{props.material.name}</h3>
                 </span>
                 <div className="material-calculations">
-                    {marketDataLoaded === true ? <MaterialCalculations data={{ highQualityChecked, pricesList, quantityRequired, setPurchaseIndexes }} />
+                    {marketDataLoaded === true ? <MaterialCalculations data={{ highQualityChecked, filteredList, quantityRequired, setPurchaseIndexes }} />
                         : <div className="loading-spinner"></div>}
                     <span className="arrow">
                         <img className="arrow-svg" src={arrowDown} alt="expand down arrow" onClick={() => setShowPrices(!showPrices)} />
@@ -126,7 +136,7 @@ function MaterialRow(props: { material: MaterialRowProps }) {
                 </div>
 
             </div>
-            {marketDataLoaded === true && showPrices === true ? <MarketBoardPricesList data={{ pricesList, lastUpdateTime, highQualityChecked }} /> : null}
+            {marketDataLoaded === true && showPrices === true ? <MarketBoardPricesList data={{ filteredList, lastUpdateTime, highQualityChecked, purchaseIndexes }} /> : null}
         </>)
 }
 

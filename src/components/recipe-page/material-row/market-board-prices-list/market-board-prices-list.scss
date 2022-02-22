@@ -46,14 +46,16 @@
 }
 
 .table-data-row,
-.table-head-row {
+.table-head-row,
+.table-data-row-chosen {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     text-align: center;
     width: 100%;
 }
-.table-data-row {
+.table-data-row,
+.table-data-row-chosen {
     background-color: $dark-blue;
     min-height: 50px;
     max-height: 50px;
@@ -70,6 +72,10 @@
         width: 100%;
         border-left: 1px solid $sky-blue;
     }
+}
+
+.table-data-row-chosen {
+    background-color: $faded-brown;
 }
 
 .spinning-loader {
