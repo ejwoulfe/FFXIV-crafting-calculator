@@ -1,7 +1,8 @@
+@import "../../../../util/variables";
+
 .material-calculations {
     display: flex;
     flex-flow: row nowrap;
-    justify-content: space-evenly;
     align-items: center;
     flex: 1 1 65%;
 
@@ -15,8 +16,13 @@
         align-items: center;
         min-height: 50px;
         justify-content: space-evenly;
+        flex: 1;
 
-        h4 {
+        .calculation-title {
+            margin: 0rem;
+        }
+        .calculation-value h4 {
+            color: $gold;
             margin: 0rem;
         }
     }
