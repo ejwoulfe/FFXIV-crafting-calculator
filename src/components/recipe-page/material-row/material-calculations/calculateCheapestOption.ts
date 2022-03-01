@@ -14,68 +14,54 @@ export default function calculateCheapestOption(hqRequired: boolean, listOfItems
     //             trimmedList.push(listOfItems[i]);
     //         }
     //     }
+
+    //     console.log(trimmedList);
     //     for (let k = 0; k < trimmedList.length; k++) {
+    //         console.log("-------------------");
+    //         console.log("Position k: " + k);
+    //         console.log("-------------------");
+
     //         let currentQuantity = trimmedList[k].quantity;
     //         let currentCombinations = [trimmedList[k]];
     //         for (let z = k + 1; z <= trimmedList.length - 1; z++) {
+    //             console.log("Position z: " + z);
+
     //             currentQuantity += trimmedList[z].quantity;
+    //             console.log("The Current Quantity is: ");
+    //             console.log(currentQuantity);
     //             if (currentQuantity >= targetQuantity) {
-    //                 possibleCombinations.push(currentCombinations);
-    //             } else {
     //                 currentCombinations.push(trimmedList[z]);
+    //                 console.log("Current Combinations after push: ");
+    //                 console.log(JSON.parse(JSON.stringify(currentCombinations)));
+    //                 possibleCombinations.push([...currentCombinations]);
+    //                 console.log("Pushed");
+    //                 console.log("Possible Combinations after push: ");
+    //                 console.log(JSON.parse(JSON.stringify(possibleCombinations)));
+    //                 currentCombinations.pop();
+    //                 console.log("Current Combinations after pop: ");
+    //                 console.log(JSON.parse(JSON.stringify(currentCombinations)));
+    //                 currentQuantity -= trimmedList[z].quantity;
+    //             } else if (z < trimmedList.length - 1) {
+    //                 currentCombinations.push(trimmedList[z]);
+    //             }
+    //             if (z === trimmedList.length - 1 && currentCombinations.length > 1) {
+    //                 let num = currentCombinations.length - 1;
+    //                 console.log("end current combinations: ");
+    //                 console.log(JSON.parse(JSON.stringify(currentCombinations)));
+    //                 console.log("length of current combinations");
+    //                 console.log(currentCombinations.length);
+    //                 z = currentCombinations[num].index;
+    //                 currentCombinations.pop();
+    //                 currentQuantity = currentCombinations.reduce((prev, current) => {
+    //                     return prev + current.quantity;
+    //                 }, 0)
+
+    //                 //z =(currentCombinations[num].index);
+    //                 // z = currentCombinations[num].index;
     //             }
     //         }
     //     }
-    //     console.log(possibleCombinations);
     //     return 0;
     // }
-
-    // let item1 = {
-    //     pricePerUnit: 8,
-    //     quantity: 1,
-    //     total: 8
-    // };
-    // let item2 = {
-    //     pricePerUnit: 10,
-    //     quantity: 15,
-    //     total: 150
-    // };
-    // let item3 = {
-    //     pricePerUnit: 11,
-    //     quantity: 1,
-    //     total: 11
-    // };
-    // let item4 = {
-    //     pricePerUnit: 14,
-    //     quantity: 1,
-    //     total: 14
-    // };
-    // let item5 = {
-    //     pricePerUnit: 15,
-    //     quantity: 3,
-    //     total: 45
-    // };
-    // let item6 = {
-    //     pricePerUnit: 16,
-    //     quantity: 2,
-    //     total: 32
-    // };
-    // let item7 = {
-    //     pricePerUnit: 17,
-    //     quantity: 1,
-    //     total: 17
-    // };
-    // let item8 = {
-    //     pricePerUnit: 20,
-    //     quantity: 1,
-    //     total: 20
-    // };
-
-    // const items = [item1, item2, item3, item4, item5, item6, item7, item8];
-
-    // calculateCheapestCombination(items, 3);
-
-
-
 
 }
