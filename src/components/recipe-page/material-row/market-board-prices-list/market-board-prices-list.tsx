@@ -22,7 +22,7 @@ function MarketBoardPricesList(props: { data: MarketBoardPricesListProps }) {
     }
 
 
-    function createMarketBoardListings(list: Array<MarketObject>, hqRequired: boolean) {
+    function createMarketBoardListings(list: Array<MarketObject>) {
 
 
         return (
@@ -105,7 +105,7 @@ function MarketBoardPricesList(props: { data: MarketBoardPricesListProps }) {
             <div className="last-updated-container">
                 {props.data.lastUpdateTime !== undefined ? convertTimeToLocal(props.data.lastUpdateTime) : null}
             </div>
-            {createMarketBoardListings(props.data.filteredList, props.data.highQualityChecked)}
+            {props.data.filteredList.length > 0 ? createMarketBoardListings(props.data.filteredList) : <h1 className="no-listings">No High Quality Listings Found</h1>}
 
         </div>
     );

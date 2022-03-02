@@ -89,17 +89,17 @@ function RecipeRow(props: { data: RowProps }) {
 
 
     return (
-        <Link to={`recipe/${props.data.recipe.recipe_id}`}
-            className="recipe-row"
-            state={{
-                recipe: props.data.recipe,
-                recipeImage: recipeImage,
-                materials: materialsArr,
-                crystals: crystalsArr
-            }}>
-            <div className="recipe-details">
-                {materialsLoaded === true && crystalsLoaded === true ?
-                    <>
+        <>
+            {materialsLoaded === true && crystalsLoaded === true ?
+                <Link to={`recipe/${props.data.recipe.recipe_id}`}
+                    className="recipe-row"
+                    state={{
+                        recipe: props.data.recipe,
+                        recipeImage: recipeImage,
+                        materials: materialsArr,
+                        crystals: crystalsArr
+                    }}>
+                    <div className="recipe-details">
                         <h2>{props.data.recipe.name}</h2>
                         <span className="img-and-details">
                             <span className="img-container">
@@ -115,26 +115,26 @@ function RecipeRow(props: { data: RowProps }) {
                                     : null}
                             </span>
                         </span>
-                    </>
-                    : <div className="loading-spinner"></div>}
-
-            </div>
-            <div className="recipe-materials">
-
-                {materialsLoaded === true && materialsArr !== null
-                    ? createItemsList(materialsArr, "material")
-                    : <div className="loading-container">
-                        <div className="loading-spinner"></div>
-                    </div>}
-            </div>
-            <div className="recipe-crystals">
-                {crystalsLoaded === true && crystalsArr !== null
-                    ? createItemsList(crystalsArr, "crystal")
-                    : <div className="loading-container">
-                        <div className="loading-spinner"></div></div>}
-            </div>
-        </Link>
+                    </div>
+                    <div className="recipe-materials">
+                        {materialsLoaded === true && materialsArr !== null
+                            ? createItemsList(materialsArr, "material")
+                            : <div className="loading-container">
+                                <div className="loading-spinner"></div>
+                            </div>}
+                    </div>
+                    <div className="recipe-crystals">
+                        {crystalsLoaded === true && crystalsArr !== null
+                            ? createItemsList(crystalsArr, "crystal")
+                            : <div className="loading-container">
+                                <div className="loading-spinner"></div></div>}
+                    </div>
+                </Link>
+                : <div className="row-loading-container">
+                    <div className="row-loading-spinner"></div> <h4>Retrieving Item Data</h4></div>}
+        </>
     );
 }
+
 
 export default RecipeRow;

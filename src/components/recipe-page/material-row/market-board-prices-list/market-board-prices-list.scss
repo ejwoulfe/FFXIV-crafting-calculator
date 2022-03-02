@@ -78,6 +78,9 @@
     background-color: $faded-brown;
     color: $gold;
 }
+.no-listings {
+    font-weight: 100;
+}
 
 .spinning-loader {
     @include loader;

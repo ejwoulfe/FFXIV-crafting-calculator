@@ -107,6 +107,31 @@
     width: 60px;
     height: 60px;
 }
+.row-loading-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0px 20px 0px;
+    padding: 20px 0 20px 0px;
+    background-color: $faded-brown;
+    &:nth-child(even) {
+        background-color: $dark-gray;
+    }
+    h4 {
+        color: $sky-blue;
+    }
+}
+.row-loading-spinner {
+    @include loader;
+    border: 8px solid $gold;
+    border-top: 8px solid $sky-blue;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+}
 
 @media (max-width: 1000px) {
     .recipe-details,
