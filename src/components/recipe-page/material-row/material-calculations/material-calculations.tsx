@@ -23,7 +23,8 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
 
     useEffect(() => {
 
-        setCheapestOptionsArray(calculateCheapestOption(props.data.highQualityChecked, props.data.filteredList, props.data.quantityRequired));
+        setCheapestOptionsArray(calculateCheapestOption(props.data.filteredList, props.data.quantityRequired));
+
 
     }, [props.data.highQualityChecked, props.data.filteredList, props.data.quantityRequired]);
 
@@ -47,7 +48,7 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
 
             }
             setTotalPrice(total);
-            setAvgPricePer(total / quantity);
+            setAvgPricePer(Math.round(total / quantity));
             setQuantity(quantity);
             setCities(retainerCities)
             props.data.setPurchaseIndexes(indexes)
