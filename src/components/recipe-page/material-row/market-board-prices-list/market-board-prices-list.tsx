@@ -45,7 +45,7 @@ function MarketBoardPricesList(props: { data: MarketBoardPricesListProps }) {
                                 </td>
                                 <td className="data-city">
                                     <span className="table-border">
-                                        {getRetainerCityIcon(marketItem.retainerCity)}
+                                        {getRetainerCityIcon(marketItem.retainerCity, index)}
                                     </span>
                                 </td>
                                 <td className="data-price">
@@ -71,7 +71,7 @@ function MarketBoardPricesList(props: { data: MarketBoardPricesListProps }) {
                                 </td>
                                 <td className="data-city">
                                     <span className="table-border">
-                                        {getRetainerCityIcon(marketItem.retainerCity)}
+                                        {getRetainerCityIcon(marketItem.retainerCity, index)}
                                     </span>
                                 </td>
                                 <td className="data-price">

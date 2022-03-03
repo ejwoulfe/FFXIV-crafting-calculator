@@ -67,9 +67,7 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
     return (
         <>
             <span className="hq">
-
                 <h4 className="calculation-title">HQ</h4>
-
                 <span className="calculation-value">
                     <h4>{highQuality}</h4>
                 </span>
@@ -78,13 +76,12 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
                 <h4 className="calculation-title">City</h4>
                 <span className="calculation-value">
                     <div id="city-icons">
-                        {cities.map((cityNumber) => {
-                            return getRetainerCityIcon(cityNumber)
+                        {cities.map((cityNumber, index) => {
+                            return getRetainerCityIcon(cityNumber, index)
                         })}
                     </div>
                 </span>
             </span>
-
             <span className="price-per">
                 <h4 className="calculation-title">Avg Price Per</h4>
                 <span className="calculation-value">

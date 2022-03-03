@@ -39,6 +39,8 @@
 #city-icons {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 .hq-img {
     height: 30px;
