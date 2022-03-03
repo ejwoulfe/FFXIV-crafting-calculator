@@ -3,8 +3,11 @@ export default function calculateCheapestOption(listOfItems: Array<MarketObject>
 
     const possibleCombinations: Array<Array<MarketObject>> = [];
     const trimmedList = [];
+    // Go through the market listings and find the ones that have a quantity equal to or larger than the target quantity.
+    // This is to reduce the number of total combinations the algorithm will gather in the next section and reduce unnecessary iterations.
     for (let i = 0; i < listOfItems.length; i++) {
         let currentQuantity = listOfItems[i].quantity;
+        // Adding an index property to all the objects to help detect where they are on the list in order to highlight them on the UI later.
         listOfItems[i].index = i;
         if (currentQuantity >= targetQuantity) {
             possibleCombinations.push([listOfItems[i]]);
@@ -12,47 +15,35 @@ export default function calculateCheapestOption(listOfItems: Array<MarketObject>
             trimmedList.push(listOfItems[i]);
         }
     }
+
     for (let k = 0; k < trimmedList.length; k++) {
-        // console.log("-------------------");
-        // console.log("Position k: " + k);
-        // console.log("-------------------");
 
         let currentQuantity = trimmedList[k].quantity;
         let currentCombinations = [trimmedList[k]];
         for (let z = k + 1; z <= trimmedList.length - 1; z++) {
-            // console.log("Position z: " + z);
+
 
             currentQuantity += trimmedList[z].quantity;
-            // console.log("The Current Quantity is: ");
-            // console.log(currentQuantity);
+
             if (currentQuantity >= targetQuantity) {
+
                 currentCombinations.push(trimmedList[z]);
-                // console.log("Current Combinations after push: ");
-                // console.log(JSON.parse(JSON.stringify(currentCombinations)));
                 possibleCombinations.push([...currentCombinations]);
-                // console.log("Pushed");
-                // console.log("Possible Combinations after push: ");
-                // console.log(JSON.parse(JSON.stringify(possibleCombinations)));
                 currentCombinations.pop();
-                // console.log("Current Combinations after pop: ");
-                //console.log(JSON.parse(JSON.stringify(currentCombinations)));
                 currentQuantity -= trimmedList[z].quantity;
+
             } else if (z < trimmedList.length - 1) {
+
                 currentCombinations.push(trimmedList[z]);
             }
             if (z === trimmedList.length - 1 && currentCombinations.length > 1) {
+
                 let num = currentCombinations.length - 1;
-                // console.log("end current combinations: ");
-                // console.log(JSON.parse(JSON.stringify(currentCombinations)));
-                // console.log("length of current combinations");
-                // console.log(currentCombinations.length);
                 z = currentCombinations[num].index;
                 currentCombinations.pop();
                 currentQuantity = currentCombinations.reduce((prev, current) => {
                     return prev + current.quantity;
                 }, 0)
-
-
             }
         }
     }
@@ -61,7 +52,7 @@ export default function calculateCheapestOption(listOfItems: Array<MarketObject>
 
 }
 
-
+// Helper function that will go through all of the possible combinations found and find the cheapest one.
 function getCheapestOption(listOfCombinations: Array<Array<MarketObject>>) {
     let cheapestOption: Array<MarketObject> = [];
     let cheapestPrice = null;

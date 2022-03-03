@@ -9,6 +9,7 @@
     background-color: $dark-gray;
     border-top: 2px solid $dark-blue;
     align-items: center;
+    border-bottom: 2px solid $gold;
 }
 .last-updated {
     @include title-style;
@@ -84,4 +85,10 @@
 
 .spinning-loader {
     @include loader;
+}
+
+@media (max-width: 675px) {
+    .listing-table {
+        width: 100%;
+    }
 }

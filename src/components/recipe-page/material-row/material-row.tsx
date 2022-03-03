@@ -4,6 +4,7 @@ import MarketObject from '../../../interfaces/market-object';
 import { ServerContext } from "../../../context/ServerContext";
 import arrowDown from '../../../assets/ui-icons/arrow-down.svg';
 import MaterialCalculations from './material-calculations/material-calculations';
+import './material-row.scss';
 
 interface MaterialRowProps {
     name: string,
@@ -128,11 +129,15 @@ function MaterialRow(props: { material: MaterialRowProps }) {
                     <h3 className="material-name">{props.material.name}</h3>
                 </span>
                 <div className="material-calculations">
-                    {marketDataLoaded === true ? <MaterialCalculations data={{ highQualityChecked, filteredList, quantityRequired, setPurchaseIndexes }} />
+                    {marketDataLoaded === true ?
+                        <>
+                            <MaterialCalculations data={{ highQualityChecked, filteredList, quantityRequired, setPurchaseIndexes }} />
+                            <span className="arrow">
+                                <img className="arrow-svg" src={arrowDown} alt="expand down arrow" onClick={() => setShowPrices(!showPrices)} />
+                            </span>
+                        </>
                         : <div className="loading-spinner"></div>}
-                    <span className="arrow">
-                        <img className="arrow-svg" src={arrowDown} alt="expand down arrow" onClick={() => setShowPrices(!showPrices)} />
-                    </span>
+
                 </div>
 
             </div>

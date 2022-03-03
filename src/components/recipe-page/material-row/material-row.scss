@@ -1,0 +1,96 @@
+@import "../../../util/variables";
+@import "../../../util/mixins";
+
+#materials-container {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    width: 65%;
+    margin: auto;
+    padding-bottom: 4%;
+}
+
+#materials-title {
+    @include title-style;
+}
+.material-row {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color: $dark-gray;
+    margin: 1rem 0rem 0rem 0rem;
+    height: 150px;
+
+    h3,
+    h4 {
+        font-weight: 100;
+    }
+}
+
+.material-details,
+.material-calculations {
+    padding: 1.5rem 1rem 1.5rem 1rem;
+}
+
+.material-details {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 1 1 35%;
+    .x-marker {
+        font-size: 0.5em;
+    }
+
+    & > * {
+        padding-right: 1rem;
+    }
+}
+.hq-checkbox-container {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding-left: 1rem;
+    input[type="checkbox"]:checked {
+        color: hotpink;
+    }
+}
+.hq-checkbox {
+    margin: 0;
+}
+
+@media (max-width: 1375px) {
+    .material-details,
+    .material-calculations {
+        padding: 0.75rem 0.25rem 0.75rem 0.25rem;
+    }
+}
+
+@media (max-width: 1000px) {
+    #materials-container {
+        width: 85%;
+    }
+    .material-row {
+        flex-direction: column;
+        height: auto;
+    }
+    .material-details {
+        width: 100%;
+        justify-content: center;
+        border-bottom: solid 2px $sky-blue;
+        padding: 0.75rem 0rem 0.75rem 0rem;
+    }
+    .material-calculations {
+        width: 100%;
+        justify-content: center;
+        padding: 0.75rem 0rem 0.75rem 0rem;
+    }
+}
+
+@media (max-width: 675px) {
+    #materials-container {
+        width: 100%;
+    }
+}

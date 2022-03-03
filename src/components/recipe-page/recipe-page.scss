@@ -15,16 +15,16 @@
 #recipe-craft-info {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: flex-end;
-    width: 35%;
+    width: 85%;
     margin: auto;
     margin-bottom: 2rem;
 
     #recipe-img,
     #recipe-details,
     #recipe-link {
-        margin: 0.5rem 0rem 0.5rem 0rem;
+        margin: 0.5rem 0.5rem 0.5rem 0.5rem;
     }
 
     #recipe-img {
@@ -51,62 +51,8 @@
         }
     }
 }
-
-#materials-container {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    width: 65%;
-    margin: auto;
-    padding-bottom: 4%;
-}
-
-#materials-title {
-    @include title-style;
-}
-.material-row {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    background-color: $dark-gray;
-    margin: 1rem 0rem 0rem 0rem;
-
-    h3,
-    h4 {
-        font-weight: 100;
-    }
-}
-
-.material-details,
-.material-calculations {
-    padding: 1.5rem 1rem 1.5rem 1rem;
-}
-
-.material-details {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-start;
-    align-items: center;
-    flex: 1 1 35%;
-    .x-marker {
-        font-size: 0.5em;
-    }
-
-    & > * {
-        padding-right: 1rem;
-    }
-}
-.hq-checkbox-container {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    padding-left: 1rem;
-    input[type="checkbox"]:checked {
-        color: hotpink;
-    }
-}
-.hq-checkbox {
-    margin: 0;
-}
+// @media (max-width: 800px) {
+//     #recipe-craft-info {
+//         width: 100%;
+//     }
+// }

@@ -67,7 +67,9 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
     return (
         <>
             <span className="hq">
+
                 <h4 className="calculation-title">HQ</h4>
+
                 <span className="calculation-value">
                     <h4>{highQuality}</h4>
                 </span>
