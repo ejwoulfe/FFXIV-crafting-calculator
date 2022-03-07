@@ -27,7 +27,7 @@ function RecipePage(props: { data: RecipePageProps }) {
 
         return materials.map((material, index) => {
 
-            return <MaterialRow material={material} key={"material-row-" + index} />
+            return <MaterialRow data={{ material, index }} key={"material-row-" + index} />
 
         })
     }

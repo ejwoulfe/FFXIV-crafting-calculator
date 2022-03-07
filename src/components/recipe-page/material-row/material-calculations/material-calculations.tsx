@@ -11,7 +11,9 @@ interface MaterialCalculationsProps {
     highQualityChecked: boolean,
     filteredList: Array<MarketObject>,
     quantityRequired: number,
-    setPurchaseIndexes: React.Dispatch<React.SetStateAction<Array<number>>>
+    setPurchaseIndexes: React.Dispatch<React.SetStateAction<Array<number>>>,
+    setTotalCost: React.Dispatch<React.SetStateAction<Array<number>>>,
+    index: number
 }
 
 function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
@@ -25,17 +27,19 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
     const [quantity, setQuantity] = useState<number>();
     const [cheapestOptionsArray, setCheapestOptionsArray] = useState<Array<MarketObject>>([]);
     const [total, setTotal] = useState(0);
+    const { setPurchaseIndexes, setTotalCost, highQualityChecked, filteredList, quantityRequired, index } = props.data;
 
     useEffect(() => {
 
-        setCheapestOptionsArray(calculateCheapestOption(props.data.filteredList, props.data.quantityRequired));
+        setCheapestOptionsArray(calculateCheapestOption(filteredList, quantityRequired));
 
 
-    }, [props.data.highQualityChecked, props.data.filteredList, props.data.quantityRequired]);
+    }, [highQualityChecked, filteredList, quantityRequired]);
+
+
 
     useEffect(() => {
         if (cheapestOptionsArray.length > 0) {
-
             let total = 0;
             let quantity = 0;
             let retainerCities = [];
@@ -56,7 +60,7 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
             setAvgPricePer(Math.round(total / quantity));
             setQuantity(quantity);
             setCities(retainerCities)
-            props.data.setPurchaseIndexes(indexes)
+            setPurchaseIndexes(indexes)
             if (amountOfHighQualities === 0) {
                 setHighQuality("No")
             } else if (amountOfHighQualities !== cheapestOptionsArray.length) {
@@ -64,19 +68,24 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
             } else if (amountOfHighQualities === cheapestOptionsArray.length) {
                 setHighQuality("Yes")
             }
+        } else {
+            setHighQuality("No")
+            setTotal(0);
+            setAvgPricePer(0);
+            setQuantity(0);
+            setCities([])
         }
-    }, [cheapestOptionsArray])
+    }, [cheapestOptionsArray, setPurchaseIndexes])
 
     useEffect(() => {
+        if (total > 0) {
+            console.log("Index at: ")
+            console.log(index)
+            console.log("Total: ")
+            console.log(total)
+        }
+    }, [total, index])
 
-        dispatch(subtractFromTotalCost(total))
-
-
-    }, [cheapestOptionsArray, dispatch])
-
-    useEffect(() => {
-        dispatch(addToTotalCost(total))
-    }, [total, dispatch])
 
 
 

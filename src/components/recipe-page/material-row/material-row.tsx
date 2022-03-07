@@ -7,9 +7,12 @@ import MaterialCalculations from './material-calculations/material-calculations'
 import './material-row.scss';
 
 interface MaterialRowProps {
-    name: string,
-    icon: string,
-    quantity: number
+    material: {
+        name: string,
+        icon: string,
+        quantity: number
+    },
+    index: number
 }
 interface ItemObject {
     ID: number,
@@ -25,7 +28,7 @@ interface FetchObject {
     SpeedMS: number
 }
 
-function MaterialRow(props: { material: MaterialRowProps }) {
+function MaterialRow(props: { data: MaterialRowProps }) {
 
     // State
     const [showPrices, setShowPrices] = useState<boolean>(false);
@@ -36,6 +39,7 @@ function MaterialRow(props: { material: MaterialRowProps }) {
     const [marketDataLoaded, setMarketDataLoaded] = useState<boolean>(false);
     const [lastUpdateTime, setLastUpdateTime] = useState<number>(0);
     const [purchaseIndexes, setPurchaseIndexes] = useState<Array<number>>([]);
+    const [totalCost, setTotalCost] = useState<Array<number>>([]);
 
     // Context
     const { server } = useContext(ServerContext);
@@ -44,8 +48,9 @@ function MaterialRow(props: { material: MaterialRowProps }) {
 
     // Variables
     const materialImagesPath = require.context('../../../assets/material-icons/', true);
-    const materialName = props.material.name;
-    const quantityRequired = props.material.quantity;
+    const { name, icon } = props.data.material;
+    const index = props.data.index;
+    const quantityRequired = props.data.material.quantity;
 
 
 
@@ -66,7 +71,7 @@ function MaterialRow(props: { material: MaterialRowProps }) {
             (async () => {
                 try {
 
-                    const fetchMaterialId = await fetch(`https://xivapi.com/search?string_algo=match&string=${materialName}`, { signal: abortController.signal })
+                    const fetchMaterialId = await fetch(`https://xivapi.com/search?string_algo=match&string=${name}`, { signal: abortController.signal })
                     const fetchObject = await fetchMaterialId.json();
                     const materialId = (await getMaterialID(fetchObject));
 
@@ -88,7 +93,7 @@ function MaterialRow(props: { material: MaterialRowProps }) {
             abortController.abort();
 
         }
-    }, [materialName, abortController, server]);
+    }, [name, abortController, server]);
 
     useEffect(() => {
         if (highQualityChecked === true) {
@@ -121,19 +126,19 @@ function MaterialRow(props: { material: MaterialRowProps }) {
                         <label>HQ?</label>
                         <input type="checkbox" className="hq-checkbox" name="hq checkbox" value="hq" onClick={() => setHighQualityChecked(!highQualityChecked)} />
                     </span>
-                    <img src={materialImagesPath(`./${props.material.icon}`).default} alt={props.material.name} />
+                    <img src={materialImagesPath(`./${icon}`).default} alt={name} />
                     <h3>
                         <span className="x-marker">
                             x
                         </span>
-                        {props.material.quantity}
+                        {quantityRequired}
                     </h3>
-                    <h3 className="material-name">{props.material.name}</h3>
+                    <h3 className="material-name">{name}</h3>
                 </span>
                 <div className="material-calculations">
                     {marketDataLoaded === true ?
                         <>
-                            <MaterialCalculations data={{ highQualityChecked, filteredList, quantityRequired, setPurchaseIndexes }} />
+                            <MaterialCalculations data={{ highQualityChecked, filteredList, quantityRequired, setPurchaseIndexes, setTotalCost, index }} />
                             <span className="arrow">
                                 <img className="arrow-svg" src={arrowDown} alt="expand down arrow" onClick={() => setShowPrices(!showPrices)} />
                             </span>
