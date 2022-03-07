@@ -4,6 +4,10 @@ import MaterialObject from "../../interfaces/material-interface";
 import CrystalObject from "../../interfaces/crystal-interface";
 import './recipe-page.scss';
 import MaterialRow from "./material-row/material-row";
+import CostsAndProfit from "./costs-and-profit/costs-and-profit";
+import { useEffect } from "react";
+import { useDispatch } from 'react-redux';
+import { reset } from '../../redux/reducers/cost-slice';
 
 interface RecipePageProps {
     recipe: RecipeObject,
@@ -14,6 +18,8 @@ interface RecipePageProps {
 
 function RecipePage(props: { data: RecipePageProps }) {
 
+    // Redux
+    const dispatch = useDispatch();
 
     const crystalImagesPath = require.context('../../assets/crystal-icons/', true);
 
@@ -25,6 +31,13 @@ function RecipePage(props: { data: RecipePageProps }) {
 
         })
     }
+
+    useEffect(() => {
+        dispatch(reset())
+
+    }, [dispatch]);
+
+
 
 
     return (
@@ -44,14 +57,14 @@ function RecipePage(props: { data: RecipePageProps }) {
                 <div id="recipe-link">
                     <img src={websiteIcon} alt="Eorzea database" />
                     <a target="_blank" rel="noreferrer" href={props.data.recipe.link}> Eorzea Database Link</a>
-
                 </div>
 
             </div>
-            <div id="calculations-container">
+            <CostsAndProfit />
+            {/* <div id="calculations-container">
                 <div id="profits"></div>
                 <div id="costs"></div>
-            </div>
+            </div> */}
             <div id="materials-container">
                 <h1 id="materials-title">Materials</h1>
                 {createMaterialDivs(props.data.materials)}

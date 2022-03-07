@@ -4,22 +4,27 @@ import calculateCheapestOption from './calculateCheapestOption';
 import MarketObject from '../../../../interfaces/market-object';
 import { useEffect, useState } from 'react';
 import './material-calculations.scss';
+import { subtractFromTotalCost, addToTotalCost } from '../../../../redux/reducers/cost-slice';
+import { useDispatch } from 'react-redux';
 
 interface MaterialCalculationsProps {
     highQualityChecked: boolean,
     filteredList: Array<MarketObject>,
     quantityRequired: number,
     setPurchaseIndexes: React.Dispatch<React.SetStateAction<Array<number>>>
-
 }
+
 function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
 
+
+    //Redux
+    const dispatch = useDispatch();
     const [highQuality, setHighQuality] = useState<string>();
     const [cities, setCities] = useState<Array<number>>([]);
     const [avgPricePer, setAvgPricePer] = useState<number>();
     const [quantity, setQuantity] = useState<number>();
-    const [totalPrice, setTotalPrice] = useState<number>();
     const [cheapestOptionsArray, setCheapestOptionsArray] = useState<Array<MarketObject>>([]);
+    const [total, setTotal] = useState(0);
 
     useEffect(() => {
 
@@ -30,12 +35,12 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
 
     useEffect(() => {
         if (cheapestOptionsArray.length > 0) {
+
             let total = 0;
             let quantity = 0;
             let retainerCities = [];
             let amountOfHighQualities = 0;
             let indexes = [];
-
             for (let i = 0; i < cheapestOptionsArray.length; i++) {
                 total += cheapestOptionsArray[i].total;
                 quantity += cheapestOptionsArray[i].quantity;
@@ -47,7 +52,7 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
 
 
             }
-            setTotalPrice(total);
+            setTotal(total);
             setAvgPricePer(Math.round(total / quantity));
             setQuantity(quantity);
             setCities(retainerCities)
@@ -61,6 +66,17 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
             }
         }
     }, [cheapestOptionsArray])
+
+    useEffect(() => {
+
+        dispatch(subtractFromTotalCost(total))
+
+
+    }, [cheapestOptionsArray, dispatch])
+
+    useEffect(() => {
+        dispatch(addToTotalCost(total))
+    }, [total, dispatch])
 
 
 
@@ -97,7 +113,7 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
             <span className="total">
                 <h4 className="calculation-title">TOTAL</h4>
                 <span className="calculation-value">
-                    <h4>{totalPrice}</h4>
+                    <h4>{total}</h4>
                 </span>
             </span>
 

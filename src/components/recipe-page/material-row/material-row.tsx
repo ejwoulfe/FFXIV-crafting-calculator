@@ -99,6 +99,8 @@ function MaterialRow(props: { material: MaterialRowProps }) {
     }, [highQualityChecked, pricesList]);
 
 
+
+
     function getMaterialID(fetchObject: FetchObject) {
 
         return fetchObject.Results.map((item) => {

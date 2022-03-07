@@ -47,6 +47,7 @@ export default function calculateCheapestOption(listOfItems: Array<MarketObject>
             }
         }
     }
+
     return getCheapestOption(possibleCombinations);
 
 
