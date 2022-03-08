@@ -12,7 +12,8 @@ interface MaterialRowProps {
         icon: string,
         quantity: number
     },
-    index: number
+    index: number,
+    totalNumOfMaterials: number
 }
 interface ItemObject {
     ID: number,
@@ -50,6 +51,7 @@ function MaterialRow(props: { data: MaterialRowProps }) {
     const { name, icon } = props.data.material;
     const index = props.data.index;
     const quantityRequired = props.data.material.quantity;
+    const totalNumOfMaterials = props.data.totalNumOfMaterials;
 
 
 
@@ -137,7 +139,7 @@ function MaterialRow(props: { data: MaterialRowProps }) {
                 <div className="material-calculations">
                     {marketDataLoaded === true ?
                         <>
-                            <MaterialCalculations data={{ highQualityChecked, setHighQualityChecked, filteredList, quantityRequired, setPurchaseIndexes, index }} />
+                            <MaterialCalculations data={{ highQualityChecked, setHighQualityChecked, filteredList, quantityRequired, setPurchaseIndexes, index, totalNumOfMaterials }} />
                             <span className="arrow">
                                 <img className="arrow-svg" src={arrowDown} alt="expand down arrow" onClick={() => setShowPrices(!showPrices)} />
                             </span>

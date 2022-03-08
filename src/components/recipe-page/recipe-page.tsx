@@ -7,7 +7,7 @@ import MaterialRow from "./material-row/material-row";
 import CostsAndProfit from "./costs-and-profit/costs-and-profit";
 import { useEffect } from "react";
 import { useDispatch } from 'react-redux';
-import { reset } from '../../redux/reducers/cost-slice';
+import { addToTotalCost, reset } from '../../redux/reducers/cost-slice';
 
 interface RecipePageProps {
     recipe: RecipeObject,
@@ -21,21 +21,27 @@ function RecipePage(props: { data: RecipePageProps }) {
     // Redux
     const dispatch = useDispatch();
 
+    // State
+    const totalNumOfMaterials = props.data.materials.length;
+
     const crystalImagesPath = require.context('../../assets/crystal-icons/', true);
 
     function createMaterialDivs(materials: Array<MaterialObject>) {
 
         return materials.map((material, index) => {
 
-            return <MaterialRow data={{ material, index }} key={"material-row-" + index} />
+            return <MaterialRow data={{ material, index, totalNumOfMaterials }} key={"material-row-" + index} />
 
         })
     }
 
     useEffect(() => {
         dispatch(reset())
+        for (let i = 0; i < totalNumOfMaterials; i++) {
+            dispatch(addToTotalCost(0))
+        }
 
-    }, [dispatch]);
+    }, [dispatch, totalNumOfMaterials]);
 
 
 

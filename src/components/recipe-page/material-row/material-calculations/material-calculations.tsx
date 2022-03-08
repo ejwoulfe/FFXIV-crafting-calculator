@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import './material-calculations.scss';
 import { addToTotalCost, updateCost } from '../../../../redux/reducers/cost-slice';
 import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../../redux/store';
 
 interface MaterialCalculationsProps {
     highQualityChecked: boolean,
@@ -13,7 +14,8 @@ interface MaterialCalculationsProps {
     quantityRequired: number,
     setHighQualityChecked: React.Dispatch<React.SetStateAction<boolean>>,
     setPurchaseIndexes: React.Dispatch<React.SetStateAction<Array<number>>>,
-    index: number
+    index: number,
+    totalNumOfMaterials: number
 }
 
 function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
@@ -21,19 +23,26 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
 
     //Redux
     const dispatch = useDispatch();
+    const totalCosts = useSelector((state: RootState) => state.costData.totalCost);
+
+    // State
     const [highQuality, setHighQuality] = useState<string>();
     const [cities, setCities] = useState<Array<number>>([]);
     const [avgPricePer, setAvgPricePer] = useState<number>();
     const [quantity, setQuantity] = useState<number>();
     const [cheapestOptionsArray, setCheapestOptionsArray] = useState<Array<MarketObject>>([]);
     const [total, setTotal] = useState(0);
-    const { setPurchaseIndexes, highQualityChecked, setHighQualityChecked, filteredList, quantityRequired, index } = props.data;
+
+
+    // Props
+    const { setPurchaseIndexes, highQualityChecked, setHighQualityChecked, filteredList, quantityRequired, index, totalNumOfMaterials } = props.data;
 
     useEffect(() => {
 
         let optionsArr = calculateCheapestOption(filteredList, quantityRequired);
         if (optionsArr.length > 0) {
             setCheapestOptionsArray(optionsArr);
+
         } else {
             let checkbox = document.getElementsByClassName('hq-checkbox')[index] as HTMLInputElement;
             checkbox.checked = false;
@@ -79,6 +88,14 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
         }
 
     }, [cheapestOptionsArray, setPurchaseIndexes])
+
+    useEffect(() => {
+
+        if (total > 0) {
+
+            dispatch(updateCost({ index, total }))
+        }
+    }, [total, dispatch, index])
 
 
 
