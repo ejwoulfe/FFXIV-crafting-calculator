@@ -39,7 +39,6 @@ function MaterialRow(props: { data: MaterialRowProps }) {
     const [marketDataLoaded, setMarketDataLoaded] = useState<boolean>(false);
     const [lastUpdateTime, setLastUpdateTime] = useState<number>(0);
     const [purchaseIndexes, setPurchaseIndexes] = useState<Array<number>>([]);
-    const [totalCost, setTotalCost] = useState<Array<number>>([]);
 
     // Context
     const { server } = useContext(ServerContext);
@@ -138,7 +137,7 @@ function MaterialRow(props: { data: MaterialRowProps }) {
                 <div className="material-calculations">
                     {marketDataLoaded === true ?
                         <>
-                            <MaterialCalculations data={{ highQualityChecked, filteredList, quantityRequired, setPurchaseIndexes, setTotalCost, index }} />
+                            <MaterialCalculations data={{ highQualityChecked, setHighQualityChecked, filteredList, quantityRequired, setPurchaseIndexes, index }} />
                             <span className="arrow">
                                 <img className="arrow-svg" src={arrowDown} alt="expand down arrow" onClick={() => setShowPrices(!showPrices)} />
                             </span>

@@ -1,8 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-
+interface CostState {
+    totalCost: Array<number>,
+}
+export interface PayloadObject {
+    index: number,
+    total: number
+}
 const initialState = {
-    totalCost: 0
+    totalCost: []
 };
 
 export const totalCostSlice = createSlice({
@@ -12,16 +18,17 @@ export const totalCostSlice = createSlice({
         reset: () => {
             return initialState
         },
-        addToTotalCost: (state, action) => {
-            state.totalCost += action.payload;
+        addToTotalCost: (state: CostState, action) => {
+            state.totalCost.push(action.payload);
         },
-        subtractFromTotalCost: (state, action) => {
-            state.totalCost -= action.payload;
+        updateCost: (state: CostState, action: PayloadAction<PayloadObject>) => {
+
+            state.totalCost.splice(action.payload.index, 1, action.payload.total);
         }
     },
 
 });
 
-export const { reset, addToTotalCost, subtractFromTotalCost } = totalCostSlice.actions;
+export const { reset, addToTotalCost, updateCost } = totalCostSlice.actions;
 
 export default totalCostSlice.reducer;

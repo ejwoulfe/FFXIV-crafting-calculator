@@ -4,15 +4,15 @@ import calculateCheapestOption from './calculateCheapestOption';
 import MarketObject from '../../../../interfaces/market-object';
 import { useEffect, useState } from 'react';
 import './material-calculations.scss';
-import { subtractFromTotalCost, addToTotalCost } from '../../../../redux/reducers/cost-slice';
-import { useDispatch } from 'react-redux';
+import { addToTotalCost, updateCost } from '../../../../redux/reducers/cost-slice';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface MaterialCalculationsProps {
     highQualityChecked: boolean,
     filteredList: Array<MarketObject>,
     quantityRequired: number,
+    setHighQualityChecked: React.Dispatch<React.SetStateAction<boolean>>,
     setPurchaseIndexes: React.Dispatch<React.SetStateAction<Array<number>>>,
-    setTotalCost: React.Dispatch<React.SetStateAction<Array<number>>>,
     index: number
 }
 
@@ -27,64 +27,58 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
     const [quantity, setQuantity] = useState<number>();
     const [cheapestOptionsArray, setCheapestOptionsArray] = useState<Array<MarketObject>>([]);
     const [total, setTotal] = useState(0);
-    const { setPurchaseIndexes, setTotalCost, highQualityChecked, filteredList, quantityRequired, index } = props.data;
+    const { setPurchaseIndexes, highQualityChecked, setHighQualityChecked, filteredList, quantityRequired, index } = props.data;
 
     useEffect(() => {
 
-        setCheapestOptionsArray(calculateCheapestOption(filteredList, quantityRequired));
-
-
-    }, [highQualityChecked, filteredList, quantityRequired]);
-
-
-
-    useEffect(() => {
-        if (cheapestOptionsArray.length > 0) {
-            let total = 0;
-            let quantity = 0;
-            let retainerCities = [];
-            let amountOfHighQualities = 0;
-            let indexes = [];
-            for (let i = 0; i < cheapestOptionsArray.length; i++) {
-                total += cheapestOptionsArray[i].total;
-                quantity += cheapestOptionsArray[i].quantity;
-                retainerCities.push(cheapestOptionsArray[i].retainerCity);
-                indexes.push(cheapestOptionsArray[i].index);
-                if (cheapestOptionsArray[i].hq === true) {
-                    amountOfHighQualities += 1;
-                }
-
-
-            }
-            setTotal(total);
-            setAvgPricePer(Math.round(total / quantity));
-            setQuantity(quantity);
-            setCities(retainerCities)
-            setPurchaseIndexes(indexes)
-            if (amountOfHighQualities === 0) {
-                setHighQuality("No")
-            } else if (amountOfHighQualities !== cheapestOptionsArray.length) {
-                setHighQuality("Mix")
-            } else if (amountOfHighQualities === cheapestOptionsArray.length) {
-                setHighQuality("Yes")
-            }
+        let optionsArr = calculateCheapestOption(filteredList, quantityRequired);
+        if (optionsArr.length > 0) {
+            setCheapestOptionsArray(optionsArr);
         } else {
-            setHighQuality("No")
-            setTotal(0);
-            setAvgPricePer(0);
-            setQuantity(0);
-            setCities([])
+            let checkbox = document.getElementsByClassName('hq-checkbox')[index] as HTMLInputElement;
+            checkbox.checked = false;
+            setHighQualityChecked(false);
+            if (highQualityChecked === false) {
+                window.alert("There are not enough listings available to meet the quantity requirement. Try again later.")
+            }
         }
-    }, [cheapestOptionsArray, setPurchaseIndexes])
+
+    }, [highQualityChecked, filteredList, quantityRequired, index, setHighQualityChecked]);
+
+
 
     useEffect(() => {
-        if (total > 0) {
-            console.log("Index at: ")
-            console.log(index)
-            console.log("Total: ")
-            console.log(total)
+
+        let total = 0;
+        let quantity = 0;
+        let retainerCities = [];
+        let amountOfHighQualities = 0;
+        let indexes = [];
+        for (let i = 0; i < cheapestOptionsArray.length; i++) {
+            total += cheapestOptionsArray[i].total;
+            quantity += cheapestOptionsArray[i].quantity;
+            retainerCities.push(cheapestOptionsArray[i].retainerCity);
+            indexes.push(cheapestOptionsArray[i].index);
+            if (cheapestOptionsArray[i].hq === true) {
+                amountOfHighQualities += 1;
+            }
+
+
         }
-    }, [total, index])
+        setTotal(total);
+        setAvgPricePer(Math.round(total / quantity));
+        setQuantity(quantity);
+        setCities(retainerCities)
+        setPurchaseIndexes(indexes)
+        if (amountOfHighQualities === 0) {
+            setHighQuality("No")
+        } else if (amountOfHighQualities !== cheapestOptionsArray.length) {
+            setHighQuality("Mix")
+        } else if (amountOfHighQualities === cheapestOptionsArray.length) {
+            setHighQuality("Yes")
+        }
+
+    }, [cheapestOptionsArray, setPurchaseIndexes])
 
 
 
