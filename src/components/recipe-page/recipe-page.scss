@@ -51,6 +51,10 @@
         }
     }
 }
+#total-costs {
+    @include title-style;
+    letter-spacing: 0px;
+}
 // @media (max-width: 800px) {
 //     #recipe-craft-info {
 //         width: 100%;

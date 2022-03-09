@@ -1,5 +1,9 @@
+@import "../../../util/variables";
+
 #costs-and-profits-container {
     width: 100%;
+    background-color: $dark-gray;
+    min-height: 200px;
 }
 
 #total-costs {

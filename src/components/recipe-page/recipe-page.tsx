@@ -66,7 +66,7 @@ function RecipePage(props: { data: RecipePageProps }) {
                 </div>
 
             </div>
-            <CostsAndProfit />
+            <CostsAndProfit recipe={props.data.recipe} />
             {/* <div id="calculations-container">
                 <div id="profits"></div>
                 <div id="costs"></div>

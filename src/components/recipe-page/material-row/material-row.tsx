@@ -5,6 +5,7 @@ import { ServerContext } from "../../../context/ServerContext";
 import arrowDown from '../../../assets/ui-icons/arrow-down.svg';
 import MaterialCalculations from './material-calculations/material-calculations';
 import './material-row.scss';
+import getMaterialID from '../getMaterialId';
 
 interface MaterialRowProps {
     material: {
@@ -14,19 +15,6 @@ interface MaterialRowProps {
     },
     index: number,
     totalNumOfMaterials: number
-}
-interface ItemObject {
-    ID: number,
-    Icon: string,
-    Name: string,
-    Url: string,
-    UrlType: string,
-    additionalProperties: { [prop: string]: string };
-}
-interface FetchObject {
-    Pagination: object,
-    Results: Array<ItemObject>,
-    SpeedMS: number
 }
 
 function MaterialRow(props: { data: MaterialRowProps }) {
@@ -105,19 +93,6 @@ function MaterialRow(props: { data: MaterialRowProps }) {
     }, [highQualityChecked, pricesList]);
 
 
-
-
-    function getMaterialID(fetchObject: FetchObject) {
-
-        return fetchObject.Results.map((item) => {
-
-            if (item.UrlType === "Item") {
-                return item.ID
-            } else {
-                return null;
-            }
-        })
-    }
 
     return (
         <>
