@@ -1,4 +1,5 @@
 @import "../../../util/variables";
+@import "../../../util/mixins";
 
 #costs-and-profits-container {
     width: 100%;
@@ -9,6 +10,7 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+
     #current-sale-price-container,
     #total-costs-container,
     #total-profits-container {
@@ -28,20 +30,23 @@
         .profits-title {
             text-decoration: underline;
             text-align: center;
+            @include title-style;
+            letter-spacing: 1.075px;
         }
         .profits-value {
             justify-content: flex-end;
+            font-weight: 100;
         }
     }
 
     #current-sale-price-container .profits-value {
-        color: green;
+        color: #7de281;
     }
     #total-costs-container .profits-value {
-        color: red;
+        color: #d36161;
     }
     #total-profits-container .profits-value {
-        color: goldenrod;
+        color: #d9b844;
     }
 }
 
