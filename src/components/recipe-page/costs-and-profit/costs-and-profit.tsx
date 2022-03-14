@@ -1,81 +1,60 @@
 import './costs-and-profit.scss';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import getMaterialID from '../getMaterialId';
-import { ServerContext } from '../../../context/ServerContext';
 import MarketObject from '../../../interfaces/market-object';
-import RecipeObject from '../../../interfaces/recipe-interface';
+
 
 interface CostsAndProfitInterface {
-    recipe: RecipeObject
+    recipeName: string,
+    recipeMarketListings: Array<MarketObject>
 }
 
-export default function CostsAndProfit(data: CostsAndProfitInterface) {
+export default function CostsAndProfit(props: { data: CostsAndProfitInterface }) {
 
     const totalCosts = useSelector((state: RootState) => state.costData.totalCost);
-    const [recipeMarketDataLoaded, setRecipeMarketDataLoaded] = useState<boolean>(false);
-    const [recipeMarketListings, setRecipeMarketListings] = useState<Array<MarketObject>>([]);
-    const [abortController, setAbortController] = useState<AbortController>(new AbortController());
-    const recipeName = data.recipe.name;
+    const totalNumber = totalCosts.reduce((prev, current) => {
+        return prev + current;
+    }, 0)
+    const { recipeName, recipeMarketListings } = props.data;
 
-    // Context
-    const { server } = useContext(ServerContext);
+    function addCommaToNumber(num: number) {
+        return num.toLocaleString("en-US");
+    }
 
-
-    useEffect(() => {
-
-        setRecipeMarketDataLoaded(false);
-
-
-        // Must be type item
-        // https://xivapi.com/search?string_algo=match&string=${itemName}
-        // Get item ID then retrieve Marketboard data.
-        // https://universalis.app/api/${server}/${itemID}
-        // Filter for hq only
-        // https://universalis.app/api/${server}/${itemID}?hq=hq
-
-        if (abortController.signal.aborted === false) {
-            (async () => {
-                try {
-
-                    const fetchMaterialId = await fetch(`https://xivapi.com/search?string_algo=match&string=${recipeName
-                        }`, { signal: abortController.signal })
-                    const fetchObject = await fetchMaterialId.json();
-                    const materialId = (await getMaterialID(fetchObject));
-
-                    const pricesFetch = await fetch(`https://universalis.app/api/${server}/${materialId}`, { signal: abortController.signal })
-                    const pricingData = await pricesFetch.json();
-                    setRecipeMarketListings(pricingData.listings)
-                    setRecipeMarketDataLoaded(true);
-
-                } catch (error: any) {
-                    return;
-
-                }
-            })();
-
-        }
-
-        return () => {
-            abortController.abort();
-
-        }
-    }, [recipeName, abortController, server]);
-
+    function calculateTotalProfits(salePrice: number, costsForMaterials: number) {
+        return salePrice - costsForMaterials;
+    }
 
     return (
         <div id="costs-and-profits-container">
             <div id="current-sale-price-container">
+                <span className="profits-title">
+                    <h2>Cheapest Sale Price For {recipeName}</h2>
+                </span>
+                <span className="profits-value">
+                    {recipeMarketListings.length > 0 ? <h1>{addCommaToNumber(recipeMarketListings[0].pricePerUnit)}</h1> : <h2>No Items Currently on Market</h2>}
+
+                </span>
             </div>
             <div id="total-costs-container">
-                <h1 id="total-costs">
-                    {totalCosts.length > 0 ?
-                        totalCosts.reduce((prev, current) => {
-                            return prev + current;
-                        }, 0).toLocaleString("en-US") : null}</h1>
+                <span className="profits-title">
+                    <h2>Total Costs for Materials</h2>
+                </span>
+                <span className="profits-value">
+                    <h1>
+                        {totalCosts.length > 0 ?
+                            addCommaToNumber(totalNumber) : null}</h1>
+                </span>
             </div>
             <div id="total-profits-container">
+                <span className="profits-title">
+                    <h2>Total Profits</h2>
+                </span>
+                <span className="profits-value">
+                    {recipeMarketListings.length > 0 ? <h1>{addCommaToNumber(calculateTotalProfits(recipeMarketListings[0].pricePerUnit, totalNumber))}</h1> : <h1>N/A</h1>}
+                </span>
             </div>
 
 

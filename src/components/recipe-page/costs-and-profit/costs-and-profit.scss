@@ -3,9 +3,89 @@
 #costs-and-profits-container {
     width: 100%;
     background-color: $dark-gray;
-    min-height: 200px;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    #current-sale-price-container,
+    #total-costs-container,
+    #total-profits-container {
+        flex: 1 1 33%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+        border-right: 2px solid $sky-blue;
+        justify-content: flex-end;
+        height: 80%;
+        min-width: 250px;
+
+        &:nth-child(3) {
+            border-right: none;
+        }
+        .profits-title {
+            text-decoration: underline;
+            text-align: center;
+        }
+        .profits-value {
+            justify-content: flex-end;
+        }
+    }
+
+    #current-sale-price-container .profits-value {
+        color: green;
+    }
+    #total-costs-container .profits-value {
+        color: red;
+    }
+    #total-profits-container .profits-value {
+        color: goldenrod;
+    }
 }
 
 #total-costs {
     text-align: center;
+}
+
+@media (max-width: 753px) {
+    #costs-and-profits-container {
+        height: 100%;
+
+        #total-costs-container {
+            border-right: none;
+        }
+        #total-profits-container,
+        #total-costs-container,
+        #current-sale-price-container {
+            flex: 1 1 35%;
+            align-self: self-end;
+        }
+    }
+    #total-profits-container {
+        border-top: 2px solid $sky-blue;
+    }
+}
+@media (max-width: 502px) {
+    #costs-and-profits-container {
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+
+        #total-profits-container,
+        #total-costs-container,
+        #current-sale-price-container {
+            border-right: none;
+            border-bottom: 2px solid $sky-blue;
+            align-self: center;
+            width: 100%;
+            &:nth-child(3) {
+                border-bottom: none;
+            }
+        }
+        #total-profits-container {
+            border-top: none;
+        }
+    }
 }

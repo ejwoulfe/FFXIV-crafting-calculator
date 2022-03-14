@@ -5,9 +5,12 @@ import CrystalObject from "../../interfaces/crystal-interface";
 import './recipe-page.scss';
 import MaterialRow from "./material-row/material-row";
 import CostsAndProfit from "./costs-and-profit/costs-and-profit";
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch } from 'react-redux';
 import { addToTotalCost, reset } from '../../redux/reducers/cost-slice';
+import MarketObject from "../../interfaces/market-object";
+import { ServerContext } from "../../context/ServerContext";
+import getMaterialID from "./getMaterialId";
 
 interface RecipePageProps {
     recipe: RecipeObject,
@@ -23,8 +26,57 @@ function RecipePage(props: { data: RecipePageProps }) {
 
     // State
     const totalNumOfMaterials = props.data.materials.length;
+    const [recipeMarketDataLoaded, setRecipeMarketDataLoaded] = useState<boolean>(false);
+    const [recipeMarketListings, setRecipeMarketListings] = useState<Array<MarketObject>>([]);
+    const [abortController, setAbortController] = useState<AbortController>(new AbortController());
+    const recipeName = props.data.recipe.name;
+
+    // Context
+    const { server } = useContext(ServerContext);
 
     const crystalImagesPath = require.context('../../assets/crystal-icons/', true);
+
+
+    useEffect(() => {
+
+        setRecipeMarketDataLoaded(false);
+
+
+        // Must be type item
+        // https://xivapi.com/search?string_algo=match&string=${itemName}
+        // Get item ID then retrieve Marketboard data.
+        // https://universalis.app/api/${server}/${itemID}
+        // Filter for hq only
+        // https://universalis.app/api/${server}/${itemID}?hq=hq
+
+        if (abortController.signal.aborted === false) {
+            (async () => {
+                try {
+
+                    const fetchMaterialId = await fetch(`https://xivapi.com/search?string_algo=match&string=${recipeName
+                        }`, { signal: abortController.signal })
+                    const fetchObject = await fetchMaterialId.json();
+                    const materialId = (await getMaterialID(fetchObject));
+
+                    const pricesFetch = await fetch(`https://universalis.app/api/${server}/${materialId}`, { signal: abortController.signal })
+                    const pricingData = await pricesFetch.json();
+                    setRecipeMarketListings(pricingData.listings)
+                    setRecipeMarketDataLoaded(true);
+
+                } catch (error: any) {
+                    return;
+
+                }
+            })();
+
+        }
+
+        return () => {
+            abortController.abort();
+
+        }
+    }, [recipeName, abortController, server]);
+
 
     function createMaterialDivs(materials: Array<MaterialObject>) {
 
@@ -66,11 +118,8 @@ function RecipePage(props: { data: RecipePageProps }) {
                 </div>
 
             </div>
-            <CostsAndProfit recipe={props.data.recipe} />
-            {/* <div id="calculations-container">
-                <div id="profits"></div>
-                <div id="costs"></div>
-            </div> */}
+            {recipeMarketDataLoaded ? <CostsAndProfit data={{ recipeName, recipeMarketListings }} /> : null}
+
             <div id="materials-container">
                 <h1 id="materials-title">Materials</h1>
                 {createMaterialDivs(props.data.materials)}
