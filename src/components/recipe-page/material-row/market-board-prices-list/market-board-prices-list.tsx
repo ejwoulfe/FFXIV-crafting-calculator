@@ -105,7 +105,7 @@ function MarketBoardPricesList(props: { data: MarketBoardPricesListProps }) {
             <div className="last-updated-container">
                 {props.data.lastUpdateTime !== undefined ? convertTimeToLocal(props.data.lastUpdateTime) : null}
             </div>
-            {props.data.filteredList.length > 0 ? createMarketBoardListings(props.data.filteredList) : <h1 className="no-listings">No High Quality Listings Found</h1>}
+            {props.data.filteredList.length > 0 ? createMarketBoardListings(props.data.filteredList) : <h1 className="no-listings">No Listings Found At This Time</h1>}
 
         </div>
     );
