@@ -30,12 +30,16 @@
         .profits-title {
             text-decoration: underline;
             text-align: center;
-            @include title-style;
-            letter-spacing: 1.075px;
+            h2 {
+                @include title-style;
+                letter-spacing: 1px;
+            }
         }
         .profits-value {
             justify-content: flex-end;
-            font-weight: 100;
+            h1 {
+                font-weight: 100;
+            }
         }
     }
 

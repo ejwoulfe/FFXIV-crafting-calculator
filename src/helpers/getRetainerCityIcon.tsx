@@ -1,10 +1,10 @@
-import crystarium from '../../assets/city-icons/crystarium.png';
-import gridania from '../../assets/city-icons/gridania.png';
-import ishgard from '../../assets/city-icons/ishgard.png';
-import kugane from '../../assets/city-icons/kugane.png';
-import oldSharlayan from '../../assets/city-icons/old-sharlayan.png';
-import ulDah from "../../assets/city-icons/ul'dah.png";
-import limsaLominsa from "../../assets/city-icons/limsa-lominsa.png";
+import crystarium from '../assets/city-icons/crystarium.png';
+import gridania from '../assets/city-icons/gridania.png';
+import ishgard from '../assets/city-icons/ishgard.png';
+import kugane from '../assets/city-icons/kugane.png';
+import oldSharlayan from '../assets/city-icons/old-sharlayan.png';
+import ulDah from "../assets/city-icons/ul'dah.png";
+import limsaLominsa from "../assets/city-icons/limsa-lominsa.png";
 
 export default function getRetainerCityIcon(cityId: number, index: number) {
     switch (cityId) {

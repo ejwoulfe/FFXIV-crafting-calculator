@@ -1,12 +1,12 @@
 
-import getRetainerCityIcon from '../../getRetainerCityIcon';
-import calculateCheapestOption from './calculateCheapestOption';
+import getRetainerCityIcon from '../../../../helpers/getRetainerCityIcon';
+import calculateCheapestOption from '../../../../helpers/calculateCheapestOption';
 import MarketObject from '../../../../interfaces/market-object';
 import { useEffect, useState } from 'react';
 import './material-calculations.scss';
-import { addToTotalCost, updateCost } from '../../../../redux/reducers/cost-slice';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { updateCost } from '../../../../redux/reducers/cost-slice';
+import { useDispatch } from 'react-redux';
+import convertNumberToString from '../../../../helpers/convertNumberToString';
 
 interface MaterialCalculationsProps {
     highQualityChecked: boolean,
@@ -14,8 +14,7 @@ interface MaterialCalculationsProps {
     quantityRequired: number,
     setHighQualityChecked: React.Dispatch<React.SetStateAction<boolean>>,
     setPurchaseIndexes: React.Dispatch<React.SetStateAction<Array<number>>>,
-    index: number,
-    totalNumOfMaterials: number
+    index: number
 }
 
 function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
@@ -23,19 +22,19 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
 
     //Redux
     const dispatch = useDispatch();
-    const totalCosts = useSelector((state: RootState) => state.costData.totalCost);
+
 
     // State
     const [highQuality, setHighQuality] = useState<string>();
     const [cities, setCities] = useState<Array<number>>([]);
-    const [avgPricePer, setAvgPricePer] = useState<number>();
-    const [quantity, setQuantity] = useState<number>();
+    const [avgPricePer, setAvgPricePer] = useState<number>(0);
+    const [quantity, setQuantity] = useState<number>(0);
     const [cheapestOptionsArray, setCheapestOptionsArray] = useState<Array<MarketObject>>([]);
     const [total, setTotal] = useState(0);
 
 
     // Props
-    const { setPurchaseIndexes, highQualityChecked, setHighQualityChecked, filteredList, quantityRequired, index, totalNumOfMaterials } = props.data;
+    const { setPurchaseIndexes, highQualityChecked, setHighQualityChecked, filteredList, quantityRequired, index } = props.data;
 
     useEffect(() => {
 
@@ -121,19 +120,19 @@ function MaterialCalculations(props: { data: MaterialCalculationsProps }) {
             <span className="price-per">
                 <h4 className="calculation-title">Avg Price Per</h4>
                 <span className="calculation-value">
-                    <h4>{avgPricePer}</h4>
+                    <h4>{convertNumberToString(avgPricePer)}</h4>
                 </span>
             </span>
             <span className="quantity">
                 <h4 className="calculation-title">QTY</h4>
                 <span className="calculation-value">
-                    <h4>{quantity}</h4>
+                    <h4>{convertNumberToString(quantity)}</h4>
                 </span>
             </span>
             <span className="total">
                 <h4 className="calculation-title">TOTAL</h4>
                 <span className="calculation-value">
-                    <h4>{total}</h4>
+                    <h4>{convertNumberToString(total)}</h4>
                 </span>
             </span>
 

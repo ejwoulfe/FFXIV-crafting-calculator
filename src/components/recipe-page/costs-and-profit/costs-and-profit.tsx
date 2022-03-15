@@ -1,9 +1,8 @@
 import './costs-and-profit.scss';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
-import { useEffect } from 'react';
-import getMaterialID from '../getMaterialId';
 import MarketObject from '../../../interfaces/market-object';
+import convertNumberToString from '../../../helpers/convertNumberToString';
 
 
 interface CostsAndProfitInterface {
@@ -19,9 +18,6 @@ export default function CostsAndProfit(props: { data: CostsAndProfitInterface })
     }, 0)
     const { recipeName, recipeMarketListings } = props.data;
 
-    function addCommaToNumber(num: number) {
-        return num.toLocaleString("en-US");
-    }
 
     function calculateTotalProfits(salePrice: number, costsForMaterials: number) {
         return salePrice - costsForMaterials;
@@ -34,7 +30,7 @@ export default function CostsAndProfit(props: { data: CostsAndProfitInterface })
                     <h2>Cheapest Sale Price For {recipeName}</h2>
                 </span>
                 <span className="profits-value">
-                    {recipeMarketListings.length > 0 ? <h1>{addCommaToNumber(recipeMarketListings[0].pricePerUnit)}</h1> : <h2>No Items Currently on Market</h2>}
+                    {recipeMarketListings.length > 0 ? <h1>{convertNumberToString(recipeMarketListings[0].pricePerUnit)}</h1> : <h2>No Items Currently on Market</h2>}
 
                 </span>
             </div>
@@ -45,7 +41,7 @@ export default function CostsAndProfit(props: { data: CostsAndProfitInterface })
                 <span className="profits-value">
                     <h1>
                         {totalCosts.length > 0 ?
-                            addCommaToNumber(totalNumber) : null}</h1>
+                            convertNumberToString(totalNumber) : null}</h1>
                 </span>
             </div>
             <div id="total-profits-container">
@@ -53,7 +49,7 @@ export default function CostsAndProfit(props: { data: CostsAndProfitInterface })
                     <h2>Total Profits</h2>
                 </span>
                 <span className="profits-value">
-                    {recipeMarketListings.length > 0 ? <h1>{addCommaToNumber(calculateTotalProfits(recipeMarketListings[0].pricePerUnit, totalNumber))}</h1> : <h1>N/A</h1>}
+                    {recipeMarketListings.length > 0 ? <h1>{convertNumberToString(calculateTotalProfits(recipeMarketListings[0].pricePerUnit, totalNumber))}</h1> : <h1>N/A</h1>}
                 </span>
             </div>
 

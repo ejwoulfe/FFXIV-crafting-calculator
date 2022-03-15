@@ -1,5 +1,6 @@
 import './search-list.scss';
 import RecipeObject from '../../../../interfaces/recipe-interface';
+import { Link } from 'react-router-dom';
 
 interface SearchListProps {
     searchResults: Array<RecipeObject>
@@ -24,14 +25,20 @@ export default function SearchList(recipes: SearchListProps) {
                 let disciple = getDiscipleName(recipe.disciple_id);
 
                 return (
+                    <Link to={`/disciple/${recipe.disciple_id}/recipes/recipe/${recipe.recipe_id}`}
+                        className="recipe-list-item"
+                        state={{
+                            recipe: recipe,
+                            recipeImage: filePath
+                        }}
+                        key={"recipe-" + index} >
 
-                    <li className="recipe-list-item" key={"recipe-" + index}>
                         <img className="recipe-icon" src={filePath} alt={`${recipe.name} icon`} />
                         <span className="recipe-info-text">
                             <p className="recipe-disciple">{disciple}</p>
                             <p className="recipe-name">{recipe.name}</p>
                         </span>
-                    </li>
+                    </Link>
                 )
 
             })

@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { addToTotalCost, reset } from '../../redux/reducers/cost-slice';
 import MarketObject from "../../interfaces/market-object";
 import { ServerContext } from "../../context/ServerContext";
-import getMaterialID from "./getMaterialId";
+import getMaterialID from "../../helpers/getMaterialId";
 
 interface RecipePageProps {
     recipe: RecipeObject,
@@ -21,6 +21,7 @@ interface RecipePageProps {
 
 function RecipePage(props: { data: RecipePageProps }) {
 
+
     // Redux
     const dispatch = useDispatch();
 
@@ -28,19 +29,19 @@ function RecipePage(props: { data: RecipePageProps }) {
     const totalNumOfMaterials = props.data.materials.length;
     const [recipeMarketDataLoaded, setRecipeMarketDataLoaded] = useState<boolean>(false);
     const [recipeMarketListings, setRecipeMarketListings] = useState<Array<MarketObject>>([]);
-    const [abortController, setAbortController] = useState<AbortController>(new AbortController());
+    const [abortController] = useState<AbortController>(new AbortController());
     const recipeName = props.data.recipe.name;
 
     // Context
     const { server } = useContext(ServerContext);
 
-    const crystalImagesPath = require.context('../../assets/crystal-icons/', true);
+    // Image path for crystals if I want to include them in my calculations. As of right now, don't think they are worth it.
+    //const crystalImagesPath = require.context('../../assets/crystal-icons/', true);
 
 
     useEffect(() => {
 
         setRecipeMarketDataLoaded(false);
-
 
         // Must be type item
         // https://xivapi.com/search?string_algo=match&string=${itemName}
@@ -64,6 +65,7 @@ function RecipePage(props: { data: RecipePageProps }) {
                     setRecipeMarketDataLoaded(true);
 
                 } catch (error: any) {
+                    abortController.abort();
                     return;
 
                 }
@@ -82,7 +84,7 @@ function RecipePage(props: { data: RecipePageProps }) {
 
         return materials.map((material, index) => {
 
-            return <MaterialRow data={{ material, index, totalNumOfMaterials }} key={"material-row-" + index} />
+            return <MaterialRow data={{ material, index }} key={"material-row-" + index} />
 
         })
     }

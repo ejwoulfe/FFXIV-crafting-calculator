@@ -5,7 +5,7 @@ import { ServerContext } from "../../../context/ServerContext";
 import arrowDown from '../../../assets/ui-icons/arrow-down.svg';
 import MaterialCalculations from './material-calculations/material-calculations';
 import './material-row.scss';
-import getMaterialID from '../getMaterialId';
+import getMaterialID from '../../../helpers/getMaterialId';
 
 interface MaterialRowProps {
     material: {
@@ -13,8 +13,7 @@ interface MaterialRowProps {
         icon: string,
         quantity: number
     },
-    index: number,
-    totalNumOfMaterials: number
+    index: number
 }
 
 function MaterialRow(props: { data: MaterialRowProps }) {
@@ -39,7 +38,6 @@ function MaterialRow(props: { data: MaterialRowProps }) {
     const { name, icon } = props.data.material;
     const index = props.data.index;
     const quantityRequired = props.data.material.quantity;
-    const totalNumOfMaterials = props.data.totalNumOfMaterials;
 
 
 
@@ -114,7 +112,7 @@ function MaterialRow(props: { data: MaterialRowProps }) {
                 <div className="material-calculations">
                     {marketDataLoaded === true ?
                         <>
-                            <MaterialCalculations data={{ highQualityChecked, setHighQualityChecked, filteredList, quantityRequired, setPurchaseIndexes, index, totalNumOfMaterials }} />
+                            <MaterialCalculations data={{ highQualityChecked, setHighQualityChecked, filteredList, quantityRequired, setPurchaseIndexes, index }} />
                             <span className="arrow">
                                 <img className="arrow-svg" src={arrowDown} alt="expand down arrow" onClick={() => setShowPrices(!showPrices)} />
                             </span>

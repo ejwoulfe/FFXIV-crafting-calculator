@@ -1,4 +1,4 @@
-import MarketObject from "../../../../interfaces/market-object"
+import MarketObject from "../interfaces/market-object"
 export default function calculateCheapestOption(listOfItems: Array<MarketObject>, targetQuantity: number) {
 
     const possibleCombinations: Array<Array<MarketObject>> = [];

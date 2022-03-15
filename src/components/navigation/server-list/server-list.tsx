@@ -69,6 +69,8 @@ export default function ServerList(props: ServerListProps) {
 
         if (event.target.className === 'server') {
             setServer(event.target.innerText)
+            // Temp Fix
+            window.location.reload();
         }
 
     }
