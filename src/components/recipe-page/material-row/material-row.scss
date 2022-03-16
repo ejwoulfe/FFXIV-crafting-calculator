@@ -12,6 +12,7 @@
 
 #materials-title {
     @include title-style;
+    text-decoration: underline;
 }
 .material-row {
     display: flex;

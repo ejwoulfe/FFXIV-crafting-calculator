@@ -1,6 +1,9 @@
 @import "../../util/variables";
 @import "../../util/mixins";
 
+#title-and-info-container {
+    background-color: $dark-blue;
+}
 #recipe-info {
     color: $sky-blue;
     font-family: $main-font;
@@ -10,6 +13,7 @@
     margin-top: 0;
     padding-top: 3rem;
     @include title-style;
+    font-size: 64px;
 }
 
 #recipe-craft-info {
@@ -19,7 +23,7 @@
     align-items: flex-end;
     width: 85%;
     margin: auto;
-    margin-bottom: 2rem;
+    padding-bottom: 2rem;
 
     #recipe-img,
     #recipe-details,
@@ -55,8 +59,8 @@
     @include title-style;
     letter-spacing: 0px;
 }
-// @media (max-width: 800px) {
-//     #recipe-craft-info {
-//         width: 100%;
-//     }
-// }
+@media (max-width: 390px) {
+    #recipe-title {
+        font-size: 48px;
+    }
+}

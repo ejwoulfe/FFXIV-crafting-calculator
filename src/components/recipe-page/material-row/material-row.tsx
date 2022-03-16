@@ -21,7 +21,7 @@ function MaterialRow(props: { data: MaterialRowProps }) {
     // State
     const [showPrices, setShowPrices] = useState<boolean>(false);
     const [highQualityChecked, setHighQualityChecked] = useState<boolean>(false);
-    const [abortController, setAbortController] = useState<AbortController>(new AbortController());
+    const [abortController] = useState<AbortController>(new AbortController());
     const [pricesList, setPricesList] = useState<Array<MarketObject>>([]);
     const [filteredList, setFilteredList] = useState<Array<MarketObject>>([]);
     const [marketDataLoaded, setMarketDataLoaded] = useState<boolean>(false);

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import hqIcon from '../../../../assets/ui-icons/hq.png';
 import getRetainerCityIcon from '../../../../helpers/getRetainerCityIcon';
 import './market-board-prices-list.scss';
