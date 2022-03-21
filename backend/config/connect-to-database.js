@@ -20,8 +20,9 @@ const connection = mysql.createConnection({
 connection.connect(err => {
     if (err) {
         throw err
+    } else {
+        console.log("MySQL Connected")
     }
-    console.log("MySQL Connected")
 });
 
 module.exports = connection;
@@ -45,4 +46,5 @@ app.use('/crystals', crystalsRouter);
 app.listen(process.env.PORT, () => {
 
     console.log("Server is running on port " + process.env.PORT);
+
 });
