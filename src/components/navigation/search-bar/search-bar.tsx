@@ -21,7 +21,7 @@ export default function SearchBar() {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         if (searchTerm !== null && searchTerm.length >= 2) {
-            fetch(`https://ffxivcc-database.c2wc6vilznc5.us-east-2.rds.amazonaws.com/recipes/name/${searchTerm}`)
+            fetch(`https://brave-lalande-048a9a.netlify.app/recipes/name/${searchTerm}`)
                 .then(response => response.json())
                 .then((results) => {
                     setSearchResults(results)
