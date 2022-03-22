@@ -8,14 +8,9 @@
 # testing
 /coverage
 
-# database config info
-/config
-
 # production
 /build
 
-# Portable Network Graphics
-*.png
 
 # misc
 .DS_Store

@@ -2,10 +2,9 @@
 import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import SearchBar from './search-bar/search-bar';
-import crystal from '../../../src/assets/ui-icons/crystal.png';
+import crystal from '../../assets/ui-icons/crystal.png';
 import './navigation.scss';
 import ServerList from './server-list/server-list';
-
 import { ServerContext } from '../../context/ServerContext';
 
 
