@@ -11,6 +11,9 @@
 # production
 /build
 
+# design
+/figma_design
+
 
 # misc
 .DS_Store
