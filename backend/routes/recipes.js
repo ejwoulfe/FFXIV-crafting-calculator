@@ -6,6 +6,7 @@ const db = require('../config/connect-to-database');
 
 // 
 router.get("/name/:recipeName", (req, res) => {
+    console.log("testing")
 
     db.query(`SELECT * FROM recipes WHERE name LIKE "%${req.params.recipeName}%"`, (err, results) => {
 
