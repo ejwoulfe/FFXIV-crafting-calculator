@@ -3,6 +3,9 @@ Front End: HTML, Sass, ReactJS, Redux Toolkit, TypeScript
 
 Back End: Node.js, Express, MySQL
 
+## Not Currently Live, Demo Available
+If you would like to see a quick demo of the website, it can be found here: https://www.youtube.com/watch?v=jwuS_8I_jLQ
+
 ## UML Diagram
 
 ![UML Diagram](https://user-images.githubusercontent.com/47793125/142658726-48a346f5-a56a-41c0-9b00-c4c12e1d8ea4.png)
