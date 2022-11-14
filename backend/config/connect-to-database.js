@@ -18,11 +18,10 @@ const connection = mysql.createConnection({
 });
 
 connection.connect(err => {
-    if (err) {
-        throw err
-    } else {
-        console.log("MySQL Connected")
-    }
+    if (!err)
+        console.log('Database is connected!');
+    else
+        console.log('Error connecting to the database: ' + JSON.stringify(err, undefined, 2));
 });
 
 module.exports = connection;

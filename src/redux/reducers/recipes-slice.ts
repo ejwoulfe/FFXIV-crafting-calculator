@@ -9,7 +9,7 @@ export interface RecipesState {
 
 export const fetchAsyncRecipes = createAsyncThunk('recipes/fetchAsyncRecipes', async (discipleId: string) => {
     const controller = new AbortController();
-    const response = await fetch(`https://brave-lalande-048a9a.netlify.app/disciple/id&=${discipleId}/recipes`, { signal: controller.signal });
+    const response = await fetch(`http://localhost:5000/disciple/id&=${discipleId}/recipes`, { signal: controller.signal });
     if (!response.ok) {
         controller.abort();
     }

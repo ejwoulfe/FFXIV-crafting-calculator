@@ -1,49 +1,74 @@
-import { useDispatch } from 'react-redux';
-import createDropDown from '../../dropdown';
-import { keywordSubmitted, changeSortNumber } from '../../../redux/reducers/recipes-slice';
-import './filter.scss';
+import { useDispatch } from "react-redux";
+import createDropDown from "../../dropdown";
+import { keywordSubmitted, changeSortNumber } from "../../../redux/reducers/recipes-slice";
+import "./filter.scss";
 
 interface FilterProps {
-    abortController: AbortController,
-    setAbortController: React.Dispatch<React.SetStateAction<AbortController>>
+  abortController: AbortController;
+  setAbortController: React.Dispatch<React.SetStateAction<AbortController>>;
 }
 
 function Filter(props: { data: FilterProps }) {
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch();
+  function sortOptionChanged(event: any) {
+    dispatch(changeSortNumber(parseInt(event.target.value)));
+  }
 
-    function sortOptionChanged(event: any) {
-        dispatch(changeSortNumber(parseInt(event.target.value)));
-    }
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>, formatSearchTerm: Function) {
+    event.preventDefault();
+    let target = event.target as HTMLFormElement;
+    let keyword = formatSearchTerm(target.keyword.value);
 
+    dispatch(keywordSubmitted(keyword));
+  }
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        let target = event.target as HTMLFormElement;
-        let keyword = target.keyword.value;
-        dispatch(keywordSubmitted(keyword))
-    }
+  function formatSearchTerm(searchTerm: string) {
+    const searchFormat = searchTerm
+      .toLowerCase()
+      .split(" ")
+      .map((word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
 
-    return (
-        <div id="filter-and-sort">
-            <div id="filter-container">
-                <label>Keyword: </label>
-                <form id="filter-form" onSubmit={(e) => { handleSubmit(e) }}>
-                    <input id="filter-bar"
-                        autoComplete="false"
-                        type="text"
-                        name="keyword"
-                        placeholder="SEARCH BY KEYWORD..." />
-                    <input id="filter-button" type="submit" value="" />
-                </form>
+    return searchFormat;
+  }
 
-            </div>
-            <div id="sort-by-container">
-                <label>Sort By: </label>
-                {createDropDown(["-", "Recipe Level - Ascending", "Recipe Level - Descending", "Recipe Names A-Z", "Recipe Names Z-A"], sortOptionChanged)}
-            </div>
-        </div>
-    );
+  return (
+    <div id="filter-and-sort">
+      <div id="filter-container">
+        <label>Keyword: </label>
+        <form
+          id="filter-form"
+          onSubmit={(e) => {
+            handleSubmit(e, formatSearchTerm);
+          }}>
+          <input
+            id="filter-bar"
+            autoComplete="false"
+            type="text"
+            name="keyword"
+            placeholder="SEARCH BY KEYWORD..."
+          />
+          <input id="filter-button" type="submit" value="" />
+        </form>
+      </div>
+      <div id="sort-by-container">
+        <label>Sort By: </label>
+        {createDropDown(
+          [
+            "-",
+            "Recipe Level - Ascending",
+            "Recipe Level - Descending",
+            "Recipe Names A-Z",
+            "Recipe Names Z-A",
+          ],
+          sortOptionChanged
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default Filter;
