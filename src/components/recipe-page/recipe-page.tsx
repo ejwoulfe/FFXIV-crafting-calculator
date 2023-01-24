@@ -13,7 +13,7 @@ import { ServerContext } from "../../context/ServerContext";
 import getMaterialID from "../../helpers/getMaterialId";
 
 interface RecipePageProps {
-  recipe: RecipeObject;
+  recipeObject: RecipeObject;
   recipeImage: string;
   materials: Array<MaterialObject>;
   crystals: Array<CrystalObject>;
@@ -25,13 +25,10 @@ function RecipePage(props: { data: RecipePageProps }) {
 
   // State
   const totalNumOfMaterials = props.data.materials.length;
-  const [recipeMarketDataLoaded, setRecipeMarketDataLoaded] =
-    useState<boolean>(false);
-  const [recipeMarketListings, setRecipeMarketListings] = useState<
-    Array<MarketObject>
-  >([]);
+  const [recipeMarketDataLoaded, setRecipeMarketDataLoaded] = useState<boolean>(false);
+  const [recipeMarketListings, setRecipeMarketListings] = useState<Array<MarketObject>>([]);
   const [abortController] = useState<AbortController>(new AbortController());
-  const recipeName = props.data.recipe.name;
+  const recipeName = props.data.recipeObject.name;
 
   // Context
   const { server } = useContext(ServerContext);
@@ -52,17 +49,15 @@ function RecipePage(props: { data: RecipePageProps }) {
     if (abortController.signal.aborted === false) {
       (async () => {
         try {
-          const fetchMaterialId = await fetch(
-            `https://xivapi.com/search?string_algo=match&string=${recipeName}`,
-            { signal: abortController.signal }
-          );
+          const fetchMaterialId = await fetch(`https://xivapi.com/search?string_algo=match&string=${recipeName}`, {
+            signal: abortController.signal,
+          });
           const fetchObject = await fetchMaterialId.json();
           const materialId = await getMaterialID(fetchObject);
 
-          const pricesFetch = await fetch(
-            `https://universalis.app/api/${server}/${materialId}`,
-            { signal: abortController.signal }
-          );
+          const pricesFetch = await fetch(`https://universalis.app/api/${server}/${materialId}`, {
+            signal: abortController.signal,
+          });
           const pricingData = await pricesFetch.json();
           setRecipeMarketListings(pricingData.listings);
           setRecipeMarketDataLoaded(true);
@@ -80,9 +75,7 @@ function RecipePage(props: { data: RecipePageProps }) {
 
   function createMaterialDivs(materials: Array<MaterialObject>) {
     return materials.map((material, index) => {
-      return (
-        <MaterialRow data={{ material, index }} key={"material-row-" + index} />
-      );
+      return <MaterialRow data={{ material, index }} key={"material-row-" + index} />;
     });
   }
 
@@ -96,36 +89,28 @@ function RecipePage(props: { data: RecipePageProps }) {
   return (
     <div id="recipe-info">
       <div id="title-and-info-container">
-        <h1 id="recipe-title">{props.data.recipe.name}</h1>
+        <h1 id="recipe-title">{props.data.recipeObject.name}</h1>
         <div id="recipe-craft-info">
-          <img
-            id="recipe-img"
-            src={props.data.recipeImage}
-            alt={`${props.data.recipe.name} recipe`}
-          />
+          <img id="recipe-img" src={props.data.recipeImage} alt={`${props.data.recipeObject.name} recipe`} />
           <div id="recipe-details">
-            <p>- Recipe Level: {props.data.recipe.level}</p>
-            {props.data.recipe.item_level !== null &&
-            props.data.recipe.item_level !== "null" ? (
-              <p>- Recipe Item Level: {props.data.recipe.item_level}</p>
+            <p>- Recipe Level: {props.data.recipeObject.level}</p>
+            {props.data.recipeObject.item_level !== null && props.data.recipeObject.item_level !== "null" ? (
+              <p>- Recipe Item Level: {props.data.recipeObject.item_level}</p>
             ) : null}
-            {props.data.recipe.type !== "null" &&
-            props.data.recipe.type !== null ? (
-              <p>- {props.data.recipe.type}</p>
+            {props.data.recipeObject.type !== "null" && props.data.recipeObject.type !== null ? (
+              <p>- {props.data.recipeObject.type}</p>
             ) : null}
           </div>
           <div id="recipe-link">
             <img src={websiteIcon} alt="Eorzea database" />
-            <a target="_blank" rel="noreferrer" href={props.data.recipe.link}>
+            <a target="_blank" rel="noreferrer" href={props.data.recipeObject.link}>
               {" "}
               Eorzea Database Link
             </a>
           </div>
         </div>
       </div>
-      {recipeMarketDataLoaded ? (
-        <CostsAndProfit data={{ recipeName, recipeMarketListings }} />
-      ) : null}
+      {recipeMarketDataLoaded ? <CostsAndProfit data={{ recipeName, recipeMarketListings }} /> : null}
 
       <div id="materials-container">
         <h1 id="materials-title">Materials</h1>

@@ -22,7 +22,7 @@ router.get("/name/:recipeName", (req, res) => {
 
 router.get("/id/:recipeId", (req, res) => {
 
-    db.query(`SELECT * FROM materials_list WHERE recipe_id = ${req.params.recipeId}`, (err, results) => {
+    db.query(`SELECT * FROM recipes WHERE recipe_id = ${req.params.recipeId}`, (err, results) => {
 
         if (err) {
 

@@ -4,9 +4,9 @@ const db = require('../config/connect-to-database');
 
 
 // Get the total number of recipes in a specified disciple.
-router.get("/id&=:discipeId", (req, res) => {
+router.get("/id&=:discipleId", (req, res) => {
 
-    db.query(`SELECT COUNT(*)FROM recipes where disciple_id = ${req.params.discipeId}`, (err, results) => {
+    db.query(`SELECT COUNT(*)FROM recipes where disciple_id = ${req.params.discipleId}`, (err, results) => {
 
         if (err) {
 
@@ -18,9 +18,9 @@ router.get("/id&=:discipeId", (req, res) => {
 });
 
 // Get all recipes from a disciple
-router.get("/id&=:discipeId/recipes", (req, res) => {
+router.get("/id&=:discipleId/recipes", (req, res) => {
 
-    db.query(`SELECT * FROM recipes where disciple_id = ${req.params.discipeId}`, (err, results) => {
+    db.query(`SELECT * FROM recipes where disciple_id = ${req.params.discipleId}`, (err, results) => {
 
         if (err) {
 
